@@ -1,0 +1,107 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Manrope:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-xcannes-background text-white !important;
+
+  font-family: system-ui, sans-serif;
+}
+
+/* ✅ Animation fade-in simple */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* ✅ Animation scroll/FAQ (fade + slide up) */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.faq-animate,
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s ease-out;
+}
+
+.faq-animate.visible,
+.scroll-animate.visible {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.clip-diagonal {
+  clip-path: polygon(-470% 90%, 100% 10%, 100% 30%, 100% 50%);
+}
+/*fond faq*/
+.bg-grey\/90 {
+  background-color: #02011ee6;
+}
+
+.text-FAQ {
+  color: white;
+}
+
+.text-global {
+
+  color: rgb(187, 29, 29);
+}
+@keyframes growShrinkLoop {
+  0%, 100% { transform: scale(0.8); }
+  50% { transform: scale(1.2); }
+}
+
+@keyframes lightSweep {
+  0% {
+    background-position: -200% 0%;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    background-position: 200% 0%;
+    opacity: 0.2;
+  }
+}
+
+
+
+
+.letter-fullfx {
+  background: linear-gradient(120deg, #0d00be 0%, #757a6c 50%, #E6B800 100%);
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+
+  animation: growShrinkLoop 6s ease-in-out infinite, lightSweep 10s ease-in-out infinite;
+
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+
+  background-clip: padding-box;
+}
+

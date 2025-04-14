@@ -1,0 +1,94 @@
+import Head from "next/head";
+import Header from "../components/Header";
+import FooterPro from "../components/FooterPro";
+import Link from "next/link";
+import FAQSection from "../components/FAQSection";
+import TokenDistributionChart from "../components/TokenDistributionChart";
+import TrustlineBlock from "../components/TrustlineBlock";
+import AltPaymentBlock from "../components/AltPaymentBlock";
+import CreatorWalletBlock from "../components/CreatorWalletBlock";
+import LangDebug from "../components/LangDebug";
+import LangueActive from "../components/LangueActive";
+import VisionBlock from "../components/VisionBlock";
+import BuyXCSSection from "../components/BuyXCSSection.jsx";
+import NotreVisionBlock from "../components/NotreVisionBlock";
+
+export default function Home() {
+  return (
+    <>
+      <Head>
+        <title>XCannes DEX - XCS</title>
+        <meta name="description" content="DEX communautaire pour le token XCS sur le XRPL." />
+      </Head>
+
+      <Header />
+      <VisionBlock />
+      
+      <main className="flex flex-col items-center justify-center pt-28 pb-10 px-4 text-center font-montserrat font-[300]">
+
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-orbitron font-[500] mb-6 flex items-end gap-[0.25rem] leading-tight">
+  Bienvenue sur
+  <div className="flex items-end gap-[0.25rem]">
+  <img
+    src="/assets/img/ui/navHeadergreen.png"
+    alt="Logo XCannes"
+    className="
+      h-[3.2rem] sm:h-[4rem] md:h-[5.5rem]
+      w-auto inline-block
+      relative 
+      top-[0.5rem] sm:top-[0.80rem] md:top-[1.4rem]
+      brightness-110 saturate-150 
+      -mr-4
+    "
+  />
+  <span className="text-xcannes-green font-orbitron font-[500]">Cannes</span>
+</div>
+
+</h1>
+
+
+
+
+        <p className="text-lg max-w-xl text-gray-300 mb-8">
+          Échangez le token <strong>XCannes (XCS)</strong> directement sur le XRP Ledger. Participez, gagnez, contribuez.
+        </p>
+
+
+        <div className="flex flex-col md:flex-row gap-6">
+          <Link href="/dex">
+            <button className="bg-xcannes-green px-6 py-3 rounded-xl font-[500] text-white hover:bg-xcannes-green hover:text-white transition transform hover:scale-105">
+              Accéder au DEX
+            </button>
+          </Link>
+          <Link href="/mxga">
+            <button className="bg-xcannes-blue px-6 py-3 rounded-xl font-[500] hover:bg-xcannes-blue hover:text-white transition transform hover:scale-105">
+              Découvrez XCS
+            </button>
+          </Link>
+        </div>
+        <div class="w-[40vw] max-w-[160px] aspect-square mt-16 border border-white/10 rounded-3xl p-2 flex items-center justify-center bg-black/20 transition-all duration-300 hover:scale-105 hover:border-[#16b303] hover:shadow-[0_0_20px_#16b303]">
+  <img src="/assets/img/ui/xcslogoblanc.png" alt="XCS Logo" class="w-full h-full object-contain object-center" />
+</div>
+
+
+
+
+        
+  <LangDebug />
+  <LangueActive />
+  <CreatorWalletBlock />
+  <AltPaymentBlock title="Achetez XCS avec votre moyen de paiement préféré" />
+  
+  
+  <TrustlineBlock />
+
+        <NotreVisionBlock />
+        <TokenDistributionChart />
+        <BuyXCSSection />
+        <FAQSection />
+      </main>
+
+      <FooterPro />
+    </>
+  );
+}

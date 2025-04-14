@@ -1,0 +1,142 @@
+import { useEffect, useRef, useState } from "react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+
+const data = [
+  {
+    name: "Team",
+    value: 25,
+    color: "#a94444",
+    icon: "🔒",
+    desc: "Verrouillé 12 mois + déblocage progressif",
+  },
+  {
+    name: "Trésorerie",
+    value: 30,
+    color: "#27ae60",
+    icon: "💰",
+    desc: "Marketing, partenariats, innovation",
+  },
+  {
+    name: "Communauté",
+    value: 20,
+    color: "#f1c40f",
+    icon: "🤝",
+    desc: "Favorise l’adoption et la croissance",
+  },
+  {
+    name: "Liquidité",
+    value: 25,
+    color: "#3498db",
+    icon: "💧",
+    desc: "Injectés directement sur le DEX & CEX",
+  },
+];
+
+export default function TokenDistributionChart() {
+  const sectionRef = useRef();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      className={`scroll-animate ${visible ? "visible" : ""} w-screen bg-cover bg-center bg-no-repeat text-white py-20 px-6 font-montserrat font-[300]`}
+      style={{
+        backgroundImage: "url('/assets/img/ui/backgroundNotreVision1.png')",
+        backgroundColor: "#202320"
+      }}
+    >
+      <div className="max-w-4xl mx-auto border-[0.5px] border-opacity-40 border-white rounded-xl shadow-lg p-6">
+        {/* Bloc graphique */}
+        <div className="bg-white/90 text-black rounded-xl shadow-lg p-6 mb-10">
+          <h2 className="text-3xl font-orbitron font-[500] text-center mb-10" style={{ color: "#16b303" }}>
+            Répartition des tokens XCS
+          </h2>
+
+          <div className="flex flex-col items-center justify-center mb-10">
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={80}
+                  outerRadius={120}
+                  dataKey="value"
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
+                  isAnimationActive={true}
+                >
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.color}
+                      onMouseEnter={(e) =>
+                        (e.target.style.transform = "scale(1.05)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.style.transform = "scale(1)")
+                      }
+                      style={{
+                        transition: "transform 0.3s ease-in-out",
+                        transformOrigin: "center",
+                      }}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const item = payload[0].payload;
+                      return (
+                        <div className="bg-white text-black rounded shadow p-2 text-sm font-semibold">
+                          {item.icon} {item.name} — {item.value}%<br />
+                          <span className="text-xs font-normal">{item.desc}</span>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Détail sous forme de cartes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {data.map((item, index) => (
+            <div
+              key={index}
+              className="bg-white/90 text-black p-4 rounded shadow hover:scale-[1.02] transition"
+            >
+              <h3 className="text-lg font-[500] mb-1">
+                {item.icon} {item.name} ({item.value}%)
+              </h3>
+              <p className="text-sm text-gray-900 font-[300]">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
