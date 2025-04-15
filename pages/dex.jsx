@@ -12,7 +12,8 @@ import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext"; // ✅ ajouter pour récupérer le wallet
 
-const XrplCandleChart = dynamic(() => import("../components/XrplCandleChart"), { ssr: false });
+const XrplCandleChart = dynamic(() => import("../components/XrplCandleChartRaw"), { ssr: false });
+
 
 
 const PAIRS = {
