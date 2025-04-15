@@ -13,12 +13,11 @@ const PAIRS = {
 
 const XrplCandleChart = ({ pair = "XCS/XRP" }) => {
   const [ohlcData, setOhlcData] = useState([]);
-  
-  console.log("🧠 Composant monté - pair =", pair);
-   useEffect(() => {
+
+  useEffect(() => {
     const fetchChartData = async () => {
       const apiURL = `https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=1m&limit=100`;
-      console.log("📍PAIR actuelle :", pair);
+      console.log("🧠 Composant monté - pair =", pair);
       console.log("📡 URL API :", apiURL);
 
       try {
@@ -33,7 +32,7 @@ const XrplCandleChart = ({ pair = "XCS/XRP" }) => {
           close: parseFloat(item.close),
         }));
 
-        console.log("🧾 Données formatées :", formatted);
+        console.log("📊 Données formatées :", formatted);
         setOhlcData(formatted);
       } catch (err) {
         console.error("❌ Erreur OHLC XRPL :", err);
@@ -46,11 +45,25 @@ const XrplCandleChart = ({ pair = "XCS/XRP" }) => {
   }, [pair]);
 
   return (
-    <div className="w-full h-[400px] bg-black border border-white border-opacity-20 rounded">
+    <div
+      className="w-full relative"
+      style={{
+        height: "400px",
+        backgroundColor: "#000",
+        border: "1px solid #444",
+        borderRadius: "10px",
+        overflow: "hidden"
+      }}
+    >
       {ohlcData.length > 0 ? (
-        <Chart candlestickSeries={[{ data: ohlcData }]} autoWidth height={400} />
+        <Chart
+          key={pair}
+          candlestickSeries={[{ data: ohlcData }]}
+          autoWidth
+          height={400}
+        />
       ) : (
-        <div className="text-gray-400 text-center py-10">
+        <div className="text-gray-400 text-center py-16">
           Aucune donnée disponible pour cette paire actuellement.
         </div>
       )}
