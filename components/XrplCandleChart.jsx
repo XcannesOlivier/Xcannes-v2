@@ -8,7 +8,7 @@ const PAIRS = {
   "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
   "XCS/USD": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_USD",
   "XCS/EUR": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_EUR",
-  "XCS/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000" // <- remapped !
+  "XCS/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000"
 };
 
 const XrplCandleChart = ({ pair = "XCS/XRP" }) => {
@@ -16,10 +16,13 @@ const XrplCandleChart = ({ pair = "XCS/XRP" }) => {
 
   useEffect(() => {
     const fetchChartData = async () => {
+      const apiURL = `https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=1m&limit=100`;
+      console.log("📍PAIR actuelle :", pair);
+      console.log("📡 URL API :", apiURL);
+
       try {
-        const res = await axios.get(
-          `https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=1m&limit=100`
-        );
+        const res = await axios.get(apiURL);
+        console.log("✅ Données reçues :", res.data);
 
         const formatted = res.data.map((item) => ({
           time: Math.floor(new Date(item.executed_time).getTime() / 1000),
@@ -29,9 +32,10 @@ const XrplCandleChart = ({ pair = "XCS/XRP" }) => {
           close: parseFloat(item.close),
         }));
 
+        console.log("🧾 Données formatées :", formatted);
         setOhlcData(formatted);
       } catch (err) {
-        console.error("Erreur OHLC XRPL :", err);
+        console.error("❌ Erreur OHLC XRPL :", err);
       }
     };
 
@@ -42,7 +46,13 @@ const XrplCandleChart = ({ pair = "XCS/XRP" }) => {
 
   return (
     <div className="w-full h-[400px] bg-black border border-white border-opacity-20 rounded">
-      <Chart candlestickSeries={[{ data: ohlcData }]} autoWidth height={400} />
+      {ohlcData.length > 0 ? (
+        <Chart candlestickSeries={[{ data: ohlcData }]} autoWidth height={400} />
+      ) : (
+        <div className="text-gray-400 text-center py-10">
+          Aucune donnée disponible pour cette paire actuellement.
+        </div>
+      )}
     </div>
   );
 };
