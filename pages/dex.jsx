@@ -12,7 +12,8 @@ import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext"; // ✅ ajouter pour récupérer le wallet
 
-const TradingViewWidget = dynamic(() => import("../components/TradingViewWidget"), { ssr: false });
+const XrplCandleChart = dynamic(() => import("../components/XrplCandleChart"), { ssr: false });
+
 
 const PAIRS = {
   "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
@@ -82,7 +83,8 @@ export default function Dex() {
             <p className="text-gray-400 mb-8">Chargement des données...</p>
           )}
 
-          <TradingViewWidget pair={selectedPair} />
+           <XrplCandleChart pair={selectedPair} />
+
 
           <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
             <TradeBox pair={selectedPair} />
