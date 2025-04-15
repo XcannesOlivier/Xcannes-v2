@@ -38,7 +38,7 @@ const XrplCandleChartRaw = ({ pair = "XCS/RLUSD" }) => {
             width,
             height: 400,
             layout: {
-              background: { color: "#000" },
+              background: { color: "#485c7b"},
               textColor: "#fff"
             },
             grid: {
