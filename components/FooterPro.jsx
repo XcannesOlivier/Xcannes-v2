@@ -116,14 +116,6 @@ export default function FooterPro() {
         </div>
       </div>
 
-      <div className="text-center text-xs text-white mt-6">
-        &copy;  {new Date().getFullYear()} -Xcannes LLC – Delaware, USA  
-[Company Registration Lookup](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx)  
-Powered by XRP Ledger – Built for Sovereignty
-
-      </div>
-
-
       <div style={{ marginTop: "1rem", textAlign: "center" }}>
   <a
     href="/test"
@@ -141,6 +133,13 @@ Powered by XRP Ledger – Built for Sovereignty
     🔧 Test Chart
   </a>
 </div>
+
+      <div className="text-center text-xs text-white mt-6">
+        &copy;  {new Date().getFullYear()} -Xcannes LLC – Delaware, USA  
+[Company Registration Lookup](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx)  
+Powered by XRP Ledger – Built for Sovereignty
+
+      </div>
 
 
 
