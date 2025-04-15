@@ -18,8 +18,11 @@ const XrplCandleChartRaw = ({ pair = "XCS/RLUSD" }) => {
 
     const fetchAndRenderChart = async () => {
       try {
-        const res = await axios.get(`https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=1m&limit=100`);
-        let data = res.data.map(item => ({
+        const res = await axios.get(
+          `https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=1m&limit=100`
+        );
+
+        let data = res.data.map((item) => ({
           time: Math.floor(new Date(item.executed_time).getTime() / 1000),
           open: parseFloat(item.open),
           high: parseFloat(item.high),
@@ -43,7 +46,7 @@ const XrplCandleChartRaw = ({ pair = "XCS/RLUSD" }) => {
         chartRef.current.innerHTML = "";
 
         setTimeout(() => {
-          const width = chartRef.current.clientWidth;
+          const width = chartRef.current.offsetWidth;
           console.log("📐 Largeur détectée:", width);
 
           chart = createChart(chartRef.current, {
@@ -67,11 +70,18 @@ const XrplCandleChartRaw = ({ pair = "XCS/RLUSD" }) => {
 
           chartInstanceRef.current = chart;
 
-          const candleSeries = chart.addCandlestickSeries();
+          const candleSeries = chart.addCandlestickSeries({
+            upColor: '#16b303',
+            downColor: '#e70707',
+            borderVisible: false,
+            wickUpColor: '#16b303',
+            wickDownColor: '#e70707',
+          });
+
           candleSeries.setData(data);
 
           observer = new ResizeObserver(() => {
-            chart.applyOptions({ width: chartRef.current.clientWidth });
+            chart.applyOptions({ width: chartRef.current.offsetWidth });
           });
           observer.observe(chartRef.current);
         }, 50);
@@ -93,9 +103,14 @@ const XrplCandleChartRaw = ({ pair = "XCS/RLUSD" }) => {
       ref={chartRef}
       style={{
         height: "400px",
+        minHeight: "400px",
+        width: "100%",
         backgroundColor: "#000",
         border: "1px solid #444",
-        borderRadius: "10px"
+        borderRadius: "10px",
+        overflow: "visible",
+        display: "block",
+        position: "relative"
       }}
     />
   );
