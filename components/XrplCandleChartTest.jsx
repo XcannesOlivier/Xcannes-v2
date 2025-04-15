@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
-import axios from "axios";
 
 export default function XrplCandleChartTest() {
   const chartRef = useRef();
@@ -10,35 +9,35 @@ export default function XrplCandleChartTest() {
   useEffect(() => {
     let chart;
 
-    const fetchAndRenderChart = async () => {
-      try {
-        const res = await axios.get(
-          "https://data.xrplf.org/v1/iou/exchanges/XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000?interval=1m&limit=100"
-        );
+    if (!chartRef.current) return;
 
-        const data = res.data.map(item => ({
-          time: Math.floor(new Date(item.executed_time).getTime() / 1000),
-          open: parseFloat(item.open),
-          high: parseFloat(item.high),
-          low: parseFloat(item.low),
-          close: parseFloat(item.close),
-        }));
+    chart = createChart(chartRef.current, {
+      width: 800,
+      height: 400,
+      layout: {
+        background: { color: "#fff" }, // pour bien voir sur fond clair
+        textColor: "#000",
+      },
+      grid: {
+        vertLines: { color: "#ccc" },
+        horzLines: { color: "#ccc" },
+      },
+    });
 
-        if (!chartRef.current) return;
+    const candleSeries = chart.addCandlestickSeries({
+      upColor: "#16b303",
+      downColor: "#e70707",
+      borderVisible: false,
+      wickUpColor: "#16b303",
+      wickDownColor: "#e70707",
+    });
 
-        chart = createChart(chartRef.current, {
-          width: 800,
-          height: 400,
-        });
-
-        const candleSeries = chart.addCandlestickSeries();
-        candleSeries.setData(data);
-      } catch (err) {
-        console.error("Erreur chargement données :", err);
-      }
-    };
-
-    fetchAndRenderChart();
+    // 🔥 Mock data 100% visible
+    candleSeries.setData([
+      { time: 1713180000, open: 0.5, high: 0.6, low: 0.4, close: 0.55 },
+      { time: 1713180600, open: 0.55, high: 0.57, low: 0.5, close: 0.53 },
+      { time: 1713181200, open: 0.53, high: 0.58, low: 0.52, close: 0.56 },
+    ]);
 
     return () => {
       if (chart) chart.remove();
