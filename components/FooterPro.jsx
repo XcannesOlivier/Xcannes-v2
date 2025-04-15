@@ -122,6 +122,29 @@ export default function FooterPro() {
 Powered by XRP Ledger – Built for Sovereignty
 
       </div>
+
+
+      <div style={{ marginTop: "1rem", textAlign: "center" }}>
+  <a
+    href="/test"
+    style={{
+      display: "inline-block",
+      padding: "8px 16px",
+      backgroundColor: "#16b303",
+      color: "#fff",
+      borderRadius: "6px",
+      fontSize: "14px",
+      textDecoration: "none",
+      fontWeight: "bold",
+    }}
+  >
+    🔧 Test Chart
+  </a>
+</div>
+
+
+
+
     </footer>
   );
 }
