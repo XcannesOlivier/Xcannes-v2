@@ -13,8 +13,9 @@ const PAIRS = {
 
 const XrplCandleChart = ({ pair = "XCS/XRP" }) => {
   const [ohlcData, setOhlcData] = useState([]);
-
-  useEffect(() => {
+  
+  console.log("🧠 Composant monté - pair =", pair);
+   useEffect(() => {
     const fetchChartData = async () => {
       const apiURL = `https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=1m&limit=100`;
       console.log("📍PAIR actuelle :", pair);
