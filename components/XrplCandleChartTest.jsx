@@ -38,15 +38,17 @@ export default function XrplCandleChartTest() {
         wickDownColor: '#e70707',
       });
       console.log("📊 Series added");
-      
-      const testData = [
-        { time: 1713225600, open: 0.5, high: 0.6, low: 0.4, close: 0.55 },
-        { time: 1713312000, open: 0.55, high: 0.57, low: 0.5, close: 0.53 },
-        { time: 1713398400, open: 0.53, high: 0.58, low: 0.52, close: 0.56 },
-      ];
-      candleSeries.setData(testData);
-      console.log("✅ Data injected", testData);
-      
+
+      // 📥 Charger les données mock depuis un fichier
+      fetch("/mock-data/mock-candles.json")
+        .then(res => res.json())
+        .then(data => {
+          console.log("✅ Data loaded from mock-candles.json:", data);
+          candleSeries.setData(data);
+        })
+        .catch(err => {
+          console.error("❌ Failed to load mock data:", err);
+        });
 
       return () => {
         chart.remove();
