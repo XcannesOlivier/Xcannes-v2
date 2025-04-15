@@ -8,7 +8,7 @@ const PAIRS = {
   "XCS/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000"
 };
 
-const XrplCandleChartFinal = ({ pair = "XCS/RLUSD" }) => {
+const XrplCandleChartRaw = ({ pair = "XCS/RLUSD" }) => {
   const chartRef = useRef();
   const chartInstanceRef = useRef(null);
 
@@ -24,35 +24,49 @@ const XrplCandleChartFinal = ({ pair = "XCS/RLUSD" }) => {
           close: parseFloat(item.close),
         }));
 
+        console.log("📊 Données formatées :", data);
+
         if (!chartRef.current) return;
 
-        // Reset si déjà un chart existant
-        chartRef.current.innerHTML = "";
+        chartRef.current.innerHTML = ""; // reset du conteneur
 
-        const chart = createChart(chartRef.current, {
-          width: chartRef.current.clientWidth,
-          height: 400,
-          layout: { background: { color: "#000" }, textColor: "#fff" },
-          grid: {
-            vertLines: { color: "#2B2B43" },
-            horzLines: { color: "#363C4E" },
-          },
-          timeScale: { borderColor: "#485c7b" },
-          priceScale: { borderColor: "#485c7b" },
-        });
+        setTimeout(() => {
+          const width = chartRef.current.clientWidth;
+          console.log("📐 Largeur détectée:", width);
 
-        chartInstanceRef.current = chart;
+          const chart = createChart(chartRef.current, {
+            width,
+            height: 400,
+            layout: {
+              background: { color: "#000" },
+              textColor: "#fff"
+            },
+            grid: {
+              vertLines: { color: "#2B2B43" },
+              horzLines: { color: "#363C4E" },
+            },
+            timeScale: {
+              borderColor: "#485c7b",
+            },
+            priceScale: {
+              borderColor: "#485c7b",
+            },
+          });
 
-        const candleSeries = chart.addCandlestickSeries();
-        candleSeries.setData(data);
+          chartInstanceRef.current = chart;
 
-        // resize dynamique
-        const observer = new ResizeObserver(() => {
-          chart.applyOptions({ width: chartRef.current.clientWidth });
-        });
-        observer.observe(chartRef.current);
+          const candleSeries = chart.addCandlestickSeries();
+          candleSeries.setData(data);
 
-        return () => observer.disconnect();
+          const observer = new ResizeObserver(() => {
+            chart.applyOptions({ width: chartRef.current.clientWidth });
+          });
+          observer.observe(chartRef.current);
+
+          // Clean-up à la destruction du composant
+          return () => observer.disconnect();
+
+        }, 50); // petit délai pour que le conteneur ait sa taille réelle
       } catch (err) {
         console.error("📉 Erreur chargement données chart :", err);
       }
@@ -74,4 +88,5 @@ const XrplCandleChartFinal = ({ pair = "XCS/RLUSD" }) => {
   );
 };
 
-export default XrplCandleChartFinal;
+export default XrplCandleChartRaw;
+
