@@ -10,11 +10,11 @@ import TradeHistory from "../components/TradeHistory";
 import AltPaymentBlock from "../components/AltPaymentBlock";
 import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
-import { useXumm } from "../context/XummContext"; // ✅ ajouter pour récupérer le wallet
+import { useXumm } from "../context/XummContext";
 
-const XrplCandleChart = dynamic(() => import("../components/XrplCandleChartRaw"), { ssr: false });
-
-
+// 🟢 Live Chart pour XCS/RLUSD, fallback pour autres
+const LiveChart = dynamic(() => import("../components/XrplCandleChartTest"), { ssr: false });
+const StaticChart = dynamic(() => import("../components/XrplCandleChartRaw"), { ssr: false });
 
 const PAIRS = {
   "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
@@ -26,9 +26,9 @@ const PAIRS = {
 export default function Dex() {
   const router = useRouter();
   const isDex = router.pathname === "/dex";
-  const [selectedPair, setSelectedPair] = useState("XCS/XRP");
+  const [selectedPair, setSelectedPair] = useState("XCS/RLUSD");
   const [marketData, setMarketData] = useState(null);
-  const { wallet, isConnected } = useXumm(); // ✅ useXumm ici
+  const { wallet, isConnected } = useXumm();
 
   const fetchData = async () => {
     try {
@@ -84,8 +84,12 @@ export default function Dex() {
             <p className="text-gray-400 mb-8">Chargement des données...</p>
           )}
 
-           <XrplCandleChart pair={selectedPair} />
-
+          {/* ✅ Affiche live chart UNIQUEMENT pour XCS/RLUSD */}
+          {selectedPair === "XCS/RLUSD" ? (
+            <LiveChart />
+          ) : (
+            <StaticChart pair={selectedPair} />
+          )}
 
           <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
             <TradeBox pair={selectedPair} />
@@ -108,4 +112,3 @@ export default function Dex() {
     </>
   );
 }
-
