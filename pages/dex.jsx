@@ -12,9 +12,8 @@ import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
 
-// 🟢 Composant live chart + fallback statique
+// 🟢 Composant WebSocket dynamique
 const XrplLiveChart = dynamic(() => import("../components/XrplLiveChart"), { ssr: false });
-const StaticChart = dynamic(() => import("../components/XrplCandleChartRaw"), { ssr: false });
 
 const PAIRS = {
   "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
@@ -86,12 +85,8 @@ export default function Dex() {
             <p className="text-gray-400 mb-8">Chargement des données...</p>
           )}
 
-          {/* ✅ WebSocket chart uniquement pour XCS/RLUSD */}
-          {selectedPair === "XCS/RLUSD" ? (
-            <XrplLiveChart pair={selectedPair} streamUrl="wss://s2.ripple.com" />
-          ) : (
-            <StaticChart pair={selectedPair} />
-          )}
+          {/* ✅ WebSocket chart dynamique */}
+          <XrplLiveChart pair={selectedPair} streamUrl="wss://s2.ripple.com" />
 
           <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
             <TradeBox pair={selectedPair} />
