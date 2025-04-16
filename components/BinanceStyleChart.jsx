@@ -80,7 +80,7 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
         console.log("🟢 WebSocket ouverte pour :", pair);
         ws.send(
           JSON.stringify({
-            id: ${pair}-${Date.now()},
+            id: `${pair}-${Date.now()}`,  // Utilisation correcte des backticks pour l'interpolation
             command: "subscribe",
             books: [
               {
@@ -92,9 +92,8 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
               },
             ],
           })
-        );
+        ); 
       };
-
       ws.onmessage = (msg) => {
         try {
           const data = JSON.parse(msg.data);
