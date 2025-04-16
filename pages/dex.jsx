@@ -12,8 +12,8 @@ import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
 
-// 🟢 Live Chart pour XCS/RLUSD, fallback pour autres
-const LiveChart = dynamic(() => import("../components/XrplCandleChartTest"), { ssr: false });
+// 🟢 Composant live chart + fallback statique
+const XrplLiveChart = dynamic(() => import("../components/XrplLiveChart"), { ssr: false });
 const StaticChart = dynamic(() => import("../components/XrplCandleChartRaw"), { ssr: false });
 
 const PAIRS = {
@@ -32,7 +32,9 @@ export default function Dex() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval=`);
+      const res = await axios.get(
+        `https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval=`
+      );
       setMarketData(res.data);
     } catch (err) {
       console.error("Erreur fetch market data:", err);
@@ -84,9 +86,9 @@ export default function Dex() {
             <p className="text-gray-400 mb-8">Chargement des données...</p>
           )}
 
-          {/* ✅ Affiche live chart UNIQUEMENT pour XCS/RLUSD */}
+          {/* ✅ WebSocket chart uniquement pour XCS/RLUSD */}
           {selectedPair === "XCS/RLUSD" ? (
-            <LiveChart />
+            <XrplLiveChart pair={selectedPair} streamUrl="wss://s2.ripple.com" />
           ) : (
             <StaticChart pair={selectedPair} />
           )}
@@ -102,7 +104,9 @@ export default function Dex() {
           <div className="my-12 text-center">
             <XummConnectButton />
             {isConnected && (
-              <p className="text-xs text-green-400 mt-2 break-all">🔗 Wallet connecté : {wallet}</p>
+              <p className="text-xs text-green-400 mt-2 break-all">
+                🔗 Wallet connecté : {wallet}
+              </p>
             )}
           </div>
         </div>
