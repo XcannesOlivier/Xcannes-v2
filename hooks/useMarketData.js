@@ -17,9 +17,16 @@ const PAIRS = {
  */
 const useMarketData = (pair) => {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true); // Track loading state
+  const [error, setError] = useState(null); // Track errors
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!pair || !PAIRS[pair]) {
+        setLoading(false);
+        return;
+      }
+      
       try {
         const response = await axios.get(
           `https://data.xrplf.org/v1/iou/market_data/${PAIRS[pair]}?interval=5m`
@@ -27,13 +34,16 @@ const useMarketData = (pair) => {
         setData(response.data);
       } catch (error) {
         console.error("Error fetching market data", error);
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    if (pair) fetchData();
+    fetchData();
   }, [pair]);
 
-  return data;
+  return { data, loading, error };
 };
 
 export default useMarketData;
