@@ -2,12 +2,13 @@
 
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
+import axios from "axios";
 
-const XrplLiveChart = ({ pair, streamUrl }) => {
+const XrplLiveChart = () => {
   const chartRef = useRef();
   const chartInstance = useRef(null);
   const candleSeries = useRef(null);
-  const wsRef = useRef(null);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     if (!chartRef.current) return;
@@ -50,52 +51,43 @@ const XrplLiveChart = ({ pair, streamUrl }) => {
     return () => {
       chart.remove();
       resizeObserver.disconnect();
+      clearInterval(intervalRef.current);
     };
   }, []);
 
-  // 🔄 Convertisseur à adapter selon structure des messages XRPL
-  const convertXrplToCandle = (data) => {
-    // TODO : adapter ça selon la vraie structure
-    return {
-      time: Math.floor(Date.now() / 1000), // timestamp UNIX secondes
-      open: parseFloat(data.open || 0),
-      high: parseFloat(data.high || 0),
-      low: parseFloat(data.low || 0),
-      close: parseFloat(data.close || 0),
-    };
-  };
-
   useEffect(() => {
-    if (!pair || !streamUrl || !candleSeries.current) return;
-
-    console.log("📡 Connecting WebSocket for:", pair);
-    const ws = new WebSocket(streamUrl);
-    wsRef.current = ws;
-
-    ws.onmessage = (msg) => {
+    const fetchCandle = async () => {
       try {
-        const data = JSON.parse(msg.data);
-        console.log("📩 Message reçu :", data);
-        const candle = convertXrplToCandle(data);
+        const res = await axios.get(
+          "https://data.xrplf.org/v1/iou/ticker_data/XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000?interval=1h"
+        );
+        const raw = res.data?.[0];
+        if (!raw) return;
+
+        const candle = {
+          time: Math.floor(new Date(raw.date_to).getTime() / 1000),
+          open: parseFloat(raw.first),
+          high: parseFloat(raw.high),
+          low: parseFloat(raw.low),
+          close: parseFloat(raw.last),
+        };
+        console.log("📊 Candle:", candle);
         candleSeries.current.update(candle);
       } catch (e) {
-        console.warn("⚠️ Erreur WebSocket message:", e);
+        console.warn("⚠️ Erreur chargement données XRP/RLUSD :", e);
       }
     };
 
-    ws.onopen = () => console.log("✅ WebSocket ouverte pour:", pair);
-    ws.onerror = (err) => console.error("❌ WebSocket error:", err);
-    ws.onclose = () => console.log("🔌 WebSocket fermée pour:", pair);
+    fetchCandle(); // premier appel immédiat
+    intervalRef.current = setInterval(fetchCandle, 60000); // toutes les minutes
 
-    return () => {
-      if (wsRef.current) wsRef.current.close();
-    };
-  }, [pair, streamUrl]);
+    return () => clearInterval(intervalRef.current);
+  }, []);
 
   return (
     <div
       ref={chartRef}
-      style={{ width: "100%", height: "400px", border: "2px dashed red" }}
+      style={{ width: "100%", height: "400px", border: "2px dashed green" }}
     ></div>
   );
 };
