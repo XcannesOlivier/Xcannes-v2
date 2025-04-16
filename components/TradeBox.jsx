@@ -37,7 +37,7 @@ export default function TradeBox({ pair = "XCS/XRP" }) {
                 mode === opt ? "bg-xcannes-green text-white border-xcannes-green" : "bg-xcannes-red border-xcannes-red"
               }`}
             >
-              {opt === "BUY" ? "Acheter" : "Vendre"}
+              {opt === "BUY" ? "Acheter" : "Echanger"}
             </button>
           ))}
         </div>
