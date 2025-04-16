@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useRef, useState } from "react";
 import { createChart } from "lightweight-charts";
 import { useWebSocket } from "../hooks/useWebSocket"; // import du hook WebSocket
