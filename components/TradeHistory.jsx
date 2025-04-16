@@ -14,7 +14,7 @@ export default function TradeHistory({ pair }) {
   const fetchHistory = async () => {
     try {
       const res = await axios.get(
-        https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=5m&limit=20
+        'https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=5m&limit=20'
       );
       setHistory(res.data);
     } catch (err) {
