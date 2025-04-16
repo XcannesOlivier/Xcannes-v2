@@ -12,7 +12,6 @@ const XrplLiveChart = ({ pair, streamUrl }) => {
   useEffect(() => {
     if (!chartRef.current) return;
 
-    // Initialisation du graphique
     chartRef.current.innerHTML = "";
     const chart = createChart(chartRef.current, {
       width: chartRef.current.clientWidth,
@@ -32,6 +31,7 @@ const XrplLiveChart = ({ pair, streamUrl }) => {
         borderColor: "#555",
       },
     });
+
     chartInstance.current = chart;
 
     candleSeries.current = chart.addCandlestickSeries({
@@ -63,15 +63,11 @@ const XrplLiveChart = ({ pair, streamUrl }) => {
     ws.onmessage = (msg) => {
       try {
         const data = JSON.parse(msg.data);
-        // Adapter en fonction du format réel retourné par ton WebSocket
-        const candle = {
-          time: Math.floor(Date.now() / 1000),
-          open: parseFloat(data.open),
-          high: parseFloat(data.high),
-          low: parseFloat(data.low),
-          close: parseFloat(data.close),
-        };
-        candleSeries.current.update(candle);
+        console.log("📩 Message reçu :", data); // 👈 ICI
+        const candle = convertXrplToCandle(data); // 💡 à implémenter ci-dessous
+        if (candle) {
+          candleSeries.current.update(candle);
+        }
       } catch (e) {
         console.warn("⚠️ Erreur WebSocket message:", e);
       }
@@ -93,5 +89,20 @@ const XrplLiveChart = ({ pair, streamUrl }) => {
     ></div>
   );
 };
+
+// 🧠 Fonction temporaire de transformation XRPL → bougie (à adapter après console.log)
+function convertXrplToCandle(data) {
+  // 👉 Juste un exemple placeholder — à remplacer après avoir vu les logs
+  if (data && data.open && data.high && data.low && data.close) {
+    return {
+      time: Math.floor(Date.now() / 1000),
+      open: parseFloat(data.open),
+      high: parseFloat(data.high),
+      low: parseFloat(data.low),
+      close: parseFloat(data.close),
+    };
+  }
+  return null;
+}
 
 export default XrplLiveChart;
