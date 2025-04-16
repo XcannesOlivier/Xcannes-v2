@@ -15,7 +15,7 @@ export default function OrderBook({ pair }) {
   const fetchOrderbook = async () => {
     try {
       const res = await axios.get(
-        https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=5m&limit=40
+        'https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=5m&limit=40'
       );
 
       const orders = res.data;
