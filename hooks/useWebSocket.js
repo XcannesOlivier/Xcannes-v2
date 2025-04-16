@@ -1,49 +1,29 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-
-// Assumes you have PAIRS defined elsewhere
-const PAIRS = {
-  "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
-  "XCS/USD": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_USD",
-  "XCS/EUR": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_EUR",
-  "XCS/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000",
-  "XRP/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000",
-};
 
 /**
- * Custom hook to fetch market data for a specific trading pair.
- * @param {string} pair - The trading pair to fetch data for.
- * @returns {Object} - The market data.
+ * Custom hook to manage WebSocket connections.
+ * @param {string} url - The WebSocket URL.
+ * @param {function} onMessage - The callback function to handle incoming messages.
+ * @returns {WebSocket | null} - The WebSocket instance.
  */
-const useMarketData = (pair) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true); // Track loading state
-  const [error, setError] = useState(null); // Track errors
+const useWebSocket = (url, onMessage) => {
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!pair || !PAIRS[pair]) {
-        setLoading(false);
-        return;
-      }
-      
-      try {
-        const response = await axios.get(
-          `https://data.xrplf.org/v1/iou/market_data/${PAIRS[pair]}?interval=5m`
-        );
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching market data", error);
-        setError(error);
-      } finally {
-        setLoading(false);
+    // Create WebSocket connection
+    const ws = new WebSocket(url);
+    ws.onmessage = onMessage;
+    setSocket(ws);
+
+    // Cleanup on component unmount
+    return () => {
+      if (ws) {
+        ws.close();
       }
     };
+  }, [url, onMessage]);
 
-    fetchData();
-  }, [pair]);
-
-  return { data, loading, error };
+  return socket;
 };
 
-export default useMarketData;
+export default useWebSocket;
