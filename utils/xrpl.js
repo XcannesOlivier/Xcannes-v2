@@ -16,11 +16,17 @@ export const getBookIdFromPair = (pair) => {
     },
     "XCS/RLUSD": {
       taker_gets: { currency: "XCS", issuer: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx" },
-      taker_pays: { currency: "524C555344000000000000000000000000000000", issuer: "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De" },
+      taker_pays: {
+        currency: "524C555344000000000000000000000000000000",
+        issuer: "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De",
+      },
     },
     "XRP/RLUSD": {
       taker_gets: { currency: "XRP" },
-      taker_pays: { currency: "524C555344000000000000000000000000000000", issuer: "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De" },
+      taker_pays: {
+        currency: "524C555344000000000000000000000000000000",
+        issuer: "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De",
+      },
     },
   };
 

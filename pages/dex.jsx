@@ -12,14 +12,15 @@ import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
 
-// 🟢 Composant WebSocket dynamique
-const XrplLiveChart = dynamic(() => import("../components/XrplLiveChart"), { ssr: false });
+// 🟢 Composant Binance Style Chart
+const BinanceStyleChart = dynamic(() => import("../components/BinanceStyleChart"), { ssr: false });
 
 const PAIRS = {
   "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
   "XCS/USD": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_USD",
   "XCS/EUR": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_EUR",
-  "XRP/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000"
+  "XCS/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000",
+  "XRP/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000",
 };
 
 export default function Dex() {
@@ -52,7 +53,8 @@ export default function Dex() {
 
       <Header />
 
-      <main className="relative w-full min-h-screen text-white pt-28 pb-0 mb-0 bg-cover bg-center bg-no-repeat bg-fixed font-montserrat font-[300]"
+      <main
+        className="relative w-full min-h-screen text-white pt-28 pb-0 mb-0 bg-cover bg-center bg-no-repeat bg-fixed font-montserrat font-[300]"
         style={{ backgroundColor: "#202320" }}
       >
         <div className="absolute inset-0 bg-black/0 z-0" />
@@ -77,16 +79,22 @@ export default function Dex() {
 
           {marketData ? (
             <div className="bg-black/60 p-4 rounded border border-xcannes-green mb-8">
-              <p><strong>Dernier prix :</strong> {marketData?.last_price?.toFixed(6)}</p>
-              <p><strong>Variation 24h :</strong> {marketData?.change_percent_24h?.toFixed(2)}%</p>
-              <p><strong>Volume 24h :</strong> {marketData?.volume_token1_24h?.toLocaleString()} XCS</p>
+              <p>
+                <strong>Dernier prix :</strong> {marketData?.last_price?.toFixed(6)}
+              </p>
+              <p>
+                <strong>Variation 24h :</strong> {marketData?.change_percent_24h?.toFixed(2)}%
+              </p>
+              <p>
+                <strong>Volume 24h :</strong> {marketData?.volume_token1_24h?.toLocaleString()} XCS
+              </p>
             </div>
           ) : (
             <p className="text-gray-400 mb-8">Chargement des données...</p>
           )}
 
-          {/* ✅ WebSocket chart dynamique */}
-          <XrplLiveChart pair={selectedPair} streamUrl="wss://s2.ripple.com" />
+          {/* ✅ Affichage du chart façon Binance */}
+          <BinanceStyleChart pair={selectedPair} streamUrl="wss://s2.ripple.com" />
 
           <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
             <TradeBox pair={selectedPair} />
