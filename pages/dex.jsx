@@ -11,7 +11,6 @@ import AltPaymentBlock from "../components/AltPaymentBlock";
 import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
-import { BinanceStyleChart } from "../components/BinanceStyleChart";
 
 // 🟢 Composant Binance Style Chart
 const BinanceStyleChart = dynamic(() => import("../components/BinanceStyleChart"), { ssr: false });
