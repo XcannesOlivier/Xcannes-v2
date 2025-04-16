@@ -1,6 +1,6 @@
-// 📦 Fichier : utils/xrpl.js
+ // 📦 Fichier : utils/xrpl.js
 
-export const getBookIdFromPair = (pair) => {
+ export const getBookIdFromPair = (pair) => {
   const mapping = {
     "XCS/XRP": {
       taker_gets: { currency: "XCS", issuer: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx" },

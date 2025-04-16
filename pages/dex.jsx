@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
+import axios from "axios";
 import { useRouter } from "next/router";
 import Header from "../components/Header";
 import FooterPro from "../components/FooterPro";
-import TradeHistory from "../components/TradeHistory";
 import OrderBook from "../components/OrderBook";
+import TradeHistory from "../components/TradeHistory";
 import AltPaymentBlock from "../components/AltPaymentBlock";
 import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
-import { useMarketData } from "../hooks/useMarketData"; // Hook de données de marché
 
-// Importation dynamique pour le graphique
+// 🟢 Composant Binance Style Chart
 const BinanceStyleChart = dynamic(() => import("../components/BinanceStyleChart"), { ssr: false });
 
 const PAIRS = {
@@ -27,9 +27,23 @@ export default function Dex() {
   const router = useRouter();
   const isDex = router.pathname === "/dex";
   const [selectedPair, setSelectedPair] = useState("XRP/RLUSD");
-
+  const [marketData, setMarketData] = useState(null);
   const { wallet, isConnected } = useXumm();
-  const marketData = useMarketData(selectedPair); // Hook pour récupérer les données du marché
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(
+        https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval=
+      );
+      setMarketData(res.data);
+    } catch (err) {
+      console.error("Erreur fetch market data:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [selectedPair]);
 
   return (
     <>
