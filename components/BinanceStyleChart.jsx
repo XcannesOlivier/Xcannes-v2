@@ -1,42 +1,53 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
-import axios from "axios";
 import { getBookIdFromPair } from "../utils/xrpl";
 
-const BinanceStyleChart = ({ pair, streamUrl = "wss://s2.ripple.com" }) => {
+const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.com" }) => {
   const chartRef = useRef();
-  const chartInstance = useRef();
-  const candleSeries = useRef();
-  const wsRef = useRef();
-  const [loading, setLoading] = useState(true);
+  const chartInstance = useRef(null);
+  const candleSeries = useRef(null);
+  const wsRef = useRef(null);
 
   useEffect(() => {
     if (!chartRef.current) return;
 
     chartRef.current.innerHTML = "";
+
     const chart = createChart(chartRef.current, {
       width: chartRef.current.clientWidth,
       height: 400,
-      layout: { background: { color: "#000" }, textColor: "#fff" },
-      grid: { vertLines: { color: "#222" }, horzLines: { color: "#222" } },
-      timeScale: { borderColor: "#444" },
-      priceScale: { borderColor: "#444" },
+      layout: {
+        background: { color: "#000" },
+        textColor: "#fff",
+      },
+      grid: {
+        vertLines: { color: "#333" },
+        horzLines: { color: "#333" },
+      },
+      timeScale: {
+        borderColor: "#555",
+      },
+      priceScale: {
+        borderColor: "#555",
+      },
     });
+
     chartInstance.current = chart;
 
     candleSeries.current = chart.addCandlestickSeries({
-      upColor: "#0f0",
-      downColor: "#f00",
+      upColor: "#16b303",
+      downColor: "#e70707",
       borderVisible: false,
-      wickUpColor: "#0f0",
-      wickDownColor: "#f00",
+      wickUpColor: "#16b303",
+      wickDownColor: "#e70707",
     });
 
     const resizeObserver = new ResizeObserver(() => {
       chart.applyOptions({ width: chartRef.current.clientWidth });
     });
+
     resizeObserver.observe(chartRef.current);
 
     return () => {
@@ -46,52 +57,36 @@ const BinanceStyleChart = ({ pair, streamUrl = "wss://s2.ripple.com" }) => {
   }, []);
 
   useEffect(() => {
-    const fetchCandles = async () => {
-      try {
-        const bookId = getBookIdFromPair(pair);
-        if (!bookId) return;
+    if (!pair || !streamUrl || !candleSeries.current) return;
 
-        const url = `https://data.xrplf.org/v1/iou/ticker_data/${pair}?interval=5m&limit=100`;
-        const res = await axios.get(url);
-        const rawData = res.data;
+    console.log("🔁 Nouvelle paire sélectionnée :", pair);
 
-        const candles = rawData.map((d) => ({
-          time: Math.floor(new Date(d.date_from).getTime() / 1000),
-          open: +d.first,
-          high: +d.high,
-          low: +d.low,
-          close: +d.last,
-        }));
+    const bookId = getBookIdFromPair(pair);
+    if (!bookId) {
+      console.warn("❌ Paire non supportée :", pair);
+      return;
+    }
 
-        candleSeries.current.setData(candles);
-        setLoading(false);
-      } catch (err) {
-        console.error("Erreur chargement HTTP candles:", err);
-        setLoading(false);
-      }
-    };
-
-    fetchCandles();
-  }, [pair]);
-
-  useEffect(() => {
-    const book = getBookIdFromPair(pair);
-    if (!book || !streamUrl || !candleSeries.current) return;
+    // Ferme ancienne connexion WebSocket si besoin
+    if (wsRef.current) {
+      wsRef.current.close();
+    }
 
     const ws = new WebSocket(streamUrl);
     wsRef.current = ws;
 
     ws.onopen = () => {
+      console.log("🟢 WebSocket ouverte pour :", pair);
       ws.send(
         JSON.stringify({
-          id: `${pair}-live`,
+          id: `${pair}-${Date.now()}`,
           command: "subscribe",
           books: [
             {
-              taker_gets: book.taker_gets,
-              taker_pays: book.taker_pays,
+              taker_gets: bookId.taker_gets,
+              taker_pays: bookId.taker_pays,
               both: false,
-              snapshot: false,
+              snapshot: true,
               depth: 1,
             },
           ],
@@ -102,23 +97,25 @@ const BinanceStyleChart = ({ pair, streamUrl = "wss://s2.ripple.com" }) => {
     ws.onmessage = (msg) => {
       try {
         const data = JSON.parse(msg.data);
-        if (data.type === "transaction") {
+
+        if (data.type === "transaction" && data.engine_result === "tesSUCCESS") {
+          const price = Math.random() * 2;
           const candle = {
             time: Math.floor(Date.now() / 1000),
-            open: Math.random(),
-            high: Math.random() + 0.5,
-            low: Math.random() - 0.5,
-            close: Math.random(),
+            open: price,
+            high: price + Math.random() * 0.5,
+            low: price - Math.random() * 0.5,
+            close: price + (Math.random() > 0.5 ? 0.2 : -0.2),
           };
           candleSeries.current.update(candle);
         }
-      } catch (e) {
-        console.warn("Erreur WebSocket:", e);
+      } catch (err) {
+        console.warn("⚠️ Erreur dans le flux WebSocket :", err);
       }
     };
 
-    ws.onerror = (err) => console.error("WebSocket error:", err);
-    ws.onclose = () => console.log("WebSocket fermé pour:", pair);
+    ws.onerror = (err) => console.error("❌ WebSocket error:", err);
+    ws.onclose = () => console.log("🔌 WebSocket fermée pour :", pair);
 
     return () => {
       if (wsRef.current) wsRef.current.close();
@@ -126,13 +123,10 @@ const BinanceStyleChart = ({ pair, streamUrl = "wss://s2.ripple.com" }) => {
   }, [pair, streamUrl]);
 
   return (
-    <div className="mt-4">
-      {loading && <p className="text-gray-400 mb-2">Chargement des chandeliers...</p>}
-      <div
-        ref={chartRef}
-        style={{ width: "100%", height: "400px", border: "2px dashed red" }}
-      ></div>
-    </div>
+    <div
+      ref={chartRef}
+      style={{ width: "100%", height: "400px", border: "2px dashed red" }}
+    ></div>
   );
 };
 
