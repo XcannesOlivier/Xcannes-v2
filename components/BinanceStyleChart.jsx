@@ -10,6 +10,7 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
   const candleSeries = useRef(null);
   const wsRef = useRef(null);
 
+  // Initialisation du graphique (une seule fois)
   useEffect(() => {
     if (!chartRef.current) return;
 
@@ -36,14 +37,6 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
 
     chartInstance.current = chart;
 
-    candleSeries.current = chart.addCandlestickSeries({
-      upColor: "#16b303",
-      downColor: "#e70707",
-      borderVisible: false,
-      wickUpColor: "#16b303",
-      wickDownColor: "#e70707",
-    });
-
     const resizeObserver = new ResizeObserver(() => {
       chart.applyOptions({ width: chartRef.current.clientWidth });
     });
@@ -56,8 +49,9 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
     };
   }, []);
 
+  // Mise à jour du graphique à chaque changement de paire
   useEffect(() => {
-    if (!pair || !streamUrl || !candleSeries.current) return;
+    if (!pair || !streamUrl || !chartInstance.current) return;
 
     console.log("🔁 Nouvelle paire sélectionnée :", pair);
 
@@ -67,7 +61,18 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
       return;
     }
 
-    // Ferme ancienne connexion WebSocket si besoin
+    if (candleSeries.current) {
+      chartInstance.current.removeSeries(candleSeries.current);
+    }
+
+    candleSeries.current = chartInstance.current.addCandlestickSeries({
+      upColor: "#16b303",
+      downColor: "#e70707",
+      borderVisible: false,
+      wickUpColor: "#16b303",
+      wickDownColor: "#e70707",
+    });
+
     if (wsRef.current) {
       wsRef.current.close();
     }
@@ -81,15 +86,7 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
         JSON.stringify({
           id: `${pair}-${Date.now()}`,
           command: "subscribe",
-          books: [
-            {
-              taker_gets: bookId.taker_gets,
-              taker_pays: bookId.taker_pays,
-              both: false,
-              snapshot: true,
-              depth: 1,
-            },
-          ],
+          streams: ["transactions"],
         })
       );
     };
@@ -98,16 +95,41 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
       try {
         const data = JSON.parse(msg.data);
 
-        if (data.type === "transaction" && data.engine_result === "tesSUCCESS") {
-          const price = Math.random() * 2;
-          const candle = {
-            time: Math.floor(Date.now() / 1000),
-            open: price,
-            high: price + Math.random() * 0.5,
-            low: price - Math.random() * 0.5,
-            close: price + (Math.random() > 0.5 ? 0.2 : -0.2),
-          };
-          candleSeries.current.update(candle);
+        if (data.type === "transaction" && data.transaction.TransactionType === "OfferCreate") {
+          const tx = data.transaction;
+
+          const gets = tx.TakerGets;
+          const pays = tx.TakerPays;
+
+          const isIOU = typeof gets === "object" && typeof pays === "object";
+
+          let price = null;
+          if (isIOU) {
+            // IOU / IOU ou IOU / XRP (inverse)
+            const valueGets = parseFloat(gets.value);
+            const valuePays = parseFloat(pays.value);
+            if (valueGets && valuePays) {
+              price = valuePays / valueGets;
+            }
+          } else if (typeof gets === "string" && typeof pays === "object") {
+            // XRP / IOU (XRP exprimé en drops)
+            price = parseFloat(pays.value) / (parseFloat(gets) / 1000000);
+          } else if (typeof pays === "string" && typeof gets === "object") {
+            // IOU / XRP
+            price = (parseFloat(pays) / 1000000) / parseFloat(gets.value);
+          }
+
+          if (price) {
+            const now = Math.floor(Date.now() / 1000);
+            const candle = {
+              time: now,
+              open: price,
+              high: price,
+              low: price,
+              close: price,
+            };
+            candleSeries.current.update(candle);
+          }
         }
       } catch (err) {
         console.warn("⚠️ Erreur dans le flux WebSocket :", err);
