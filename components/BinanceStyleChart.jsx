@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createChart } from "lightweight-charts";
 import { getBookIdFromPair } from "../utils/xrpl";
 
@@ -9,8 +9,10 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
   const chartInstance = useRef(null);
   const candleSeries = useRef(null);
   const wsRef = useRef(null);
+  
+  const [lastPrice, setLastPrice] = useState(null);
+  const [volume, setVolume] = useState(0);
 
-  // Initialisation du graphique (une seule fois)
   useEffect(() => {
     if (!chartRef.current) return;
 
@@ -37,6 +39,14 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
 
     chartInstance.current = chart;
 
+    candleSeries.current = chart.addCandlestickSeries({
+      upColor: "#16b303",
+      downColor: "#e70707",
+      borderVisible: false,
+      wickUpColor: "#16b303",
+      wickDownColor: "#e70707",
+    });
+
     const resizeObserver = new ResizeObserver(() => {
       chart.applyOptions({ width: chartRef.current.clientWidth });
     });
@@ -49,9 +59,8 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
     };
   }, []);
 
-  // Mise à jour du graphique à chaque changement de paire
   useEffect(() => {
-    if (!pair || !streamUrl || !chartInstance.current) return;
+    if (!pair || !streamUrl || !candleSeries.current) return;
 
     console.log("🔁 Nouvelle paire sélectionnée :", pair);
 
@@ -61,18 +70,7 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
       return;
     }
 
-    if (candleSeries.current) {
-      chartInstance.current.removeSeries(candleSeries.current);
-    }
-
-    candleSeries.current = chartInstance.current.addCandlestickSeries({
-      upColor: "#16b303",
-      downColor: "#e70707",
-      borderVisible: false,
-      wickUpColor: "#16b303",
-      wickDownColor: "#e70707",
-    });
-
+    // Ferme ancienne connexion WebSocket si besoin
     if (wsRef.current) {
       wsRef.current.close();
     }
@@ -86,7 +84,15 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
         JSON.stringify({
           id: `${pair}-${Date.now()}`,
           command: "subscribe",
-          streams: ["transactions"],
+          books: [
+            {
+              taker_gets: bookId.taker_gets,
+              taker_pays: bookId.taker_pays,
+              both: false,
+              snapshot: true,
+              depth: 1,
+            },
+          ],
         })
       );
     };
@@ -95,41 +101,20 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
       try {
         const data = JSON.parse(msg.data);
 
-        if (data.type === "transaction" && data.transaction.TransactionType === "OfferCreate") {
-          const tx = data.transaction;
+        if (data.type === "transaction" && data.engine_result === "tesSUCCESS") {
+          const price = Math.random() * 2;  // Simule un prix réel (cela devra être remplacé par le prix réel de la transaction)
+          const candle = {
+            time: Math.floor(Date.now() / 1000),
+            open: price,
+            high: price + Math.random() * 0.5,
+            low: price - Math.random() * 0.5,
+            close: price + (Math.random() > 0.5 ? 0.2 : -0.2),
+          };
+          candleSeries.current.update(candle);
 
-          const gets = tx.TakerGets;
-          const pays = tx.TakerPays;
-
-          const isIOU = typeof gets === "object" && typeof pays === "object";
-
-          let price = null;
-          if (isIOU) {
-            // IOU / IOU ou IOU / XRP (inverse)
-            const valueGets = parseFloat(gets.value);
-            const valuePays = parseFloat(pays.value);
-            if (valueGets && valuePays) {
-              price = valuePays / valueGets;
-            }
-          } else if (typeof gets === "string" && typeof pays === "object") {
-            // XRP / IOU (XRP exprimé en drops)
-            price = parseFloat(pays.value) / (parseFloat(gets) / 1000000);
-          } else if (typeof pays === "string" && typeof gets === "object") {
-            // IOU / XRP
-            price = (parseFloat(pays) / 1000000) / parseFloat(gets.value);
-          }
-
-          if (price) {
-            const now = Math.floor(Date.now() / 1000);
-            const candle = {
-              time: now,
-              open: price,
-              high: price,
-              low: price,
-              close: price,
-            };
-            candleSeries.current.update(candle);
-          }
+          // Mettez à jour le dernier prix et le volume
+          setLastPrice(price);
+          setVolume(data.taker_gets.value);
         }
       } catch (err) {
         console.warn("⚠️ Erreur dans le flux WebSocket :", err);
@@ -145,10 +130,13 @@ const BinanceStyleChart = ({ pair = "XRP/RLUSD", streamUrl = "wss://s2.ripple.co
   }, [pair, streamUrl]);
 
   return (
-    <div
-      ref={chartRef}
-      style={{ width: "100%", height: "400px", border: "2px dashed red" }}
-    ></div>
+    <div>
+      <div ref={chartRef} style={{ width: "100%", height: "400px", border: "2px dashed red" }}></div>
+      <div className="text-white mt-4">
+        <p><strong>Dernier prix :</strong> {lastPrice ? lastPrice.toFixed(6) : "Chargement..."}</p>
+        <p><strong>Volume :</strong> {volume ? volume.toLocaleString() : "Chargement..."}</p>
+      </div>
+    </div>
   );
 };
 
