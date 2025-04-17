@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 import axios from "axios";
-import { getBookIdFromPair } from "../utils/xrpl"; // ✅ Ton utilitaire
+import { getBookIdFromPair } from "../utils/xrpl"; // ✅ Ton mapping avec .url
 
 export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }) {
   const chartRef = useRef();
@@ -16,14 +16,12 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     const bookId = getBookIdFromPair(pair);
 
-    if (!bookId) {
+    if (!bookId || !bookId.url) {
       console.warn("❌ Paire inconnue dans getBookIdFromPair:", pair);
       return;
     }
 
-    const takerGets = `${bookId.taker_gets.issuer || "XRP"}_${bookId.taker_gets.currency}`;
-    const takerPays = `${bookId.taker_pays.issuer || "XRP"}_${bookId.taker_pays.currency}`;
-    const PAIR_ID = `${takerGets}/${takerPays}`;
+    const PAIR_ID = bookId.url; // ✅ directement depuis ton mapping
 
     const loadInitialData = async () => {
       try {
