@@ -40,11 +40,6 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       }
     };
 
-    const getAmount = (value) => {
-      if (typeof value === "object") return parseFloat(value.value);
-      return parseFloat(value) / 1_000_000; // Convert drops to XRP
-    };
-
     const aggregateCandles = (trades, intervalSec) => {
       const buckets = new Map();
       trades.forEach((trade) => {
@@ -67,6 +62,10 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     const updatePriceScale = (chart, min, max) => {
       const margin = 0.02;
+      if (!min || !max || isNaN(min) || isNaN(max) || min === max || max > 10000 || min < 0.000001) {
+        chart.priceScale().applyOptions({ autoScale: true });
+        return;
+      }
       chart.priceScale().applyOptions({
         autoScale: false,
         minValue: min * (1 - margin),
@@ -78,16 +77,36 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     if (!bookId?.url) return;
     const PAIR_ID = bookId.url;
     const intervalSec = intervalMap[interval] || 60;
-    const limit = getLimitFromInterval(interval);
 
     const loadInitialData = async () => {
       try {
-        const res = await axios.get(
-          `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
-        );
+        const pageSize = getLimitFromInterval(interval);
+        let skip = 0;
+        let hasMore = true;
+        let allData = [];
 
-        // ❌ AUCUN FILTRE !
-        const data = aggregateCandles(res.data, intervalSec);
+        while (hasMore) {
+          const res = await axios.get(
+            `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}`,
+            {
+              params: {
+                interval,
+                limit: pageSize,
+                skip,
+              },
+            }
+          );
+          allData = allData.concat(res.data);
+          hasMore = res.headers["x-has-more-data"] === "true";
+          skip += pageSize;
+        }
+
+        const filtered = allData.filter((t) => {
+          const price = parseFloat(t.rate);
+          return price >= 0.000001 && price <= 10000 && !isNaN(price);
+        });
+
+        const data = aggregateCandles(filtered, intervalSec);
         if (!data.length) return;
 
         lastCandleRef.current = data[data.length - 1];
@@ -152,7 +171,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           if (socket) socket.close();
         };
       } catch (err) {
-        console.error("❌ Erreur fetch XRPL:", err);
+        console.error("❌ Erreur fetch paginé XRPL:", err);
       }
     };
 
@@ -161,32 +180,37 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
       socket.onopen = () => {
         console.log("✅ WebSocket connecté");
-        socket.send(JSON.stringify({
-          id: 1,
-          command: "subscribe",
-          streams: ["transactions"],
-        }));
+        socket.send(
+          JSON.stringify({
+            id: 1,
+            command: "subscribe",
+            streams: ["transactions"],
+          })
+        );
       };
 
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data);
-        if (data.type !== "transaction" || !data.transaction) return;
+        const tx = data?.transaction;
+        if (data.type !== "transaction" || !tx || tx.TransactionType !== "OfferCreate") return;
 
-        const tx = data.transaction;
-        if (tx.TransactionType !== "OfferCreate") return;
+        const getAmount = (value) => {
+          if (!value) return 0;
+          if (typeof value === "object") return parseFloat(value.value);
+          return parseFloat(value) / 1_000_000;
+        };
 
         const gets = getAmount(tx.TakerGets);
         const pays = getAmount(tx.TakerPays);
         if (!gets || !pays || isNaN(gets) || isNaN(pays) || pays === 0) return;
 
         const price = gets / pays;
+        if (price < 0.000001 || price > 10000) return;
 
-        // ❌ AUCUN FILTRE ICI NON PLUS
         const now = Math.floor(Date.now() / 1000);
         const bucketTime = now - (now % intervalSec);
 
         let last = lastCandleRef.current;
-
         if (!last || last.time !== bucketTime) {
           const newCandle = {
             time: bucketTime,
