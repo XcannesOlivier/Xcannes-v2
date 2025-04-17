@@ -118,7 +118,12 @@ export default function Dex() {
           )}
 
           {/* ✅ Affichage du chart avec données XRPL + timeframe */}
-          <XrplCandleChartRaw pair={selectedPair} interval={interval} />
+          <XrplCandleChartRaw
+           key={`${selectedPair}-${interval}`} // 🔑 force un re-render complet
+           pair={selectedPair}
+           interval={interval}
+           />
+
 
           <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
             <TradeBox pair={selectedPair} />
