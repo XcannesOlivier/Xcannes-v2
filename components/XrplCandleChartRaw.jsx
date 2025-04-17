@@ -93,10 +93,21 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         const res = await axios.get(
           `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
         );
-        const data = aggregateCandles(res.data, intervalSec);
+    
+        // ✅ Ajout du filtre sécurisé
+        const raw = res.data.filter((t) => {
+          const price = parseFloat(t.rate);
+          return price >= 0.0001 && price <= 10 && !isNaN(price);
+        });
+    
+        const data = aggregateCandles(raw, intervalSec);
         if (!data.length) return;
+        
+        // ... le reste de ton code continue ici 👇
+    
 
         lastCandleRef.current = data[data.length - 1];
+        
 
         chart = createChart(chartRef.current, {
           width: chartRef.current.clientWidth,
