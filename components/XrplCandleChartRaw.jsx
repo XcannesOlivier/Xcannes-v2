@@ -9,6 +9,8 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
   const chartRef = useRef();
   const candleSeriesRef = useRef(null);
   const lastCandleRef = useRef(null);
+  const timeScaleRef = useRef(null); // ✅ Pour contrôler le zoom depuis un bouton
+
 
   useEffect(() => {
     let chart;
@@ -77,6 +79,10 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           },
           priceScale: { borderColor: "#485c7b" },
         });
+        
+        // ✅ On stocke le timeScale dans le ref pour le bouton Reset Zoom
+        timeScaleRef.current = chart.timeScale();
+        
         
         candleSeriesRef.current = chart.addCandlestickSeries({
           upColor: "#16b303",
@@ -188,3 +194,16 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     />
   );
 }
+<div className="mt-2 text-right">
+  <button
+    onClick={() => {
+      if (timeScaleRef.current) {
+        timeScaleRef.current.fitContent(); // ✅ Reset auto
+      }
+    }}
+    className="bg-xcannes-green text-black px-4 py-2 rounded text-sm hover:bg-green-400 transition"
+  >
+    🔄 Reset Zoom
+  </button>
+</div>
+
