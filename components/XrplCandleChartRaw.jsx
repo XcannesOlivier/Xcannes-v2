@@ -41,7 +41,9 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           }
         };
         
-        const limit = getLimitFromInterval(interval);
+        const limit = 1000; // max autorisé par l'API
+        const interval = "1d"; // ou "1w" si tu veux des semaines
+
 
         const res = await axios.get(
           `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
