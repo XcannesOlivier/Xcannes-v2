@@ -164,32 +164,66 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     const setupWebSocket = (chartInstance) => {
       socket = new WebSocket("wss://s1.ripple.com");
-
+    
       socket.onopen = () => {
+        console.log("✅ WebSocket connecté");
         socket.send(JSON.stringify({
           id: 1,
           command: "subscribe",
           streams: ["transactions"],
         }));
       };
-
+    
+      // ✅ Fonction de nettoyage
+      const sanitizeTrade = (tx) => {
+        if (tx.TransactionType !== "OfferCreate") return null;
+    
+        const getAmount = (value) => {
+          if (!value) return 0;
+          if (typeof value === "object") return parseFloat(value.value);
+          return parseFloat(value) / 1_000_000; // drops → XRP
+        };
+    
+        const gets = getAmount(tx.TakerGets);
+        const pays = getAmount(tx.TakerPays);
+        if (!gets || !pays || isNaN(gets) || isNaN(pays) || pays === 0) return null;
+    
+        const price = gets / pays;
+    
+        const MIN_PRICE = 0.0001;
+        const MAX_PRICE = 10;
+    
+        if (price < MIN_PRICE || price > MAX_PRICE) {
+          console.warn("❌ Prix rejeté (extrême):", price);
+          return null;
+        }
+    
+        return price;
+      };
+    
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data);
-        const tx = data?.transaction;
-        if (data.type !== "transaction" || !tx || tx.TransactionType !== "OfferCreate") return;
-
-        const price = normalizePrice(tx);
+        if (data.type !== "transaction" || !data.transaction) return;
+    
+        const price = sanitizeTrade(data.transaction);
         if (!price) return;
-
+    
         const now = Math.floor(Date.now() / 1000);
-        const bucketTime = now - (now % intervalSec);
+        const bucketTime = now - (now % 60);
+    
         let last = lastCandleRef.current;
-
+    
         if (!last || last.time !== bucketTime) {
-          const newCandle = { time: bucketTime, open: price, high: price, low: price, close: price };
+          const newCandle = {
+            time: bucketTime,
+            open: price,
+            high: price,
+            low: price,
+            close: price,
+          };
           candleSeriesRef.current.update(newCandle);
           lastCandleRef.current = newCandle;
-          updatePriceScale(chartInstance, newCandle.low, newCandle.high);
+          updatePriceScale(chartInstance, price, price);
         } else {
           last.high = Math.max(last.high, price);
           last.low = Math.min(last.low, price);
@@ -198,7 +232,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           updatePriceScale(chartInstance, last.low, last.high);
         }
       };
-
+    
       socket.onerror = (err) => {
         console.error("❌ WebSocket error:", err);
       };
