@@ -12,6 +12,10 @@ import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
 
+const XrplCandleChartRaw = dynamic(() => import("../components/XrplCandleChartRaw"), {
+  ssr: false,
+});
+
 // 🟢 Composant Binance Style Chart
 const BinanceStyleChart = dynamic(() => import("../components/BinanceStyleChart"), { ssr: false });
 
@@ -93,8 +97,9 @@ export default function Dex() {
             <p className="text-gray-400 mb-8">Chargement des données...</p>
           )}
 
-          {/* ✅ Affichage du chart façon Binance */}
-          <BinanceStyleChart pair={selectedPair} streamUrl="wss://s2.ripple.com" />
+          {/* ✅ Affichage du chart avec données réelles XRPL */}
+<XrplCandleChartRaw pair={PAIRS[selectedPair]} />
+
 
           <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
             <TradeBox pair={selectedPair} />
