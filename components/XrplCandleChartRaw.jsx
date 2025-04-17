@@ -17,7 +17,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     const bookId = getBookIdFromPair(pair);
     if (!bookId || !bookId.url) {
-      console.warn("❌ Paire inconnue dans getBookIdFromPair:", pair);
+      console.warn("❌ Paire inconnue :", pair);
       return;
     }
 
@@ -44,30 +44,36 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
         );
 
-        let data = res.data.map((item) => ({
-          time: Math.floor(new Date(item.executed_time).getTime() / 1000),
-          open: parseFloat(item.open),
-          high: parseFloat(item.high),
-          low: parseFloat(item.low),
-          close: parseFloat(item.close),
-        }));
+        // 🧽 Filtrer les bougies valides
+        let data = res.data
+          .map((item) => ({
+            time: Math.floor(new Date(item.executed_time).getTime() / 1000),
+            open: parseFloat(item.open),
+            high: parseFloat(item.high),
+            low: parseFloat(item.low),
+            close: parseFloat(item.close),
+          }))
+          .filter(
+            (c) =>
+              c.time &&
+              !isNaN(c.open) &&
+              !isNaN(c.high) &&
+              !isNaN(c.low) &&
+              !isNaN(c.close)
+          );
+
+        // 🧪 Debug
+        console.warn("⚠️ Certaines bougies sont mal formées :", res.data.length - data.length);
+        console.log("✅ Bougies chargées :", data.length);
+        if (data.length > 0) {
+          console.log("📍 Première bougie :", data[0]);
+          console.log("📍 Dernière bougie :", data[data.length - 1]);
+        }
 
         if (!data.length) {
-          console.warn("⚠️ Aucune donnée reçue");
-          data = [
-            { time: 1713312000, open: 0.5, high: 0.6, low: 0.4, close: 0.55 },
-            { time: 1713315600, open: 0.55, high: 0.57, low: 0.5, close: 0.53 },
-          ];
+          console.warn("⛔ Aucun point de données valide. Abort.");
+          return;
         }
-
-        const isValid = data.every(c => c.time && c.open && c.high && c.low && c.close);
-        if (!isValid) {
-          console.warn("❌ Certaines bougies sont mal formées :", data);
-        }
-
-        console.log("✅ Bougies chargées :", data);
-        console.log("📊 Première bougie :", data[0]);
-        console.log("📊 Dernière bougie :", data[data.length - 1]);
 
         lastCandleRef.current = data[data.length - 1];
 
@@ -99,25 +105,19 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
         candleSeriesRef.current.setData(data);
 
-        if (data.length === 1) {
-          const single = data[0].time;
+        // 🎯 Zoom auto sur les 30 derniers jours
+        const firstCandle = data[0];
+        const lastCandle = data[data.length - 1];
+        const duration = lastCandle.time - firstCandle.time;
+
+        if (duration >= 2592000) {
+          const thirtyDaysAgo = lastCandle.time - 2592000;
           chart.timeScale().setVisibleRange({
-            from: single - 3600,
-            to: single + 3600,
+            from: thirtyDaysAgo,
+            to: lastCandle.time,
           });
         } else {
-          const first = data[0];
-          const last = data[data.length - 1];
-          const duration = last.time - first.time;
-
-          if (duration >= 2592000) {
-            chart.timeScale().setVisibleRange({
-              from: last.time - 2592000,
-              to: last.time,
-            });
-          } else {
-            chart.timeScale().fitContent();
-          }
+          chart.timeScale().fitContent();
         }
 
         const observer = new ResizeObserver(() => {
@@ -142,11 +142,13 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
       socket.onopen = () => {
         console.log("✅ WebSocket connecté XRPL");
-        socket.send(JSON.stringify({
-          id: 1,
-          command: "subscribe",
-          streams: ["transactions"],
-        }));
+        socket.send(
+          JSON.stringify({
+            id: 1,
+            command: "subscribe",
+            streams: ["transactions"],
+          })
+        );
       };
 
       socket.onmessage = (msg) => {
@@ -164,6 +166,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         if (!takerGets || !takerPays || isNaN(takerGets) || isNaN(takerPays)) return;
 
         const price = takerGets / takerPays;
+
         let last = lastCandleRef.current;
 
         if (!last || last.time !== bucketTime) {
@@ -193,13 +196,15 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
   }, [pair, interval]);
 
   return (
-    <div style={{
-      height: "400px",
-      backgroundColor: "#000",
-      border: "1px solid #444",
-      borderRadius: "10px",
-      marginTop: "1rem",
-    }}>
+    <div
+      style={{
+        height: "400px",
+        backgroundColor: "#000",
+        border: "1px solid #444",
+        borderRadius: "10px",
+        marginTop: "1rem",
+      }}
+    >
       <div ref={chartRef} style={{ height: "100%" }} />
 
       <div className="mt-2 text-right">
