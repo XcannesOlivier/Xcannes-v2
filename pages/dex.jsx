@@ -96,7 +96,7 @@ export default function Dex() {
           )}
 
           {/* ✅ Affichage du chart avec données réelles XRPL */}
-<XrplCandleChartRaw pair={PAIRS[selectedPair]} interval="1m" />
+          <XrplCandleChartRaw pair={selectedPair} interval="1m" />
 
 
           <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
