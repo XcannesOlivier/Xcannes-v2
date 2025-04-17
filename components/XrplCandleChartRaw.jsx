@@ -42,7 +42,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     const getAmount = (value) => {
       if (typeof value === "object") return parseFloat(value.value);
-      return parseFloat(value) / 1_000_000;
+      return parseFloat(value) / 1_000_000; // drops → XRP
     };
 
     const aggregateCandles = (trades, intervalSec) => {
@@ -51,10 +51,16 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         const time = Math.floor(new Date(trade.executed_time).getTime() / 1000);
         const bucket = time - (time % intervalSec);
         const price = parseFloat(trade.rate);
-        if (!price || isNaN(price) || price < 0.000001 || price > 10000) return;
+        if (!price || isNaN(price)) return;
 
         if (!buckets.has(bucket)) {
-          buckets.set(bucket, { time: bucket, open: price, high: price, low: price, close: price });
+          buckets.set(bucket, {
+            time: bucket,
+            open: price,
+            high: price,
+            low: price,
+            close: price,
+          });
         } else {
           const c = buckets.get(bucket);
           c.high = Math.max(c.high, price);
@@ -67,15 +73,37 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     const updatePriceScale = (chart, min, max) => {
       const margin = 0.02;
-      if (!min || !max || isNaN(min) || isNaN(max) || min === max || max > 10000 || min < 0.000001) {
+      if (!min || !max || isNaN(min) || isNaN(max) || min === max) {
         chart.priceScale().applyOptions({ autoScale: true });
         return;
       }
+
       chart.priceScale().applyOptions({
         autoScale: false,
         minValue: min * (1 - margin),
         maxValue: max * (1 + margin),
       });
+    };
+
+    const sanitizeTrade = (tx, lastPrice = null) => {
+      if (tx.TransactionType !== "OfferCreate") return null;
+
+      const gets = getAmount(tx.TakerGets);
+      const pays = getAmount(tx.TakerPays);
+      if (!gets || !pays || isNaN(gets) || isNaN(pays) || pays === 0) return null;
+
+      const price = gets / pays;
+
+      if (lastPrice) {
+        const deviation = Math.abs(price - lastPrice) / lastPrice;
+        const maxDeviation = 1.0; // 100% de marge (peut aller de x0.5 à x2)
+        if (deviation > maxDeviation) {
+          console.warn("⛔ Rejeté (trop d'écart vs précédent):", price);
+          return null;
+        }
+      }
+
+      return price;
     };
 
     const bookId = getBookIdFromPair(pair);
@@ -90,12 +118,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
         );
 
-        const raw = res.data.filter((t) => {
-          const price = parseFloat(t.rate);
-          return price >= 0.000001 && price <= 10000 && !isNaN(price);
-        });
-
-        const data = aggregateCandles(raw, intervalSec);
+        const data = aggregateCandles(res.data, intervalSec);
         if (!data.length) return;
 
         lastCandleRef.current = data[data.length - 1];
@@ -176,38 +199,12 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         }));
       };
 
-      const sanitizeTrade = (tx) => {
-        if (tx.TransactionType !== "OfferCreate") return null;
-
-        const gets = getAmount(tx.TakerGets);
-        const pays = getAmount(tx.TakerPays);
-        if (!gets || !pays || isNaN(gets) || isNaN(pays) || pays === 0) return null;
-
-        const price = gets / pays;
-
-        if (price < 0.000001 || price > 10000) {
-          console.warn("❌ Prix rejeté (extrême):", price);
-          return null;
-        }
-
-        const last = lastCandleRef.current;
-        if (last) {
-          const deviation = Math.abs(price - last.close) / last.close;
-          const maxDeviation = 4.0; // 200%
-          if (deviation > maxDeviation) {
-            console.warn("⚠️ Prix rejeté (écart trop grand):", price, "(last:", last.close, ")");
-            return null;
-          }
-        }
-
-        return price;
-      };
-
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data);
         if (data.type !== "transaction" || !data.transaction) return;
 
-        const price = sanitizeTrade(data.transaction);
+        const lastClose = lastCandleRef.current?.close;
+        const price = sanitizeTrade(data.transaction, lastClose);
         if (!price) return;
 
         const now = Math.floor(Date.now() / 1000);
