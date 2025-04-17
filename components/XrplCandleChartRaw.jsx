@@ -42,7 +42,25 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     const getAmount = (value) => {
       if (typeof value === "object") return parseFloat(value.value);
-      return parseFloat(value) / 1_000_000; // drops → XRP
+      return parseFloat(value) / 1_000_000;
+    };
+
+    const sanitizeTrade = (tx, lastPrice = null) => {
+      if (tx.TransactionType !== "OfferCreate") return null;
+      const gets = getAmount(tx.TakerGets);
+      const pays = getAmount(tx.TakerPays);
+      if (!gets || !pays || isNaN(gets) || isNaN(pays) || pays === 0) return null;
+
+      const price = gets / pays;
+
+      // ✅ Limite d’écart pour éviter les spikes
+      if (lastPrice) {
+        const deviation = Math.abs(price - lastPrice) / lastPrice;
+        const maxDeviation = 1.0;
+        if (deviation > maxDeviation) return null;
+      }
+
+      return price;
     };
 
     const aggregateCandles = (trades, intervalSec) => {
@@ -54,13 +72,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         if (!price || isNaN(price)) return;
 
         if (!buckets.has(bucket)) {
-          buckets.set(bucket, {
-            time: bucket,
-            open: price,
-            high: price,
-            low: price,
-            close: price,
-          });
+          buckets.set(bucket, { time: bucket, open: price, high: price, low: price, close: price });
         } else {
           const c = buckets.get(bucket);
           c.high = Math.max(c.high, price);
@@ -77,33 +89,11 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         chart.priceScale().applyOptions({ autoScale: true });
         return;
       }
-
       chart.priceScale().applyOptions({
         autoScale: false,
         minValue: min * (1 - margin),
         maxValue: max * (1 + margin),
       });
-    };
-
-    const sanitizeTrade = (tx, lastPrice = null) => {
-      if (tx.TransactionType !== "OfferCreate") return null;
-
-      const gets = getAmount(tx.TakerGets);
-      const pays = getAmount(tx.TakerPays);
-      if (!gets || !pays || isNaN(gets) || isNaN(pays) || pays === 0) return null;
-
-      const price = gets / pays;
-
-      if (lastPrice) {
-        const deviation = Math.abs(price - lastPrice) / lastPrice;
-        const maxDeviation = 1.0; // 100% de marge (peut aller de x0.5 à x2)
-        if (deviation > maxDeviation) {
-          console.warn("⛔ Rejeté (trop d'écart vs précédent):", price);
-          return null;
-        }
-      }
-
-      return price;
     };
 
     const bookId = getBookIdFromPair(pair);
@@ -183,7 +173,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           if (socket) socket.close();
         };
       } catch (err) {
-        console.error("❌ Erreur fetch XRPL:", err);
+        console.error("❌ Erreur XRPL fetch:", err);
       }
     };
 
@@ -191,7 +181,6 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       socket = new WebSocket("wss://s1.ripple.com");
 
       socket.onopen = () => {
-        console.log("✅ WebSocket connecté");
         socket.send(JSON.stringify({
           id: 1,
           command: "subscribe",
@@ -209,17 +198,10 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
         const now = Math.floor(Date.now() / 1000);
         const bucketTime = now - (now % intervalSec);
-
         let last = lastCandleRef.current;
 
         if (!last || last.time !== bucketTime) {
-          const newCandle = {
-            time: bucketTime,
-            open: price,
-            high: price,
-            low: price,
-            close: price,
-          };
+          const newCandle = { time: bucketTime, open: price, high: price, low: price, close: price };
           candleSeriesRef.current.update(newCandle);
           lastCandleRef.current = newCandle;
           updatePriceScale(chartInstance, price, price);
@@ -254,9 +236,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       <div className="mt-2 text-right">
         <button
           onClick={() => {
-            if (timeScaleRef.current) {
-              timeScaleRef.current.fitContent();
-            }
+            if (timeScaleRef.current) timeScaleRef.current.fitContent();
           }}
           className="bg-xcannes-green text-black px-4 py-2 rounded text-sm hover:bg-green-400 transition"
         >
