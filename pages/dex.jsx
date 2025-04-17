@@ -12,11 +12,12 @@ import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
 
+// Chart dynamique
 const XrplCandleChartRaw = dynamic(() => import("../components/XrplCandleChartRaw"), {
   ssr: false,
 });
 
-
+// Paires disponibles
 const PAIRS = {
   "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
   "XCS/USD": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_USD",
@@ -28,14 +29,16 @@ const PAIRS = {
 export default function Dex() {
   const router = useRouter();
   const isDex = router.pathname === "/dex";
+
   const [selectedPair, setSelectedPair] = useState("XRP/RLUSD");
+  const [interval, setInterval] = useState("1m");
   const [marketData, setMarketData] = useState(null);
   const { wallet, isConnected } = useXumm();
 
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        `https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval=`
+        `https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval=${interval}`
       );
       setMarketData(res.data);
     } catch (err) {
@@ -45,7 +48,7 @@ export default function Dex() {
 
   useEffect(() => {
     fetchData();
-  }, [selectedPair]);
+  }, [selectedPair, interval]);
 
   return (
     <>
@@ -64,21 +67,40 @@ export default function Dex() {
         <div className="max-w-5xl mx-auto px-4 relative z-10">
           <h1 className="text-3xl font-orbitron font-[500] text-xcannes-green mb-6">XCannes DEX</h1>
 
-          <div className="mb-4">
-            <label className="mr-2 font-[500]">Choisir une paire :</label>
-            <select
-              value={selectedPair}
-              onChange={(e) => setSelectedPair(e.target.value)}
-              className="bg-black/80 border border-white border-opacity-40 px-4 py-2 rounded text-white"
-            >
-              {Object.keys(PAIRS).map((pair) => (
-                <option key={pair} value={pair}>
-                  {pair}
-                </option>
-              ))}
-            </select>
+          {/* 🎯 Sélecteurs */}
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4">
+            <div>
+              <label className="mr-2 font-[500]">Choisir une paire :</label>
+              <select
+                value={selectedPair}
+                onChange={(e) => setSelectedPair(e.target.value)}
+                className="bg-black/80 border border-white border-opacity-40 px-4 py-2 rounded text-white"
+              >
+                {Object.keys(PAIRS).map((pair) => (
+                  <option key={pair} value={pair}>
+                    {pair}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="mr-2 font-[500]">Timeframe :</label>
+              <select
+                value={interval}
+                onChange={(e) => setInterval(e.target.value)}
+                className="bg-black/80 border border-white border-opacity-40 px-4 py-2 rounded text-white"
+              >
+                {["1m", "5m", "1h", "1d", "1w", "1M", "1Y", "all"].map((int) => (
+                  <option key={int} value={int}>
+                    {int}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
+          {/* 📊 Market data */}
           {marketData ? (
             <div className="bg-black/60 p-4 rounded border border-xcannes-green mb-8">
               <p>
@@ -95,9 +117,8 @@ export default function Dex() {
             <p className="text-gray-400 mb-8">Chargement des données...</p>
           )}
 
-          {/* ✅ Affichage du chart avec données réelles XRPL */}
-          <XrplCandleChartRaw pair={selectedPair} interval="1m" />
-
+          {/* ✅ Affichage du chart avec données XRPL + timeframe */}
+          <XrplCandleChartRaw pair={selectedPair} interval={interval} />
 
           <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
             <TradeBox pair={selectedPair} />
