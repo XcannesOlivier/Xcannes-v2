@@ -28,22 +28,15 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     const getLimitFromInterval = (interval) => {
       switch (interval) {
-        case "1m":
-        case "5m":
-        case "1h":
-          return 1000;
-        case "1d":
-          return 500;
-        case "1w":
-          return 200;
-        case "1M":
-          return 100;
-        case "1Y":
-          return 50;
-        case "all":
-          return 2000;
-        default:
-          return 1000;
+        case "1m": return 1000;
+        case "5m": return 1000;
+        case "1h": return 1000;
+        case "1d": return 500;
+        case "1w": return 200;
+        case "1M": return 100;
+        case "1Y": return 50;
+        case "all": return 2000;
+        default: return 1000;
       }
     };
 
@@ -87,14 +80,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         const res = await axios.get(
           `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
         );
-
-        // ✅ Optionnel : filtrage basique (prix valides)
-        const raw = res.data.filter((t) => {
-          const price = parseFloat(t.rate);
-          return !isNaN(price);
-        });
-
-        const data = aggregateCandles(raw, intervalSec);
+        const data = aggregateCandles(res.data, intervalSec);
         if (!data.length) return;
 
         lastCandleRef.current = data[data.length - 1];
@@ -133,11 +119,14 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         const prices = data.flatMap((c) => [c.low, c.high]);
         updatePriceScale(chart, Math.min(...prices), Math.max(...prices));
 
-        const duration = data[data.length - 1].time - data[0].time;
+        const first = data[0];
+        const last = data[data.length - 1];
+        const duration = last.time - first.time;
+
         if (duration >= 2592000) {
           chart.timeScale().setVisibleRange({
-            from: data[data.length - 1].time - 2592000,
-            to: data[data.length - 1].time,
+            from: last.time - 2592000,
+            to: last.time,
           });
         } else {
           chart.timeScale().fitContent();
@@ -172,17 +161,36 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         }));
       };
 
+      const sanitizeTrade = (tx) => {
+        if (tx.TransactionType !== "OfferCreate") return null;
+
+        const getAmount = (value) => {
+          if (!value) return 0;
+          if (typeof value === "object") return parseFloat(value.value);
+          return parseFloat(value) / 1_000_000;
+        };
+
+        const gets = getAmount(tx.TakerGets);
+        const pays = getAmount(tx.TakerPays);
+        if (!gets || !pays || isNaN(gets) || isNaN(pays) || pays === 0) return null;
+
+        const getsCurrency = typeof tx.TakerGets === "object" ? tx.TakerGets.currency : "XRP";
+        const paysCurrency = typeof tx.TakerPays === "object" ? tx.TakerPays.currency : "XRP";
+
+        const allowedCurrencies = pair.split("/").map((v) => v.trim().toUpperCase());
+        if (!allowedCurrencies.includes(getsCurrency) && !allowedCurrencies.includes(paysCurrency)) {
+          return null;
+        }
+
+        return gets / pays;
+      };
+
       socket.onmessage = (msg) => {
         const data = JSON.parse(msg.data);
-        const tx = data?.transaction;
-        if (data.type !== "transaction" || !tx || tx.TransactionType !== "OfferCreate") return;
+        if (data.type !== "transaction" || !data.transaction) return;
 
-        const gets = typeof tx.TakerGets === "object" ? parseFloat(tx.TakerGets.value) : parseFloat(tx.TakerGets) / 1_000_000;
-        const pays = typeof tx.TakerPays === "object" ? parseFloat(tx.TakerPays.value) : parseFloat(tx.TakerPays) / 1_000_000;
-
-        if (!gets || !pays || isNaN(gets) || isNaN(pays) || pays === 0) return;
-
-        const price = gets / pays;
+        const price = sanitizeTrade(data.transaction);
+        if (!price) return;
 
         const now = Math.floor(Date.now() / 1000);
         const bucketTime = now - (now % intervalSec);
@@ -243,3 +251,4 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     </div>
   );
 }
+
