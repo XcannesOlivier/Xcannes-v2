@@ -109,11 +109,13 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         const now = Math.floor(Date.now() / 1000);
         const bucketTime = now - (now % 60);
 
-        const price =
-          parseFloat(tx.TakerGets?.value || tx.TakerGets || 0) /
-          parseFloat(tx.TakerPays?.value || tx.TakerPays || 1);
+        const takerGets = parseFloat(tx.TakerGets?.value || tx.TakerGets || 0);
+const takerPays = parseFloat(tx.TakerPays?.value || tx.TakerPays || 0);
 
-        if (!price || isNaN(price)) return;
+if (!takerGets || !takerPays || isNaN(takerGets) || isNaN(takerPays)) return;
+
+const price = takerGets / takerPays;
+
 
         let last = lastCandleRef.current;
 
