@@ -66,8 +66,8 @@ export default function Home() {
             </button>
           </Link>
         </div>
-        <div class="w-[40vw] max-w-[160px] aspect-square mt-16 border border-white/10 rounded-3xl p-2 flex items-center justify-center bg-black/20 transition-all duration-300 hover:scale-105 hover:border-[#16b303] hover:shadow-[0_0_20px_#16b303]">
-  <img src="/assets/img/ui/xcslogoblanc.png" alt="XCS Logo" class="w-full h-full object-contain object-center" />
+        <div className="w-[40vw] max-w-[160px] aspect-square mt-16 border border-white/10 rounded-3xl p-2 flex items-center justify-center bg-black/20 transition-all duration-300 hover:scale-105 hover:border-[#16b303] hover:shadow-[0_0_20px_#16b303]">
+  <img src="/assets/img/ui/xcslogoblanc.png" alt="XCS Logo" className="w-full h-full object-contain object-center" />
 </div>
 
 
