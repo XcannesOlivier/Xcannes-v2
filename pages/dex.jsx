@@ -37,7 +37,7 @@ export default function Dex() {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        'https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval='
+        `https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval=`
       );
       setMarketData(res.data);
     } catch (err) {
