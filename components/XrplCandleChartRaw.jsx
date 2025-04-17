@@ -193,7 +193,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         const last = lastCandleRef.current;
         if (last) {
           const deviation = Math.abs(price - last.close) / last.close;
-          const maxDeviation = 2.0; // 200%
+          const maxDeviation = 4.0; // 200%
           if (deviation > maxDeviation) {
             console.warn("⚠️ Prix rejeté (écart trop grand):", price, "(last:", last.close, ")");
             return null;
