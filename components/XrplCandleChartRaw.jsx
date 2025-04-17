@@ -96,15 +96,23 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
         // 🔍 Zoom glissant sur les 30 derniers jours
         if (data.length > 0) {
+          const firstCandle = data[0];
           const lastCandle = data[data.length - 1];
-          const lastTime = lastCandle.time;
-          const thirtyDaysAgo = lastTime - 2592000;
-
-          chart.timeScale().setVisibleRange({
-            from: thirtyDaysAgo,
-            to: lastTime,
-          });
+          const duration = lastCandle.time - firstCandle.time;
+        
+          // 🧠 30 jours = 2592000 secondes
+          if (duration >= 2592000) {
+            const thirtyDaysAgo = lastCandle.time - 2592000;
+        
+            chart.timeScale().setVisibleRange({
+              from: thirtyDaysAgo,
+              to: lastCandle.time,
+            });
+          } else {
+            chart.timeScale().fitContent(); // 🧲 Auto-zoom si peu de données
+          }
         }
+        
 
         const observer = new ResizeObserver(() => {
           chart.applyOptions({ width: chartRef.current.clientWidth });
