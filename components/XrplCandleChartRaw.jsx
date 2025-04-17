@@ -25,10 +25,26 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     const loadInitialData = async () => {
       try {
-        const res = await axios.get(
-          `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=100`
-        );
+        const getLimitFromInterval = (interval) => {
+          switch (interval) {
+            case "1m": return 500;    // ~8h20 de données
+            case "5m": return 500;    // ~1 jour 17h
+            case "1h": return 500;    // ~20 jours
+            case "1d": return 200;    // ~6 mois
+            case "1w": return 60;     // ~1 an
+            case "1M": return 36;     // ~3 ans
+            case "1Y": return 10;     // ~10 ans
+            case "all": return 1000;  // full historique dispo
+            default: return 200;      // fallback
+          }
+        };
+        
+        const limit = getLimitFromInterval(interval);
 
+        const res = await axios.get(
+          `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
+        );
+        
         let data = res.data.map((item) => ({
           time: Math.floor(new Date(item.executed_time).getTime() / 1000),
           open: parseFloat(item.open),
