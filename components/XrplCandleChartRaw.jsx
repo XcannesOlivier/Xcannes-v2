@@ -18,7 +18,7 @@ export default function XrplCandleChartRaw() {
     const loadInitialData = async () => {
       try {
         const res = await axios.get(
-          https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=1m&limit=100
+          'https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=1m&limit=100'
         );
 
         let data = res.data.map(item => ({
