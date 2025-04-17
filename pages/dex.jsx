@@ -16,8 +16,6 @@ const XrplCandleChartRaw = dynamic(() => import("../components/XrplCandleChartRa
   ssr: false,
 });
 
-// 🟢 Composant Binance Style Chart
-const BinanceStyleChart = dynamic(() => import("../components/BinanceStyleChart"), { ssr: false });
 
 const PAIRS = {
   "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
