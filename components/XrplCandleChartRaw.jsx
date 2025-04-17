@@ -3,10 +3,9 @@
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 import axios from "axios";
+import { getBookIdFromPair } from "../utils/xrpl"; // ✅ Ton utilitaire
 
-const PAIR_ID = "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000"; // XCS/RLUSD
-
-export default function XrplCandleChartRaw() {
+export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }) {
   const chartRef = useRef();
   const candleSeriesRef = useRef(null);
   const lastCandleRef = useRef(null);
@@ -15,13 +14,24 @@ export default function XrplCandleChartRaw() {
     let chart;
     let socket;
 
+    const bookId = getBookIdFromPair(pair);
+
+    if (!bookId) {
+      console.warn("❌ Paire inconnue dans getBookIdFromPair:", pair);
+      return;
+    }
+
+    const takerGets = `${bookId.taker_gets.issuer || "XRP"}_${bookId.taker_gets.currency}`;
+    const takerPays = `${bookId.taker_pays.issuer || "XRP"}_${bookId.taker_pays.currency}`;
+    const PAIR_ID = `${takerGets}/${takerPays}`;
+
     const loadInitialData = async () => {
       try {
         const res = await axios.get(
-          'https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=1m&limit=100'
+          `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=100`
         );
 
-        let data = res.data.map(item => ({
+        let data = res.data.map((item) => ({
           time: Math.floor(new Date(item.executed_time).getTime() / 1000),
           open: parseFloat(item.open),
           high: parseFloat(item.high),
@@ -29,7 +39,6 @@ export default function XrplCandleChartRaw() {
           close: parseFloat(item.close),
         }));
 
-        // fallback mock si vide
         if (!data.length) {
           data = [
             { time: 1713312000, open: 0.5, high: 0.6, low: 0.4, close: 0.55 },
@@ -52,11 +61,11 @@ export default function XrplCandleChartRaw() {
         });
 
         candleSeriesRef.current = chart.addCandlestickSeries({
-          upColor: '#16b303',
-          downColor: '#e70707',
+          upColor: "#16b303",
+          downColor: "#e70707",
           borderVisible: false,
-          wickUpColor: '#16b303',
-          wickDownColor: '#e70707',
+          wickUpColor: "#16b303",
+          wickDownColor: "#e70707",
         });
 
         candleSeriesRef.current.setData(data);
@@ -82,12 +91,14 @@ export default function XrplCandleChartRaw() {
       socket = new WebSocket("wss://s1.ripple.com");
 
       socket.onopen = () => {
-        console.log("✅ XRPL WebSocket connecté");
-        socket.send(JSON.stringify({
-          id: 1,
-          command: "subscribe",
-          streams: ["transactions"]
-        }));
+        console.log("✅ WebSocket connecté XRPL");
+        socket.send(
+          JSON.stringify({
+            id: 1,
+            command: "subscribe",
+            streams: ["transactions"],
+          })
+        );
       };
 
       socket.onmessage = (msg) => {
@@ -97,16 +108,17 @@ export default function XrplCandleChartRaw() {
         const tx = data.transaction;
         if (tx.TransactionType !== "OfferCreate") return;
 
-        // On simule que ça concerne notre paire ici (à affiner si besoin)
         const now = Math.floor(Date.now() / 1000);
         const bucketTime = now - (now % 60);
 
-        const price = parseFloat(tx.TakerGets?.value || tx.TakerGets || 0) / parseFloat(tx.TakerPays?.value || tx.TakerPays || 1);
+        const price =
+          parseFloat(tx.TakerGets?.value || tx.TakerGets || 0) /
+          parseFloat(tx.TakerPays?.value || tx.TakerPays || 1);
+
         if (!price || isNaN(price)) return;
 
         let last = lastCandleRef.current;
 
-        // Nouvelle bougie
         if (!last || last.time !== bucketTime) {
           const newCandle = {
             time: bucketTime,
@@ -118,7 +130,6 @@ export default function XrplCandleChartRaw() {
           candleSeriesRef.current.update(newCandle);
           lastCandleRef.current = newCandle;
         } else {
-          // Mise à jour de la dernière
           last.high = Math.max(last.high, price);
           last.low = Math.min(last.low, price);
           last.close = price;
@@ -126,13 +137,13 @@ export default function XrplCandleChartRaw() {
         }
       };
 
-      socket.onerror = err => {
+      socket.onerror = (err) => {
         console.error("❌ WebSocket error:", err);
       };
     };
 
     loadInitialData();
-  }, []);
+  }, [pair, interval]);
 
   return (
     <div
@@ -142,7 +153,7 @@ export default function XrplCandleChartRaw() {
         backgroundColor: "#000",
         border: "1px solid #444",
         borderRadius: "10px",
-        marginTop: "1rem"
+        marginTop: "1rem",
       }}
     />
   );
