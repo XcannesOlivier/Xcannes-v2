@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 import axios from "axios";
-import { getBookIdFromPair } from "../utils/xrpl"; // ✅ Ton mapping avec .url
+import { getBookIdFromPair } from "../utils/xrpl";
 
 export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }) {
   const chartRef = useRef();
@@ -21,7 +21,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       return;
     }
 
-    const PAIR_ID = bookId.url; // ✅ directement depuis ton mapping
+    const PAIR_ID = bookId.url;
 
     const loadInitialData = async () => {
       try {
@@ -68,6 +68,18 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
         candleSeriesRef.current.setData(data);
 
+        // 🔍 Zoom glissant sur les 30 derniers jours
+        if (data.length > 0) {
+          const lastCandle = data[data.length - 1];
+          const lastTime = lastCandle.time;
+          const thirtyDaysAgo = lastTime - 2592000;
+
+          chart.timeScale().setVisibleRange({
+            from: thirtyDaysAgo,
+            to: lastTime,
+          });
+        }
+
         const observer = new ResizeObserver(() => {
           chart.applyOptions({ width: chartRef.current.clientWidth });
         });
@@ -110,12 +122,10 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         const bucketTime = now - (now % 60);
 
         const takerGets = parseFloat(tx.TakerGets?.value || tx.TakerGets || 0);
-const takerPays = parseFloat(tx.TakerPays?.value || tx.TakerPays || 0);
+        const takerPays = parseFloat(tx.TakerPays?.value || tx.TakerPays || 0);
+        if (!takerGets || !takerPays || isNaN(takerGets) || isNaN(takerPays)) return;
 
-if (!takerGets || !takerPays || isNaN(takerGets) || isNaN(takerPays)) return;
-
-const price = takerGets / takerPays;
-
+        const price = takerGets / takerPays;
 
         let last = lastCandleRef.current;
 
