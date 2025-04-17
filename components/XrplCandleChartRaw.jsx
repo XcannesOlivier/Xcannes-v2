@@ -54,10 +54,14 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
             vertLines: { color: "#2B2B43" },
             horzLines: { color: "#363C4E" },
           },
-          timeScale: { borderColor: "#485c7b" },
+          timeScale: {
+            borderColor: "#485c7b",
+            timeVisible: true, // ✅ Affiche la date & l'heure sur l'axe horizontal
+            secondsVisible: interval === "1m", // ✅ Affiche les secondes uniquement si interval = "1m"
+          },
           priceScale: { borderColor: "#485c7b" },
         });
-
+        
         candleSeriesRef.current = chart.addCandlestickSeries({
           upColor: "#16b303",
           downColor: "#e70707",
