@@ -15,63 +15,77 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     let chart;
     let socket;
 
-    const bookId = getBookIdFromPair(pair);
-    if (!bookId || !bookId.url) {
-      console.warn("❌ Paire inconnue :", pair);
-      return;
-    }
-
-    const PAIR_ID = bookId.url;
-
     const getLimitFromInterval = (interval) => {
       switch (interval) {
-        case "1m": return 500;
-        case "5m": return 500;
-        case "1h": return 500;
-        case "1d": return 200;
-        case "1w": return 60;
-        case "1M": return 36;
-        case "1Y": return 10;
-        case "all": return 1000;
-        default: return 200;
+        case "1m": return 1000;
+        case "5m": return 1000;
+        case "1h": return 1000;
+        case "1d": return 500;
+        case "1w": return 200;
+        case "1M": return 100;
+        case "1Y": return 50;
+        case "all": return 2000;
+        default: return 1000;
       }
     };
+
+    const aggregateToCandles = (trades, interval) => {
+      if (!trades?.length) return [];
+
+      const intervalMap = {
+        "1m": 60,
+        "5m": 300,
+        "15m": 900,
+        "30m": 1800,
+        "1h": 3600,
+        "4h": 14400,
+        "1d": 86400,
+        "1w": 604800,
+      };
+
+      const bucketSize = intervalMap[interval] || 60;
+      const buckets = new Map();
+
+      trades.forEach((trade) => {
+        const timestamp = Math.floor(new Date(trade.executed_time).getTime() / 1000);
+        const bucket = timestamp - (timestamp % bucketSize);
+        const price = parseFloat(trade.rate);
+
+        if (!buckets.has(bucket)) {
+          buckets.set(bucket, {
+            time: bucket,
+            open: price,
+            high: price,
+            low: price,
+            close: price,
+          });
+        } else {
+          const candle = buckets.get(bucket);
+          candle.high = Math.max(candle.high, price);
+          candle.low = Math.min(candle.low, price);
+          candle.close = price;
+        }
+      });
+
+      return Array.from(buckets.values()).sort((a, b) => a.time - b.time);
+    };
+
+    const bookId = getBookIdFromPair(pair);
+    if (!bookId?.url) return;
+
+    const PAIR_ID = bookId.url;
 
     const loadInitialData = async () => {
       try {
         const limit = getLimitFromInterval(interval);
-        const res = await axios.get(
-          `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
-        );
+        const url = `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`;
+        const res = await axios.get(url);
 
-        // 🧽 Filtrer les bougies valides
-        let data = res.data
-          .map((item) => ({
-            time: Math.floor(new Date(item.executed_time).getTime() / 1000),
-            open: parseFloat(item.open),
-            high: parseFloat(item.high),
-            low: parseFloat(item.low),
-            close: parseFloat(item.close),
-          }))
-          .filter(
-            (c) =>
-              c.time &&
-              !isNaN(c.open) &&
-              !isNaN(c.high) &&
-              !isNaN(c.low) &&
-              !isNaN(c.close)
-          );
+        let data = aggregateToCandles(res.data, interval);
 
-        // 🧪 Debug
-        console.warn("⚠️ Certaines bougies sont mal formées :", res.data.length - data.length);
-        console.log("✅ Bougies chargées :", data.length);
-        if (data.length > 0) {
-          console.log("📍 Première bougie :", data[0]);
-          console.log("📍 Dernière bougie :", data[data.length - 1]);
-        }
-
+        console.log("🟢 Bougies chargées :", data.length);
         if (!data.length) {
-          console.warn("⛔ Aucun point de données valide. Abort.");
+          console.warn("⚠️ Aucune donnée valide. Abort.");
           return;
         }
 
@@ -105,16 +119,14 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
         candleSeriesRef.current.setData(data);
 
-        // 🎯 Zoom auto sur les 30 derniers jours
-        const firstCandle = data[0];
-        const lastCandle = data[data.length - 1];
-        const duration = lastCandle.time - firstCandle.time;
-
+        // ⏱ Zoom sur 30 jours si possible
+        const first = data[0];
+        const last = data[data.length - 1];
+        const duration = last.time - first.time;
         if (duration >= 2592000) {
-          const thirtyDaysAgo = lastCandle.time - 2592000;
           chart.timeScale().setVisibleRange({
-            from: thirtyDaysAgo,
-            to: lastCandle.time,
+            from: last.time - 2592000,
+            to: last.time,
           });
         } else {
           chart.timeScale().fitContent();
@@ -160,13 +172,11 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
         const now = Math.floor(Date.now() / 1000);
         const bucketTime = now - (now % 60);
-
         const takerGets = parseFloat(tx.TakerGets?.value || tx.TakerGets || 0);
         const takerPays = parseFloat(tx.TakerPays?.value || tx.TakerPays || 0);
         if (!takerGets || !takerPays || isNaN(takerGets) || isNaN(takerPays)) return;
 
         const price = takerGets / takerPays;
-
         let last = lastCandleRef.current;
 
         if (!last || last.time !== bucketTime) {
@@ -196,17 +206,14 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
   }, [pair, interval]);
 
   return (
-    <div
-      style={{
-        height: "400px",
-        backgroundColor: "#000",
-        border: "1px solid #444",
-        borderRadius: "10px",
-        marginTop: "1rem",
-      }}
-    >
+    <div style={{
+      height: "400px",
+      backgroundColor: "#000",
+      border: "1px solid #444",
+      borderRadius: "10px",
+      marginTop: "1rem",
+    }}>
       <div ref={chartRef} style={{ height: "100%" }} />
-
       <div className="mt-2 text-right">
         <button
           onClick={() => {
