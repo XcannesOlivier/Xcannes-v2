@@ -182,28 +182,27 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
   }, [pair, interval]);
 
   return (
-    <div
-      ref={chartRef}
-      style={{
-        height: "400px",
-        backgroundColor: "#000",
-        border: "1px solid #444",
-        borderRadius: "10px",
-        marginTop: "1rem",
-      }}
-    />
+    <div style={{
+      height: "400px",
+      backgroundColor: "#000",
+      border: "1px solid #444",
+      borderRadius: "10px",
+      marginTop: "1rem",
+    }}>
+      <div ref={chartRef} style={{ height: "100%" }} />
+  
+      <div className="mt-2 text-right">
+        <button
+          onClick={() => {
+            if (timeScaleRef.current) {
+              timeScaleRef.current.fitContent(); // ✅ Reset auto
+            }
+                      }}
+          className="bg-xcannes-green text-black px-4 py-2 rounded text-sm hover:bg-green-400 transition"
+        >
+          🔄 Reset Zoom
+        </button>
+      </div>
+    </div>
   );
 }
-<div className="mt-2 text-right">
-  <button
-    onClick={() => {
-      if (timeScaleRef.current) {
-        timeScaleRef.current.fitContent(); // ✅ Reset auto
-      }
-    }}
-    className="bg-xcannes-green text-black px-4 py-2 rounded text-sm hover:bg-green-400 transition"
-  >
-    🔄 Reset Zoom
-  </button>
-</div>
-
