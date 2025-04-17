@@ -19,10 +19,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       switch (interval) {
         case "1m": return 1000;
         case "5m": return 1000;
-        case "15m": return 1000;
-        case "30m": return 1000;
         case "1h": return 1000;
-        case "4h": return 800;
         case "1d": return 500;
         case "1w": return 200;
         case "1M": return 100;
@@ -73,12 +70,17 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       return Array.from(buckets.values()).sort((a, b) => a.time - b.time);
     };
 
-    const bookId = getBookIdFromPair(pair);
-    if (!bookId || !bookId.url) {
-      console.warn("❌ Paire inconnue:", pair);
-      return;
-    }
+    const updatePriceScale = (chart, low, high) => {
+      const margin = 0.02;
+      chart.priceScale().applyOptions({
+        autoScale: false,
+        minValue: low * (1 - margin),
+        maxValue: high * (1 + margin),
+      });
+    };
 
+    const bookId = getBookIdFromPair(pair);
+    if (!bookId?.url) return;
     const PAIR_ID = bookId.url;
 
     const loadInitialData = async () => {
@@ -88,10 +90,10 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
         );
 
-        const data = aggregateToCandles(res.data, interval);
+        let data = aggregateToCandles(res.data, interval);
 
         if (!data.length) {
-          console.warn("⚠️ Aucune donnée reçue.");
+          console.warn("⚠️ Aucune donnée valide. Abort.");
           return;
         }
 
@@ -128,7 +130,13 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
         candleSeriesRef.current.setData(data);
 
-        // ⏱ Zoom sur 30 jours si dispo
+        // 🔍 Ajustement initial du priceScale
+        const allPrices = data.flatMap((d) => [d.low, d.high]);
+        const minPrice = Math.min(...allPrices);
+        const maxPrice = Math.max(...allPrices);
+        updatePriceScale(chart, minPrice, maxPrice);
+
+        // ⏱ Zoom sur 30 jours si possible
         const first = data[0];
         const last = data[data.length - 1];
         const duration = last.time - first.time;
@@ -141,23 +149,12 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           chart.timeScale().fitContent();
         }
 
-        // 📈 Auto-ajustement min/max des prix
-        const allPrices = data.flatMap(d => [d.low, d.high]);
-        const minPrice = Math.min(...allPrices);
-        const maxPrice = Math.max(...allPrices);
-
-        chart.priceScale().applyOptions({
-          autoScale: false,
-          minValue: minPrice * 0.98,
-          maxValue: maxPrice * 1.02,
-        });
-
         const observer = new ResizeObserver(() => {
           chart.applyOptions({ width: chartRef.current.clientWidth });
         });
         observer.observe(chartRef.current);
 
-        setupWebSocket();
+        setupWebSocket(chart);
 
         return () => {
           observer.disconnect();
@@ -165,11 +162,11 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           if (socket) socket.close();
         };
       } catch (err) {
-        console.error("❌ Erreur chargement initial:", err);
+        console.error("❌ Erreur fetch initial XRPL:", err);
       }
     };
 
-    const setupWebSocket = () => {
+    const setupWebSocket = (chartInstance) => {
       socket = new WebSocket("wss://s1.ripple.com");
 
       socket.onopen = () => {
@@ -209,11 +206,13 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           };
           candleSeriesRef.current.update(newCandle);
           lastCandleRef.current = newCandle;
+          updatePriceScale(chartInstance, newCandle.low, newCandle.high);
         } else {
           last.high = Math.max(last.high, price);
           last.low = Math.min(last.low, price);
           last.close = price;
           candleSeriesRef.current.update(last);
+          updatePriceScale(chartInstance, last.low, last.high);
         }
       };
 
@@ -226,15 +225,16 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
   }, [pair, interval]);
 
   return (
-    <div style={{
-      height: "400px",
-      backgroundColor: "#000",
-      border: "1px solid #444",
-      borderRadius: "10px",
-      marginTop: "1rem",
-    }}>
+    <div
+      style={{
+        height: "400px",
+        backgroundColor: "#000",
+        border: "1px solid #444",
+        borderRadius: "10px",
+        marginTop: "1rem",
+      }}
+    >
       <div ref={chartRef} style={{ height: "100%" }} />
-
       <div className="mt-2 text-right">
         <button
           onClick={() => {
