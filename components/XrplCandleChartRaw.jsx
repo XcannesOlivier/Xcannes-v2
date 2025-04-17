@@ -29,6 +29,58 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       }
     };
 
+    const aggregateToCandles = (trades, interval) => {
+      if (!trades?.length) return [];
+
+      const intervalMap = {
+        "1m": 60,
+        "5m": 300,
+        "15m": 900,
+        "30m": 1800,
+        "1h": 3600,
+        "4h": 14400,
+        "1d": 86400,
+        "1w": 604800,
+      };
+
+      const bucketSize = intervalMap[interval] || 60;
+      const buckets = new Map();
+
+      trades.forEach((trade) => {
+        const timestamp = Math.floor(new Date(trade.executed_time).getTime() / 1000);
+        const bucket = timestamp - (timestamp % bucketSize);
+        const price = parseFloat(trade.rate);
+
+        if (price < 0.000001 || price > 10000 || isNaN(price)) return; // filtre safety
+
+        if (!buckets.has(bucket)) {
+          buckets.set(bucket, {
+            time: bucket,
+            open: price,
+            high: price,
+            low: price,
+            close: price,
+          });
+        } else {
+          const candle = buckets.get(bucket);
+          candle.high = Math.max(candle.high, price);
+          candle.low = Math.min(candle.low, price);
+          candle.close = price;
+        }
+      });
+
+      return Array.from(buckets.values()).sort((a, b) => a.time - b.time);
+    };
+
+    const updatePriceScale = (chart, low, high) => {
+      const margin = 0.02;
+      chart.priceScale().applyOptions({
+        autoScale: false,
+        minValue: low * (1 - margin),
+        maxValue: high * (1 + margin),
+      });
+    };
+
     const bookId = getBookIdFromPair(pair);
     if (!bookId?.url) return;
     const PAIR_ID = bookId.url;
@@ -36,18 +88,16 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     const loadInitialData = async () => {
       try {
         const limit = getLimitFromInterval(interval);
-        const url = `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`;
-        const res = await axios.get(url);
+        const res = await axios.get(
+          `https://data.xrplf.org/v1/iou/exchanges/${PAIR_ID}?interval=${interval}&limit=${limit}`
+        );
 
-        const data = res.data.map((item) => ({
-          time: Math.floor(new Date(item.executed_time).getTime() / 1000),
-          open: parseFloat(item.open),
-          high: parseFloat(item.high),
-          low: parseFloat(item.low),
-          close: parseFloat(item.close),
-        }));
+        const data = aggregateToCandles(res.data, interval);
 
-        if (!data.length) return;
+        if (!data.length) {
+          console.warn("⚠️ Aucune donnée valide.");
+          return;
+        }
 
         lastCandleRef.current = data[data.length - 1];
 
@@ -64,7 +114,10 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
             timeVisible: true,
             secondsVisible: interval === "1m",
           },
-          priceScale: { borderColor: "#485c7b" },
+          priceScale: {
+            borderColor: "#485c7b",
+            autoScale: false,
+          },
         });
 
         timeScaleRef.current = chart.timeScale();
@@ -78,6 +131,9 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         });
 
         candleSeriesRef.current.setData(data);
+
+        const prices = data.flatMap((d) => [d.low, d.high]);
+        updatePriceScale(chart, Math.min(...prices), Math.max(...prices));
 
         const first = data[0];
         const last = data[data.length - 1];
@@ -97,7 +153,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         });
         observer.observe(chartRef.current);
 
-        setupWebSocket();
+        setupWebSocket(chart);
 
         return () => {
           observer.disconnect();
@@ -105,15 +161,15 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           if (socket) socket.close();
         };
       } catch (err) {
-        console.error("❌ Erreur fetch initial XRPL:", err);
+        console.error("❌ Erreur XRPL :", err);
       }
     };
 
-    const setupWebSocket = () => {
+    const setupWebSocket = (chartInstance) => {
       socket = new WebSocket("wss://s1.ripple.com");
 
       socket.onopen = () => {
-        console.log("✅ WebSocket connecté XRPL");
+        console.log("✅ WebSocket connecté");
         socket.send(JSON.stringify({
           id: 1,
           command: "subscribe",
@@ -128,12 +184,12 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         const tx = data.transaction;
         if (tx.TransactionType !== "OfferCreate") return;
 
-        // 🧠 Calcul du prix
+        // 🧠 TakerGets / TakerPays
         let gets = tx.TakerGets;
         let pays = tx.TakerPays;
 
         if (typeof gets === "object") gets = parseFloat(gets.value);
-        else gets = parseFloat(gets) / 1_000_000; // drops -> XRP
+        else gets = parseFloat(gets) / 1_000_000;
 
         if (typeof pays === "object") pays = parseFloat(pays.value);
         else pays = parseFloat(pays) / 1_000_000;
@@ -142,9 +198,8 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
         const price = gets / pays;
 
-        // 🔒 Protection contre prix anormal
         if (price < 0.000001 || price > 10000) {
-          console.warn("⚠️ Prix XRPL ignoré (extrême) :", price);
+          console.warn("❌ Prix ignoré (extrême):", price);
           return;
         }
 
@@ -162,11 +217,13 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
           };
           candleSeriesRef.current.update(newCandle);
           lastCandleRef.current = newCandle;
+          updatePriceScale(chartInstance, price, price);
         } else {
           last.high = Math.max(last.high, price);
           last.low = Math.min(last.low, price);
           last.close = price;
           candleSeriesRef.current.update(last);
+          updatePriceScale(chartInstance, last.low, last.high);
         }
       };
 
@@ -179,15 +236,16 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
   }, [pair, interval]);
 
   return (
-    <div style={{
-      height: "400px",
-      backgroundColor: "#000",
-      border: "1px solid #444",
-      borderRadius: "10px",
-      marginTop: "1rem",
-    }}>
+    <div
+      style={{
+        height: "400px",
+        backgroundColor: "#000",
+        border: "1px solid #444",
+        borderRadius: "10px",
+        marginTop: "1rem",
+      }}
+    >
       <div ref={chartRef} style={{ height: "100%" }} />
-
       <div className="mt-2 text-right">
         <button
           onClick={() => {
@@ -203,4 +261,3 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     </div>
   );
 }
-
