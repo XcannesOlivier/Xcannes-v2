@@ -1,39 +1,57 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { Client } from "xrpl";
+import { getBookIdFromPair } from "../utils/xrpl";
 
 export default function OrderBook({ pair }) {
   const [asks, setAsks] = useState([]);
   const [bids, setBids] = useState([]);
 
-  const PAIRS = {
-    "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
-    "XCS/USD": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_USD",
-    "XCS/EUR": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_EUR",
-    "XCS/RLUSD": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000"
-  };
-
   const fetchOrderbook = async () => {
+    const client = new Client("wss://s1.ripple.com");
     try {
-      const res = await axios.get(
-        'https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=5m&limit=40'
-      );
+      await client.connect();
+      const book = getBookIdFromPair(pair);
+      if (!book) return console.warn("❌ Paire inconnue");
 
-      const orders = res.data;
+      const res = await client.request({
+        command: "book_offers",
+        taker_gets: book.taker_gets,
+        taker_pays: book.taker_pays,
+        limit: 20,
+      });
 
-      // Trier ventes et achats
-      const _asks = orders.filter((o) => o.taker === "XCS").slice(0, 10);
-      const _bids = orders.filter((o) => o.taker === "XRP").slice(0, 10);
+      const offers = res.result.offers;
 
-      setAsks(_asks);
-      setBids(_bids);
+      const getAmount = (value) => {
+        if (typeof value === "object") return parseFloat(value.value);
+        return parseFloat(value) / 1_000_000;
+      };
+
+      const parsed = offers.map((offer) => {
+        const amount = getAmount(offer.TakerGets);
+        const total = getAmount(offer.TakerPays);
+        const price = total / amount;
+        return { price, amount };
+      });
+
+      // 👉 La logique XRPL c’est : taker_gets = ce que le vendeur donne
+      // Donc ASK = vendeurs (offres existantes)
+      // BID = inverse (on inverse l’ordre pour cohérence visuelle)
+      setAsks(parsed.slice(0, 10));
+      setBids(parsed.slice().reverse().slice(0, 10));
+
+      await client.disconnect();
     } catch (err) {
-      console.error("Erreur Orderbook:", err);
+      console.error("❌ Erreur WebSocket Orderbook:", err);
+      client.disconnect();
     }
   };
 
   useEffect(() => {
     fetchOrderbook();
-    const interval = setInterval(fetchOrderbook, 10000);
+    const interval = setInterval(fetchOrderbook, 15000); // auto-refresh 15s
     return () => clearInterval(interval);
   }, [pair]);
 
@@ -47,8 +65,8 @@ export default function OrderBook({ pair }) {
         <ul className="space-y-1">
           {asks.map((order, idx) => (
             <li key={idx} className="flex justify-between">
-              <span className="text-red-500">{parseFloat(order.price).toFixed(6)}</span>
-              <span className="text-gray-300">{parseFloat(order.amount).toFixed(2)} XCS</span>
+              <span className="text-red-500">{order.price.toFixed(6)}</span>
+              <span className="text-gray-300">{order.amount.toFixed(2)}</span>
             </li>
           ))}
         </ul>
@@ -59,8 +77,8 @@ export default function OrderBook({ pair }) {
         <ul className="space-y-1">
           {bids.map((order, idx) => (
             <li key={idx} className="flex justify-between">
-              <span className="text-xcannes-green-500">{parseFloat(order.price).toFixed(6)}</span>
-              <span className="text-gray-300">{parseFloat(order.amount).toFixed(2)} XRP</span>
+              <span className="text-green-500">{order.price.toFixed(6)}</span>
+              <span className="text-gray-300">{order.amount.toFixed(2)}</span>
             </li>
           ))}
         </ul>
