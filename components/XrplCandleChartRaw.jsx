@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
-import axios from "axios";
+import { Client } from "xrpl";
 import { getBookIdFromPair } from "../utils/xrpl";
 
 export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }) {
@@ -13,28 +13,42 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
   useEffect(() => {
     let chart;
+    const client = new Client("wss://s1.ripple.com");
 
     const intervalMap = {
-      "1m": "1m",
-      "5m": "5m",
-      "15m": "15m",
-      "30m": "30m",
-      "1h": "1h",
-      "4h": "4h",
-      "1d": "1d",
-      "1w": "1w",
-      "1M": "1M",
-      "1Y": "1Y",
+      "1m": 60,
+      "5m": 300,
+      "15m": 900,
+      "30m": 1800,
+      "1h": 3600,
+      "4h": 14400,
+      "1d": 86400,
+      "1w": 604800,
     };
 
-    const formatCandleData = (data) => {
-      return data.map((entry) => ({
-        time: Math.floor(new Date(entry.timestamp).getTime() / 1000),
-        open: parseFloat(entry.open),
-        high: parseFloat(entry.high),
-        low: parseFloat(entry.low),
-        close: parseFloat(entry.close),
-      }));
+    const getAmount = (value) => {
+      if (typeof value === "object") return parseFloat(value.value);
+      return parseFloat(value) / 1_000_000;
+    };
+
+    const aggregateCandles = (trades, intervalSec) => {
+      const buckets = new Map();
+      trades.forEach((trade) => {
+        const time = Math.floor(new Date(trade.executed_time).getTime() / 1000);
+        const bucket = time - (time % intervalSec);
+        const price = parseFloat(trade.rate);
+        if (!price || isNaN(price)) return;
+
+        if (!buckets.has(bucket)) {
+          buckets.set(bucket, { time: bucket, open: price, high: price, low: price, close: price });
+        } else {
+          const c = buckets.get(bucket);
+          c.high = Math.max(c.high, price);
+          c.low = Math.min(c.low, price);
+          c.close = price;
+        }
+      });
+      return Array.from(buckets.values()).sort((a, b) => a.time - b.time);
     };
 
     const updatePriceScale = (chart, min, max) => {
@@ -43,7 +57,6 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         chart.priceScale().applyOptions({ autoScale: true });
         return;
       }
-
       chart.priceScale().applyOptions({
         autoScale: false,
         minValue: min * (1 - margin),
@@ -51,73 +64,99 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       });
     };
 
-    const loadCandleData = async () => {
-      try {
-        const book = getBookIdFromPair(pair);
-        if (!book || !book.url) return;
+    const fetchHistoricalTrades = async () => {
+      const book = getBookIdFromPair(pair);
+      if (!book?.taker_gets?.issuer && book?.taker_gets?.currency !== "XRP") return [];
 
-        const [base, counter] = book.url.split("/");
+      await client.connect();
 
-        const res = await axios.get(
-          `https://data.xrplf.org/v1/iou/market_data/${base}/${counter}?interval=${intervalMap[interval] || "1m"}`
-        );
+      const response = await client.request({
+        command: "account_tx",
+        account: book.taker_gets.issuer || book.taker_pays.issuer,
+        ledger_index_min: -10000,
+        ledger_index_max: -1,
+        limit: 200,
+      });
 
-        const candles = formatCandleData(res.data);
-        if (!candles.length) return;
+      const trades = response.result.transactions
+        .filter((tx) => tx.tx.TransactionType === "OfferCreate")
+        .map((tx) => {
+          const gets = getAmount(tx.tx.TakerGets);
+          const pays = getAmount(tx.tx.TakerPays);
+          const rate = gets && pays ? gets / pays : null;
 
-        lastCandleRef.current = candles[candles.length - 1];
+          return {
+            executed_time: new Date(tx.tx.date * 1000 + 946684800000), // Convert Ripple epoch
+            rate: rate,
+          };
+        })
+        .filter((t) => !isNaN(t.rate) && t.rate > 0);
 
-        chart = createChart(chartRef.current, {
-          width: chartRef.current.clientWidth,
-          height: 400,
-          layout: { background: { color: "#000" }, textColor: "#fff" },
-          grid: {
-            vertLines: { color: "#2B2B43" },
-            horzLines: { color: "#363C4E" },
-          },
-          timeScale: {
-            borderColor: "#485c7b",
-            timeVisible: true,
-            secondsVisible: interval === "1m",
-          },
-          priceScale: {
-            borderColor: "#485c7b",
-            autoScale: false,
-          },
-        });
-
-        timeScaleRef.current = chart.timeScale();
-
-        candleSeriesRef.current = chart.addCandlestickSeries({
-          upColor: "#16b303",
-          downColor: "#e70707",
-          borderVisible: false,
-          wickUpColor: "#16b303",
-          wickDownColor: "#e70707",
-        });
-
-        candleSeriesRef.current.setData(candles);
-
-        const prices = candles.flatMap((c) => [c.low, c.high]);
-        updatePriceScale(chart, Math.min(...prices), Math.max(...prices));
-
-        chart.timeScale().fitContent();
-
-        const observer = new ResizeObserver(() => {
-          chart.applyOptions({ width: chartRef.current.clientWidth });
-        });
-        observer.observe(chartRef.current);
-
-        return () => {
-          observer.disconnect();
-          chart.remove();
-        };
-      } catch (err) {
-        console.error("❌ Erreur API XRPL market_data:", err);
-      }
+      return trades;
     };
 
-    loadCandleData();
+    const setupChart = async () => {
+      const trades = await fetchHistoricalTrades();
+      if (!trades || !trades.length) return;
+
+      const intervalSec = intervalMap[interval] || 60;
+      const data = aggregateCandles(trades, intervalSec);
+
+      lastCandleRef.current = data[data.length - 1];
+
+      chart = createChart(chartRef.current, {
+        width: chartRef.current.clientWidth,
+        height: 400,
+        layout: { background: { color: "#000" }, textColor: "#fff" },
+        grid: {
+          vertLines: { color: "#2B2B43" },
+          horzLines: { color: "#363C4E" },
+        },
+        timeScale: {
+          borderColor: "#485c7b",
+          timeVisible: true,
+          secondsVisible: interval === "1m",
+        },
+        priceScale: {
+          borderColor: "#485c7b",
+          autoScale: false,
+        },
+      });
+
+      timeScaleRef.current = chart.timeScale();
+
+      candleSeriesRef.current = chart.addCandlestickSeries({
+        upColor: "#16b303",
+        downColor: "#e70707",
+        borderVisible: false,
+        wickUpColor: "#16b303",
+        wickDownColor: "#e70707",
+      });
+
+      candleSeriesRef.current.setData(data);
+
+      const prices = data.flatMap((c) => [c.low, c.high]);
+      updatePriceScale(chart, Math.min(...prices), Math.max(...prices));
+
+      chart.timeScale().fitContent();
+
+      const observer = new ResizeObserver(() => {
+        chart.applyOptions({ width: chartRef.current.clientWidth });
+      });
+      observer.observe(chartRef.current);
+
+      return () => {
+        observer.disconnect();
+        chart.remove();
+        client.disconnect();
+      };
+    };
+
+    setupChart();
+
+    return () => {
+      if (client.isConnected()) client.disconnect();
+    };
   }, [pair, interval]);
 
   return (
