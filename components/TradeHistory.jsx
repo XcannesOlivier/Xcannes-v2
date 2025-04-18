@@ -18,8 +18,8 @@ export default function TradeHistory({ pair }) {
       const res = await client.request({
         command: "account_tx",
         account: book.taker_gets.issuer,
-        ledger_index_min: -10000,
-        ledger_index_max: -1,
+        ledger_index_min: "validated",
+        ledger_index_max: "validated",
         limit: 100,
       });
 
