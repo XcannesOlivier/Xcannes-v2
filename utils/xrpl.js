@@ -1,37 +1,63 @@
-// utils/xrpl.js
+export const getBookIdFromPair = (pair) => {
+  const mapping = {
+    "XCS/XRP": {
+      taker_gets: {
+        currency: "XCS",
+        issuer: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx",
+      },
+      taker_pays: {
+        currency: "XRP",
+      },
+      url: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP"
+    },
 
-export function getBookIdFromPair(pair) {
-  if (!pair || typeof pair !== "string") return null;
+    "XCS/USD": {
+      taker_gets: {
+        currency: "XCS",
+        issuer: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx",
+      },
+      taker_pays: {
+        currency: "USD",
+        issuer: "rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq"
+      },
+      url: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_USD"
+    },
 
-  const parts = pair.split("/");
-  if (parts.length !== 2) return null;
+    "XCS/EUR": {
+      taker_gets: {
+        currency: "XCS",
+        issuer: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx",
+      },
+      taker_pays: {
+        currency: "EUR",
+        issuer: "rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq"
+      },
+      url: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_EUR"
+    },
 
-  const [base, counter] = parts;
+    "XCS/RLUSD": {
+      taker_gets: {
+        currency: "XCS",
+        issuer: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx",
+      },
+      taker_pays: {
+        currency: "524C555344000000000000000000000000000000", // RLUSD
+        issuer: "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De"
+      },
+      url: "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000"
+    },
 
-  const ISSUERS = {
-    XCS: "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx",
-    USD: "rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq",
-    EUR: "rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq",
-    RLUSD: "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De",
+    "XRP/RLUSD": {
+      taker_gets: {
+        currency: "XRP",
+      },
+      taker_pays: {
+        currency: "524C555344000000000000000000000000000000",
+        issuer: "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De"
+      },
+      url: "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000"
+    }
   };
 
-  const format = (symbol) => {
-    if (symbol === "XRP") return { currency: "XRP" };
-    const issuer = ISSUERS[symbol];
-    if (!issuer) return null;
-    return { currency: symbol, issuer };
-  };
-
-  const taker_gets = format(base);
-  const taker_pays = format(counter);
-
-  if (!taker_gets || !taker_pays) return null;
-
-  const url = `${taker_gets.issuer || "XRP"}_${taker_gets.currency}/${taker_pays.issuer || "XRP"}_${taker_pays.currency}`;
-
-  return {
-    taker_gets,
-    taker_pays,
-    url,
-  };
-}
+  return mapping[pair] || null;
+};
