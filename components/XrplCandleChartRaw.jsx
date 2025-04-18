@@ -56,7 +56,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         const book = getBookIdFromPair(pair);
         if (!book || !book.url) return;
 
-        const [base, counter] = book.url.split("_");
+        const [base, counter] = book.url.split("/");
 
         const res = await axios.get(
           `https://data.xrplf.org/v1/iou/market_data/${base}/${counter}?interval=${intervalMap[interval] || "1m"}`
