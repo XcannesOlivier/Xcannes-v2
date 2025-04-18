@@ -1,7 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import axios from "axios";
 import { useRouter } from "next/router";
 import Header from "../components/Header";
 import FooterPro from "../components/FooterPro";
@@ -37,12 +38,13 @@ export default function Dex() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(
-        `https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval=${interval}`
-      );
-      setMarketData(res.data);
+      const url = `https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval=${interval}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
+      const data = await res.json();
+      setMarketData(data);
     } catch (err) {
-      console.error("Erreur fetch market data:", err);
+      console.error("❌ Erreur fetch market data:", err);
     }
   };
 
@@ -117,13 +119,12 @@ export default function Dex() {
             <p className="text-gray-400 mb-8">Chargement des données...</p>
           )}
 
-          {/* ✅ Affichage du chart avec données XRPL + timeframe */}
+          {/* ✅ Graphique dynamique */}
           <XrplCandleChartRaw
-           key={`${selectedPair}-${interval}`} // 🔑 force un re-render complet
-           pair={selectedPair}
-           interval={interval}
-           />
-
+            key={`${selectedPair}-${interval}`}
+            pair={selectedPair}
+            interval={interval}
+          />
 
           <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
             <TradeBox pair={selectedPair} />
