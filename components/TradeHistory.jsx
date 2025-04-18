@@ -1,32 +1,60 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Client } from "xrpl";
+import { getBookIdFromPair } from "../utils/xrpl";
 
 export default function TradeHistory({ pair }) {
   const [history, setHistory] = useState([]);
 
-  const PAIRS = {
-    "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
-    "XCS/USD": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_USD",
-    "XCS/EUR": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_EUR",
-    "XCS/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000",
-  };
+  const fetchTradeHistory = async () => {
+    const client = new Client("wss://s1.ripple.com");
 
-  const fetchHistory = async () => {
     try {
-      const url = `https://data.xrplf.org/v1/iou/exchanges/${PAIRS[pair]}?interval=5m&limit=20`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      setHistory(data);
+      await client.connect();
+
+      const book = getBookIdFromPair(pair);
+      if (!book?.taker_gets?.issuer) return console.warn("❌ Paire invalide pour historique");
+
+      // Récupérer les dernières transactions de l’émetteur
+      const res = await client.request({
+        command: "account_tx",
+        account: book.taker_gets.issuer,
+        ledger_index_min: -10000,
+        ledger_index_max: -1,
+        limit: 50,
+      });
+
+      const getAmount = (value) => {
+        if (typeof value === "object") return parseFloat(value.value);
+        return parseFloat(value) / 1_000_000;
+      };
+
+      const txs = res.result.transactions
+        .filter((tx) => tx.tx.TransactionType === "OfferCreate")
+        .map((tx) => {
+          const takerGets = getAmount(tx.tx.TakerGets);
+          const takerPays = getAmount(tx.tx.TakerPays);
+          const price = takerPays / takerGets;
+          return {
+            price,
+            amount: takerGets,
+            taker: book.taker_gets.currency,
+            executed_time: new Date(tx.tx.date * 1000 + 946684800000), // Ripple Epoch → JS
+          };
+        });
+
+      setHistory(txs.slice(0, 10));
     } catch (err) {
-      console.error("❌ Erreur historique des transactions :", err);
+      console.error("❌ Erreur historique des transactions (xrpl):", err);
+    } finally {
+      client.disconnect();
     }
   };
 
   useEffect(() => {
-    fetchHistory();
-    const interval = setInterval(fetchHistory, 15000);
+    fetchTradeHistory();
+    const interval = setInterval(fetchTradeHistory, 15000);
     return () => clearInterval(interval);
   }, [pair]);
 
@@ -42,15 +70,11 @@ export default function TradeHistory({ pair }) {
           </tr>
         </thead>
         <tbody>
-          {history.slice(0, 10).map((tx, idx) => (
+          {history.map((tx, idx) => (
             <tr key={idx} className="border-b border-white border-opacity-20 text-sm">
-              <td className="text-xcannes-green font-[500]">{parseFloat(tx.price).toFixed(6)}</td>
-              <td className="font-[200]">
-                {parseFloat(tx.amount).toFixed(2)} {tx.taker}
-              </td>
-              <td className="font-[300]">
-                {new Date(tx.executed_time).toLocaleTimeString("fr-FR")}
-              </td>
+              <td className="text-xcannes-green font-[500]">{tx.price.toFixed(6)}</td>
+              <td className="font-[200]">{tx.amount.toFixed(2)} {tx.taker}</td>
+              <td className="font-[300]">{tx.executed_time.toLocaleTimeString("fr-FR")}</td>
             </tr>
           ))}
         </tbody>
