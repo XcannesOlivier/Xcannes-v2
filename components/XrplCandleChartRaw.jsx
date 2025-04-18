@@ -2,13 +2,11 @@
 
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
-import { Client } from "xrpl";
 import { getBookIdFromPair } from "../utils/xrpl";
 
 export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }) {
   const chartRef = useRef();
   const candleSeriesRef = useRef(null);
-  const lastCandleRef = useRef(null);
   const timeScaleRef = useRef(null);
 
   const intervalMap = {
@@ -20,80 +18,41 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     "4h": 14400,
     "1d": 86400,
     "1w": 604800,
+    "1M": 2628000,
+    "1Y": 31536000,
   };
 
-  const getAmount = (value) => {
-    if (typeof value === "object") return parseFloat(value.value);
-    return parseFloat(value) / 1_000_000;
-  };
-
-  const aggregateCandles = (trades, intervalSec) => {
-    const buckets = new Map();
-    trades.forEach((trade) => {
-      const time = Math.floor(new Date(trade.executed_time).getTime() / 1000);
-      const bucket = time - (time % intervalSec);
-      const price = parseFloat(trade.rate);
-      if (!price || isNaN(price)) return;
-
-      if (!buckets.has(bucket)) {
-        buckets.set(bucket, { time: bucket, open: price, high: price, low: price, close: price });
-      } else {
-        const c = buckets.get(bucket);
-        c.high = Math.max(c.high, price);
-        c.low = Math.min(c.low, price);
-        c.close = price;
-      }
-    });
-    return Array.from(buckets.values()).sort((a, b) => a.time - b.time);
-  };
-
-  const fetchHistoricalTrades = async () => {
-    const book = getBookIdFromPair(pair);
-    if (!book?.taker_gets?.issuer) return [];
-
-    const client = new Client("wss://s1.ripple.com");
+  const fetchMarketData = async () => {
     try {
-      await client.connect();
-      const res = await client.request({
-        command: "account_tx",
-        account: book.taker_gets.issuer,
-        ledger_index_min: -100000,
-        ledger_index_max: -1,
-        limit: 200,
-      });
+      const book = getBookIdFromPair(pair);
+      if (!book?.url) return [];
 
-      const trades = res.result.transactions
-        .filter((tx) => tx.tx.TransactionType === "OfferCreate")
-        .map((tx) => {
-          const time = new Date(tx.tx.date * 1000 + 946684800000); // Ripple epoch → JS
-          const gets = getAmount(tx.tx.TakerGets);
-          const pays = getAmount(tx.tx.TakerPays);
-          const rate = gets && pays ? gets / pays : null;
-          return {
-            executed_time: time,
-            rate,
-          };
-        })
-        .filter((t) => t.rate); // Nettoyage
+      const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
 
-      await client.disconnect();
-      return trades;
+      // On transforme les données XRPL vers le format Lightweight Charts
+      return json.map((candle) => ({
+        time: Math.floor(new Date(candle.timestamp).getTime() / 1000),
+        open: candle.open,
+        high: candle.high,
+        low: candle.low,
+        close: candle.close,
+      }));
     } catch (err) {
-      console.error("❌ XRPL Client fetch trades error:", err);
+      console.error("❌ Erreur fetch bougies XRPL:", err);
       return [];
     }
   };
 
   useEffect(() => {
     let chart;
-    const intervalSec = intervalMap[interval] || 60;
+    let observer;
 
-    const renderChart = async () => {
-      const trades = await fetchHistoricalTrades();
-      if (!trades.length) return;
-
-      const data = aggregateCandles(trades, intervalSec);
-      lastCandleRef.current = data[data.length - 1];
+    const setupChart = async () => {
+      const data = await fetchMarketData();
+      if (!data.length) return;
 
       chart = createChart(chartRef.current, {
         width: chartRef.current.clientWidth,
@@ -106,7 +65,6 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
         timeScale: {
           borderColor: "#485c7b",
           timeVisible: true,
-          secondsVisible: interval === "1m",
         },
         priceScale: {
           borderColor: "#485c7b",
@@ -127,19 +85,18 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       candleSeriesRef.current.setData(data);
       chart.timeScale().fitContent();
 
-      const observer = new ResizeObserver(() => {
+      observer = new ResizeObserver(() => {
         chart.applyOptions({ width: chartRef.current.clientWidth });
       });
-
       observer.observe(chartRef.current);
-
-      return () => {
-        observer.disconnect();
-        chart.remove();
-      };
     };
 
-    renderChart();
+    setupChart();
+
+    return () => {
+      if (observer) observer.disconnect();
+      if (chart) chart.remove();
+    };
   }, [pair, interval]);
 
   return (

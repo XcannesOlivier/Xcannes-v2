@@ -13,19 +13,13 @@ import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
 
-// Chart dynamique
+// 📈 Chart dynamique sans SSR
 const XrplCandleChartRaw = dynamic(() => import("../components/XrplCandleChartRaw"), {
   ssr: false,
 });
 
-// Paires disponibles
-const PAIRS = {
-  "XCS/XRP": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/XRP",
-  "XCS/USD": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_USD",
-  "XCS/EUR": "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx_XCS/rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq_EUR",
-  "XCS/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000",
-  "XRP/RLUSD": "XRP/rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De_524C555344000000000000000000000000000000",
-};
+// 🎯 Liste des paires disponibles (clefs utilisées dans getBookIdFromPair)
+const PAIRS = ["XCS/XRP", "XCS/USD", "XCS/EUR", "XCS/RLUSD", "XRP/RLUSD"];
 
 export default function Dex() {
   const router = useRouter();
@@ -33,24 +27,7 @@ export default function Dex() {
 
   const [selectedPair, setSelectedPair] = useState("XRP/RLUSD");
   const [interval, setInterval] = useState("1m");
-  const [marketData, setMarketData] = useState(null);
   const { wallet, isConnected } = useXumm();
-
-  const fetchData = async () => {
-    try {
-      const url = `https://data.xrplf.org/v1/iou/market_data/${PAIRS[selectedPair]}?interval=${interval}`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
-      const data = await res.json();
-      setMarketData(data);
-    } catch (err) {
-      console.error("❌ Erreur fetch market data:", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [selectedPair, interval]);
 
   return (
     <>
@@ -78,7 +55,7 @@ export default function Dex() {
                 onChange={(e) => setSelectedPair(e.target.value)}
                 className="bg-black/80 border border-white border-opacity-40 px-4 py-2 rounded text-white"
               >
-                {Object.keys(PAIRS).map((pair) => (
+                {PAIRS.map((pair) => (
                   <option key={pair} value={pair}>
                     {pair}
                   </option>
@@ -102,24 +79,7 @@ export default function Dex() {
             </div>
           </div>
 
-          {/* 📊 Market data */}
-          {marketData ? (
-            <div className="bg-black/60 p-4 rounded border border-xcannes-green mb-8">
-              <p>
-                <strong>Dernier prix :</strong> {marketData?.last_price?.toFixed(6)}
-              </p>
-              <p>
-                <strong>Variation 24h :</strong> {marketData?.change_percent_24h?.toFixed(2)}%
-              </p>
-              <p>
-                <strong>Volume 24h :</strong> {marketData?.volume_token1_24h?.toLocaleString()} XCS
-              </p>
-            </div>
-          ) : (
-            <p className="text-gray-400 mb-8">Chargement des données...</p>
-          )}
-
-          {/* ✅ Graphique dynamique */}
+          {/* ✅ Graphique */}
           <XrplCandleChartRaw
             key={`${selectedPair}-${interval}`}
             pair={selectedPair}

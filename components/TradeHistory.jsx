@@ -12,43 +12,41 @@ export default function TradeHistory({ pair }) {
 
     try {
       await client.connect();
-
       const book = getBookIdFromPair(pair);
-      if (!book?.taker_gets?.issuer) return console.warn("❌ Paire invalide pour historique");
+      if (!book?.taker_gets?.issuer) return console.warn("❌ Paire invalide :", pair);
 
-      // Récupérer les dernières transactions de l’émetteur
       const res = await client.request({
         command: "account_tx",
         account: book.taker_gets.issuer,
         ledger_index_min: -10000,
         ledger_index_max: -1,
-        limit: 50,
+        limit: 100,
       });
 
-      const getAmount = (value) => {
-        if (typeof value === "object") return parseFloat(value.value);
-        return parseFloat(value) / 1_000_000;
-      };
+      const getAmount = (val) =>
+        typeof val === "object" ? parseFloat(val.value) : parseFloat(val) / 1_000_000;
 
-      const txs = res.result.transactions
+      const parsed = res.result.transactions
         .filter((tx) => tx.tx.TransactionType === "OfferCreate")
         .map((tx) => {
-          const takerGets = getAmount(tx.tx.TakerGets);
-          const takerPays = getAmount(tx.tx.TakerPays);
-          const price = takerPays / takerGets;
+          const gets = getAmount(tx.tx.TakerGets);
+          const pays = getAmount(tx.tx.TakerPays);
+          const price = gets > 0 ? pays / gets : null;
+
           return {
             price,
-            amount: takerGets,
+            amount: gets,
             taker: book.taker_gets.currency,
-            executed_time: new Date(tx.tx.date * 1000 + 946684800000), // Ripple Epoch → JS
+            executed_time: new Date(tx.tx.date * 1000 + 946684800000), // Ripple epoch
           };
-        });
+        })
+        .filter((t) => t.price); // Nettoyage
 
-      setHistory(txs.slice(0, 10));
+      setHistory(parsed.slice(0, 10));
     } catch (err) {
-      console.error("❌ Erreur historique des transactions (xrpl):", err);
+      console.error("❌ Erreur historique (XRPL) :", err);
     } finally {
-      client.disconnect();
+      if (client.isConnected()) await client.disconnect();
     }
   };
 
@@ -72,8 +70,8 @@ export default function TradeHistory({ pair }) {
         <tbody>
           {history.map((tx, idx) => (
             <tr key={idx} className="border-b border-white border-opacity-20 text-sm">
-              <td className="text-xcannes-green font-[500]">{tx.price.toFixed(6)}</td>
-              <td className="font-[200]">{tx.amount.toFixed(2)} {tx.taker}</td>
+              <td className="text-xcannes-green font-[500]">{tx.price?.toFixed(6)}</td>
+              <td className="font-[200]">{tx.amount?.toFixed(2)} {tx.taker}</td>
               <td className="font-[300]">{tx.executed_time.toLocaleTimeString("fr-FR")}</td>
             </tr>
           ))}
