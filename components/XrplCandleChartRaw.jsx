@@ -21,35 +21,34 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     "1y": 31536000,
   };
 
-  
-  const getStartEndTimestamps = (interval, depth = 0) => {
+  const getStartEndTimestamps = (interval) => {
     const now = new Date();
   
-    const defaultCandleCount = {
-      "30s": 600,
-      "1m": 600,
-      "5m": 720,
-      "15m": 480,
-      "1h": 240,
-      "4h": 180,
-      "1d": 300,
-      "1M": 6,
-      "1y": 12,
-    };
-  
-    const candleCount = defaultCandleCount[interval] || 60;
     const secondsPerCandle = intervalMap[interval] || 60;
-    const multiplier = 1 + depth;
   
-    const durationMs = candleCount * secondsPerCandle * 1000 * multiplier;
+    // Durée globale cible par interval (en jours)
+    let durationInDays;
+  
+    if (interval === "30s" || interval === "1m") durationInDays = 0.5; // 12h
+    else if (interval === "5m") durationInDays = 1; // 1 jour
+    else if (interval === "15m") durationInDays = 3;
+    else if (interval === "1h") durationInDays = 7;
+    else if (interval === "4h") durationInDays = 15;
+    else if (interval === "1d") durationInDays = 60;
+    else if (interval === "1M") durationInDays = 180;
+    else if (interval === "1y") durationInDays = 365 * 5;
+    else durationInDays = 1; // fallback
+  
+    const durationMs = durationInDays * 24 * 60 * 60 * 1000;
     const start = new Date(now.getTime() - durationMs);
   
     return {
       start: start.toISOString(),
-      end: undefined, // on laisse l'API aller jusqu'à maintenant
+      end: undefined, // laisse l'API aller jusqu’à maintenant
     };
   };
   
+ 
 
   const buildFlatLineFromTo = (startUnix, endUnix, price) => {
     const intervalSeconds = intervalMap[interval] || 60;
