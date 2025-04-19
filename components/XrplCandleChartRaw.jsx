@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 import { getBookIdFromPair } from "../utils/xrpl";
 
@@ -21,25 +21,26 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     "1y": 31536000,
   };
 
-  const getStartEndTimestamps = (interval, depth = 0) => {
+  // 👇 Fonction pour calculer start/end selon l'interval
+  const getStartEndTimestamps = (interval) => {
     const now = new Date();
+
     const defaultCandleCount = {
-      "30s": 60,
-      "1m": 60,
-      "5m": 72,
-      "15m": 48,
-      "1h": 24,
-      "4h": 18,
-      "1d": 30,
-      "1M": 6,
-      "1y": 12,
+      "30s": 60,   // 30 minutes
+      "1m": 60,    // 1h
+      "5m": 72,    // 6h
+      "15m": 48,   // 12h
+      "1h": 24,    // 1 jour
+      "4h": 18,    // 3 jours
+      "1d": 30,    // 1 mois
+      "1M": 6,     // 6 mois
+      "1y": 12     // 12 ans (symbolique)
     };
 
     const candleCount = defaultCandleCount[interval] || 60;
     const secondsPerCandle = intervalMap[interval] || 60;
-    const multiplier = 1 + depth;
+    const durationMs = candleCount * secondsPerCandle * 1000;
 
-    const durationMs = candleCount * secondsPerCandle * 1000 * multiplier;
     const start = new Date(now.getTime() - durationMs);
     return {
       start: start.toISOString(),
@@ -47,71 +48,30 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     };
   };
 
-  const buildFlatLineFromTo = (startUnix, endUnix, price) => {
-    const intervalSeconds = intervalMap[interval] || 60;
-    const candles = [];
-    let t = startUnix;
-
-    while (t < endUnix) {
-      candles.push({
-        time: t,
-        open: price,
-        high: price,
-        low: price,
-        close: price,
-      });
-      t += intervalSeconds;
-    }
-
-    return candles;
-  };
-
   const fetchMarketData = async () => {
-    const book = getBookIdFromPair(pair);
-    if (!book?.url) return [];
+    try {
+      const book = getBookIdFromPair(pair);
+      if (!book?.url) return [];
 
-    let data = [];
-    let depth = 0;
-    let found = false;
+      const { start, end } = getStartEndTimestamps(interval); // 🔥 intégration ici
 
-    while (depth < 3 && !found) {
-      const { start, end } = getStartEndTimestamps(interval, depth);
-      const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}&end=${end}`;
+      const url = https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}&end=${end};
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(HTTP ${res.status});
+      const json = await res.json();
 
-      try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-
-        data = json.map((candle) => ({
-          time: Math.floor(new Date(candle.timestamp).getTime() / 1000),
-          open: candle.open,
-          high: candle.high,
-          low: candle.low,
-          close: candle.close,
-        }));
-
-        if (data.length >= 1) found = true;
-      } catch (err) {
-        console.error("❌ Erreur fetch (depth", depth, "):", err);
-      }
-
-      depth++;
-    }
-
-    if (!found) {
-      console.log(`😴 Paire ${pair} : aucun trade trouvé, aucune donnée`);
+      // On transforme les données XRPL vers le format Lightweight Charts
+      return json.map((candle) => ({
+        time: Math.floor(new Date(candle.timestamp).getTime() / 1000),
+        open: candle.open,
+        high: candle.high,
+        low: candle.low,
+        close: candle.close,
+      }));
+    } catch (err) {
+      console.error("❌ Erreur fetch bougies XRPL:", err);
       return [];
     }
-
-    // Ligne plate depuis 2023-01-01 jusqu'au premier trade connu
-    const firstCandle = data[0];
-    const flatStart = Math.floor(new Date("2023-01-01T00:00:00Z").getTime() / 1000);
-    const flatEnd = firstCandle.time;
-
-    const flatLine = buildFlatLineFromTo(flatStart, flatEnd, firstCandle.close);
-
-    return [...flatLine, ...data];
   };
 
   useEffect(() => {
@@ -191,4 +151,3 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     </div>
   );
 }
-
