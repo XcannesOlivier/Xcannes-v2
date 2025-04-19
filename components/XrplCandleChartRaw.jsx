@@ -26,15 +26,15 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     const now = new Date();
 
     const defaultCandleCount = {
-      "30s": 60,   // 30 minutes
-      "1m": 60,    // 1h
-      "5m": 72,    // 6h
-      "15m": 48,   // 12h
-      "1h": 24,    // 1 jour
-      "4h": 18,    // 3 jours
-      "1d": 30,    // 1 mois
-      "1M": 6,     // 6 mois
-      "1y": 12     // 12 ans (symbolique)
+      "30s": 600,   // 30 minutes
+      "1m": 600,    // 1h
+      "5m": 720,    // 6h
+      "15m": 480,   // 12h
+      "1h": 240,    // 1 jour
+      "4h": 180,    // 3 jours
+      "1d": 300,    // 1 mois
+      "1M": 4,     // 6 mois
+      "1y": 1     // 12 ans (symbolique)
     };
 
     const candleCount = defaultCandleCount[interval] || 60;
