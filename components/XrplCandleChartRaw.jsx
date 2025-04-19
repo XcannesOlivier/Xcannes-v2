@@ -21,12 +21,41 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     "1y": 31536000,
   };
 
+  // 👇 Fonction pour calculer start/end selon l'interval
+  const getStartEndTimestamps = (interval) => {
+    const now = new Date();
+
+    const defaultCandleCount = {
+      "30s": 60,   // 30 minutes
+      "1m": 60,    // 1h
+      "5m": 72,    // 6h
+      "15m": 48,   // 12h
+      "1h": 24,    // 1 jour
+      "4h": 18,    // 3 jours
+      "1d": 30,    // 1 mois
+      "1M": 6,     // 6 mois
+      "1y": 12     // 12 ans (symbolique)
+    };
+
+    const candleCount = defaultCandleCount[interval] || 60;
+    const secondsPerCandle = intervalMap[interval] || 60;
+    const durationMs = candleCount * secondsPerCandle * 1000;
+
+    const start = new Date(now.getTime() - durationMs);
+    return {
+      start: start.toISOString(),
+      end: now.toISOString(),
+    };
+  };
+
   const fetchMarketData = async () => {
     try {
       const book = getBookIdFromPair(pair);
       if (!book?.url) return [];
 
-      const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}`;
+      const { start, end } = getStartEndTimestamps(interval); // 🔥 intégration ici
+
+      const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}&end=${end}`;
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
@@ -122,3 +151,4 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     </div>
   );
 }
+
