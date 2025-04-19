@@ -39,7 +39,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     const secondsPerCandle = intervalMap[interval] || 60;
     const multiplier = 1 + depth;
 
-    const durationMs = candleCount * secondsPerCandle * 1000 * multiplier;
+    const durationMs = candleCount * secondsPerCandle * 2000 * multiplier;
     const start = new Date(now.getTime() - durationMs);
     return {
       start: start.toISOString(),
