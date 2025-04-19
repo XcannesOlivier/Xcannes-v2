@@ -55,9 +55,9 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
       const { start, end } = getStartEndTimestamps(interval); // 🔥 intégration ici
 
-      const url = https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}&end=${end};
+      const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}&end=${end};`
       const res = await fetch(url);
-      if (!res.ok) throw new Error(HTTP ${res.status});
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
 
       // On transforme les données XRPL vers le format Lightweight Charts
@@ -150,4 +150,4 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       </div>
     </div>
   );
-}
+} 
