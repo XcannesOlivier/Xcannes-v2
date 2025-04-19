@@ -34,7 +34,7 @@ export default function Home() {
     alt="Logo XCannes"
     className="
       h-[3.2rem] sm:h-[4rem] md:h-[5.5rem]
-      w-auto inline-block
+      w-auto inline-flex
       relative 
       top-[0.5rem] sm:top-[0.80rem] md:top-[1.4rem]
       brightness-110 saturate-150 
@@ -66,9 +66,7 @@ export default function Home() {
             </button>
           </Link>
         </div>
-        <div className="w-[40vw] max-w-[160px] aspect-square mt-16 border border-white/10 rounded-3xl p-2 flex items-center justify-center bg-black/20 transition-all duration-300 hover:scale-105 hover:border-[#16b303] hover:shadow-[0_0_20px_#16b303]">
-  <img src="/assets/img/ui/xcslogoblanc.png" alt="XCS Logo" className="w-full h-full object-contain object-center" />
-</div>
+        
 
 
 
