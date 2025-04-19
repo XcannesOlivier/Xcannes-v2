@@ -106,7 +106,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
     // Ligne plate depuis 2023-01-01 jusqu'au premier trade connu
     const firstCandle = data[0];
-    const flatStart = Math.floor(new Date("2023-01-01T00:00:00Z").getTime() / 1000);
+    const flatStart = Math.floor(new Date("2024-01-12T00:00:00Z").getTime() / 1000);
     const flatEnd = firstCandle.time;
 
     const flatLine = buildFlatLineFromTo(flatStart, flatEnd, firstCandle.close);
