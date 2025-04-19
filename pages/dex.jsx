@@ -70,7 +70,7 @@ export default function Dex() {
                 onChange={(e) => setInterval(e.target.value)}
                 className="bg-black/80 border border-white border-opacity-40 px-4 py-2 rounded text-white"
               >
-                {["1m", "5m", "1h", "1d", "1w", "1M", "1Y", "all"].map((int) => (
+                {["1m", "5m", "15m","1h", "1d", "1w", "1M", "1Y", "all"].map((int) => (
                   <option key={int} value={int}>
                     {int}
                   </option>
