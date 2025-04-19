@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 import { getBookIdFromPair } from "../utils/xrpl";
 
@@ -23,32 +23,24 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
   const getStartEndTimestamps = (interval) => {
     const now = new Date();
-  
     const secondsPerCandle = intervalMap[interval] || 60;
-  
-    // Durée globale cible par interval (en jours)
+
     let durationInDays;
-  
-    if (interval === "30s" || interval === "1m") durationInDays = 1; // 12h
-    else if (interval === "5m") durationInDays = 2; // 1 jour
+    if (interval === "30s" || interval === "1m") durationInDays = 1;
+    else if (interval === "5m") durationInDays = 2;
     else if (interval === "15m") durationInDays = 6;
     else if (interval === "1h") durationInDays = 14;
     else if (interval === "4h") durationInDays = 30;
     else if (interval === "1d") durationInDays = 200;
     else if (interval === "1M") durationInDays = 365;
     else if (interval === "1y") durationInDays = 365 * 5;
-    else durationInDays = 1; // fallback
-  
+    else durationInDays = 1;
+
     const durationMs = durationInDays * 24 * 60 * 60 * 1000;
     const start = new Date(now.getTime() - durationMs);
-  
-    return {
-      start: start.toISOString(),
-      end: undefined, // laisse l'API aller jusqu’à maintenant
-    };
+
+    return { start: start.toISOString(), end: undefined };
   };
-  
- 
 
   const buildFlatLineFromTo = (startUnix, endUnix, price) => {
     const intervalSeconds = intervalMap[interval] || 60;
@@ -81,7 +73,6 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       const { start, end } = getStartEndTimestamps(interval);
       const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}` + 
                   (end ? `&end=${end}` : '');
-       
 
       try {
         const res = await fetch(url);
@@ -109,13 +100,11 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       return [];
     }
 
-    // Ligne plate depuis 2023-01-01 jusqu'au premier trade connu
     const firstCandle = data[0];
     const flatStart = Math.floor(new Date("2024-01-12T00:00:00Z").getTime() / 1000);
     const flatEnd = firstCandle.time;
 
     const flatLine = buildFlatLineFromTo(flatStart, flatEnd, firstCandle.close);
-
     return [...flatLine, ...data];
   };
 
@@ -157,18 +146,29 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
       candleSeriesRef.current.setData(data);
 
-// 🔍 Autozoom avec marge autour des vraies bougies
-const first = data.find(c => c.open !== 0 || c.high !== 0 || c.low !== 0 || c.close !== 0)?.time;
-const last = [...data].reverse().find(c => c.open !== 0 || c.high !== 0 || c.low !== 0 || c.close !== 0)?.time;
+      // 📅 Autozoom horizontal
+      const first = data.find(c => c.open !== 0 || c.high !== 0 || c.low !== 0 || c.close !== 0)?.time;
+      const last = [...data].reverse().find(c => c.open !== 0 || c.high !== 0 || c.low !== 0 || c.close !== 0)?.time;
 
-if (first && last && chart?.timeScale) {
-  const margin = Math.floor((last - first) * 0.05); // 5% de marge
-  chart.timeScale().setVisibleRange({
-    from: first - margin,
-    to: last + margin,
-  });
-}
+      if (first && last && chart?.timeScale) {
+        const margin = Math.floor((last - first) * 0.05);
+        chart.timeScale().setVisibleRange({
+          from: first - margin,
+          to: last + margin,
+        });
+      }
 
+      // 💹 Autozoom vertical (prix)
+      const highs = data.map(d => d.high);
+      const lows = data.map(d => d.low);
+      const maxPrice = Math.max(...highs);
+      const minPrice = Math.min(...lows);
+      const marginY = (maxPrice - minPrice) * 0.1;
+
+      chart.priceScale('right').setVisibleRange({
+        from: minPrice - marginY,
+        to: maxPrice + marginY,
+      });
 
       observer = new ResizeObserver(() => {
         chart.applyOptions({ width: chartRef.current.clientWidth });
