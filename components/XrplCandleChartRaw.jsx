@@ -157,15 +157,16 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
 
       candleSeriesRef.current.setData(data);
 
-// Option 1 : fit automatiquement à la data entière
-chart.timeScale().fitContent();
+// 🔍 Autozoom avec marge autour des vraies bougies
+const first = data.find(c => c.open !== 0 || c.high !== 0 || c.low !== 0 || c.close !== 0)?.time;
+const last = [...data].reverse().find(c => c.open !== 0 || c.high !== 0 || c.low !== 0 || c.close !== 0)?.time;
 
-// Option 2 : zoom personnalisé (exemple)
-const first = data[0]?.time;
-const last = data[data.length - 1]?.time;
-
-if (first && last) {
-  chart.timeScale().setVisibleRange({ from: first, to: last });
+if (first && last && chart?.timeScale) {
+  const margin = Math.floor((last - first) * 0.05); // 5% de marge
+  chart.timeScale().setVisibleRange({
+    from: first - margin,
+    to: last + margin,
+  });
 }
 
 
