@@ -21,54 +21,31 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     "1y": 31536000,
   };
 
-  const getSafeStartDate = (interval) => {
+  // 👇 Fonction pour calculer start/end selon l'interval
+  const getStartEndTimestamps = (interval) => {
     const now = new Date();
-    const maxLookbackDays = {
-      "30s": 1,
-      "1m": 7,
-      "5m": 14,
-      "15m": 30,
-      "1h": 90,
-      "4h": 180,
-      "1d": 365,
-      "1M": 730,
-      "1y": 3650,
+
+    const defaultCandleCount = {
+      "30s": 600,   // 30 minutes
+      "1m": 600,    // 1h
+      "5m": 720,    // 6h
+      "15m": 480,   // 12h
+      "1h": 240,    // 1 jour
+      "4h": 180,    // 3 jours
+      "1d": 300,    // 1 mois
+      "1M": 4,     // 6 mois
+      "1y": 1     // 12 ans (symbolique)
     };
-    const days = maxLookbackDays[interval] || 7;
-    const startDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
-    return startDate.toISOString();
-  };
 
-  const normalizeCandles = (data, interval) => {
-    const intervalSec = intervalMap[interval] || 60;
-    const normalized = [];
-    if (!data.length) return [];
+    const candleCount = defaultCandleCount[interval] || 60;
+    const secondsPerCandle = intervalMap[interval] || 60;
+    const durationMs = candleCount * secondsPerCandle * 1000;
 
-    const start = data[0].time;
-    const end = Math.floor(Date.now() / 1000);
-    let current = start;
-    let i = 0;
-
-    while (current <= end) {
-      if (data[i] && data[i].time === current) {
-        normalized.push(data[i]);
-        i++;
-      } else {
-        const prev = normalized.at(-1);
-        if (prev) {
-          normalized.push({
-            time: current,
-            open: prev.close,
-            high: prev.close,
-            low: prev.close,
-            close: prev.close,
-          });
-        }
-      }
-      current += intervalSec;
-    }
-
-    return normalized;
+    const start = new Date(now.getTime() - durationMs);
+    return {
+      start: start.toISOString(),
+      end: now.toISOString(),
+    };
   };
 
   const fetchMarketData = async () => {
@@ -76,21 +53,21 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       const book = getBookIdFromPair(pair);
       if (!book?.url) return [];
 
-      const start = getSafeStartDate(interval);
-      const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}`;
+      const { start, end } = getStartEndTimestamps(interval); // 🔥 intégration ici
+
+      const url = https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}&end=${end};
       const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new Error(HTTP ${res.status});
       const json = await res.json();
 
-      const rawData = json.map((candle) => ({
+      // On transforme les données XRPL vers le format Lightweight Charts
+      return json.map((candle) => ({
         time: Math.floor(new Date(candle.timestamp).getTime() / 1000),
         open: candle.open,
         high: candle.high,
         low: candle.low,
         close: candle.close,
       }));
-
-      return normalizeCandles(rawData, interval); // Bougies régulières
     } catch (err) {
       console.error("❌ Erreur fetch bougies XRPL:", err);
       return [];
