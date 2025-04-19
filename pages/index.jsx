@@ -28,7 +28,7 @@ export default function Home() {
 
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-orbitron font-[500] mb-6 flex items-end gap-[0.25rem] leading-tight">
   Bienvenue sur
-  <div className="flex items-center gap-[0.25rem] leading-tight">
+  <div className="flex items-end gap-[0.25rem] leading-tight">
   <img
     src="/assets/img/ui/navHeadergreen.png"
     alt="Logo XCannes"
