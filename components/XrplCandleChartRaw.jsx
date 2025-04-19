@@ -29,13 +29,13 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     // Durée globale cible par interval (en jours)
     let durationInDays;
   
-    if (interval === "30s" || interval === "1m") durationInDays = 0.5; // 12h
-    else if (interval === "5m") durationInDays = 1; // 1 jour
-    else if (interval === "15m") durationInDays = 3;
-    else if (interval === "1h") durationInDays = 7;
-    else if (interval === "4h") durationInDays = 15;
-    else if (interval === "1d") durationInDays = 60;
-    else if (interval === "1M") durationInDays = 180;
+    if (interval === "30s" || interval === "1m") durationInDays = 1; // 12h
+    else if (interval === "5m") durationInDays = 2; // 1 jour
+    else if (interval === "15m") durationInDays = 6;
+    else if (interval === "1h") durationInDays = 14;
+    else if (interval === "4h") durationInDays = 30;
+    else if (interval === "1d") durationInDays = 200;
+    else if (interval === "1M") durationInDays = 365;
     else if (interval === "1y") durationInDays = 365 * 5;
     else durationInDays = 1; // fallback
   
