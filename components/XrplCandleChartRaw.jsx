@@ -156,7 +156,18 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
       });
 
       candleSeriesRef.current.setData(data);
-      chart.timeScale().fitContent();
+
+// Option 1 : fit automatiquement à la data entière
+chart.timeScale().fitContent();
+
+// Option 2 : zoom personnalisé (exemple)
+const first = data[0]?.time;
+const last = data[data.length - 1]?.time;
+
+if (first && last) {
+  chart.timeScale().setVisibleRange({ from: first, to: last });
+}
+
 
       observer = new ResizeObserver(() => {
         chart.applyOptions({ width: chartRef.current.clientWidth });
