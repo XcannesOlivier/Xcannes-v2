@@ -43,7 +43,7 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     const start = new Date(now.getTime() - durationMs);
     return {
       start: start.toISOString(),
-      end: now.toISOString(),
+      end: undefined,
     };
   };
 
@@ -75,8 +75,10 @@ export default function XrplCandleChartRaw({ pair = "XCS/XRP", interval = "1m" }
     let found = false;
 
     while (depth < 3 && !found) {
-      const { start, end } = getStartEndTimestamps(interval, depth);
-      const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}&end=${end}`;
+      const { start, end } = getStartEndTimestamps(interval);
+      const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}` + 
+                  (end ? `&end=${end}` : '');
+       
 
       try {
         const res = await fetch(url);
