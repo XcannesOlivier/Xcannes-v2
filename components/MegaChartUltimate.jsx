@@ -13,15 +13,53 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
   const [showMACD, setShowMACD] = useState(true);
   const [showBB, setShowBB] = useState(true);
 
+  const intervalMap = {
+    "30s": 30,
+    "1m": 60,
+    "5m": 300,
+    "15m": 900,
+    "1h": 3600,
+    "4h": 14400,
+    "1d": 86400,
+    "1M": 2628000,
+    "1y": 31536000,
+  };
+  
+  const getStartEndTimestamps = (interval) => {
+    const now = new Date();
+  
+    let durationInDays;
+    if (interval === "30s" || interval === "1m") durationInDays = 1;
+    else if (interval === "5m") durationInDays = 2;
+    else if (interval === "15m") durationInDays = 6;
+    else if (interval === "1h") durationInDays = 14;
+    else if (interval === "4h") durationInDays = 30;
+    else if (interval === "1d") durationInDays = 200;
+    else if (interval === "1M") durationInDays = 365;
+    else if (interval === "1y") durationInDays = 365 * 5;
+    else durationInDays = 1;
+  
+    const durationMs = durationInDays * 24 * 60 * 60 * 1000;
+    const start = new Date(now.getTime() - durationMs);
+  
+    return { start: start.toISOString(), end: undefined };
+  };
+  
+
+
   const fetchData = async () => {
     const book = getBookIdFromPair(pair);
     if (!book?.url) return [];
-    const now = new Date();
-    const start = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}`;
+  
+    const { start, end } = getStartEndTimestamps(interval);
+  
+    const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}` +
+                (end ? `&end=${end}` : '');
+  
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
+  
     return json.map(c => ({
       time: Math.floor(new Date(c.timestamp).getTime() / 1000),
       open: c.open,
@@ -31,6 +69,7 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
       volume: c.volume || 0,
     }));
   };
+  
 
   useEffect(() => {
     let chart, rsiChart;
