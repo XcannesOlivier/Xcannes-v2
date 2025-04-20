@@ -118,7 +118,7 @@ export default function FooterPro() {
 
       <div style={{ marginTop: "1rem", textAlign: "center" }}>
   <a
-    href="/test-chart"
+    href="/test-chart/"
     style={{
       display: "inline-block",
       padding: "8px 16px",
