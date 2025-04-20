@@ -26,13 +26,13 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
   };
 
   const intervalZoomMap = {
-    "30s": 0.5,
-    "1m": 1,
-    "5m": 2,
-    "15m": 5,
-    "1h": 15,
-    "4h": 60,
-    "1d": 365,
+    "30s": 0.1,
+    "1m": 0.5,
+    "5m": 1,
+    "15m": 2.5,
+    "1h": 7,
+    "4h": 20,
+    "1d": 105,
     "1M": 365 * 3,
     "1y": 365 * 10,
   };
