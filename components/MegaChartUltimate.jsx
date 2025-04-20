@@ -25,24 +25,29 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
     "1y": 31536000,
   };
 
+  const intervalZoomMap = {
+    "30s": 0.5,
+    "1m": 1,
+    "5m": 2,
+    "15m": 5,
+    "1h": 15,
+    "4h": 60,
+    "1d": 365,
+    "1M": 365 * 3,
+    "1y": 365 * 10,
+  };
+
   const getStartEndTimestamps = (interval) => {
     const now = new Date();
-
-    let durationInDays;
-    if (interval === "30s" || interval === "1m") durationInDays = 1;
-    else if (interval === "5m") durationInDays = 2;
-    else if (interval === "15m") durationInDays = 6;
-    else if (interval === "1h") durationInDays = 14;
-    else if (interval === "4h") durationInDays = 30;
-    else if (interval === "1d") durationInDays = 200;
-    else if (interval === "1M") durationInDays = 365;
-    else if (interval === "1y") durationInDays = 365 * 5;
-    else durationInDays = 1;
-
+    const durationInDays = intervalZoomMap[interval] || 1;
     const durationMs = durationInDays * 24 * 60 * 60 * 1000;
-    const start = new Date(now.getTime() - durationMs);
+    const end = new Date(now.getTime() - 1 * 60 * 60 * 1000);
+    const start = new Date(end.getTime() - durationMs);
 
-    return { start: start.toISOString(), end: undefined };
+    return {
+      start: start.toISOString(),
+      end: end.toISOString(),
+    };
   };
 
   const fetchData = async () => {
@@ -50,7 +55,6 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
     if (!book?.url) return [];
 
     const { start, end } = getStartEndTimestamps(interval);
-
     const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}` +
                 (end ? `&end=${end}` : '');
 
@@ -128,6 +132,17 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
         chart.addHistogramSeries({ color: "#ccc" }).setData(macdData.map(d => ({ time: d.time, value: d.histogram })));
       }
 
+      const highs = data.map(d => d.high);
+      const lows = data.map(d => d.low);
+      const maxPrice = Math.max(...highs);
+      const minPrice = Math.min(...lows);
+      const marginY = (maxPrice - minPrice) * 0.1;
+
+      chart.priceScale('right').setVisibleRange({
+        from: minPrice - marginY,
+        to: maxPrice + marginY,
+      });
+
       const tooltipEl = document.createElement("div");
       tooltipEl.style = "position: absolute; display: none; background: #222; color: #fff; padding: 6px 8px; font-size: 12px; border-radius: 4px; pointer-events: none; z-index: 1000;";
       container.appendChild(tooltipEl);
@@ -202,6 +217,17 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
         <button onClick={handleFullscreen} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
           Plein écran
         </button>
+        <button
+          onClick={() => {
+            if (chartRef.current) {
+              chartRef.current.chart.timeScale().fitContent();
+              chartRef.current.chart.priceScale("right").setAutoScale(true);
+            }
+          }}
+          className="bg-xcannes-green text-black px-3 py-1 rounded text-sm"
+        >
+          🔄 Reset Zoom
+        </button>
         <label className="text-sm">
           <input type="checkbox" checked={showRSI} onChange={() => setShowRSI(!showRSI)} className="mr-1" />RSI
         </label>
@@ -222,3 +248,4 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
     </div>
   );
 }
+
