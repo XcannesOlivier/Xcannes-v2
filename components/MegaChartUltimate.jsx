@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createChart } from "lightweight-charts";
 import { getBookIdFromPair } from "../utils/xrpl";
-import { calcRSI, calcMACD, calcBollinger } from "../utils/TechnicalIndicators";
+import { calcRSI, calcMACD, calcBollinger } from "../utils/Technicallndicators";
 
 export default function MegaChartUltimate({ pair = "XRP/RLUSD" }) {
   const chartRef = useRef();
