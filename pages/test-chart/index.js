@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import MegaChartUltimate from '../components/MegaChartUltimate'
+import MegaChartUltimate from '../../components/MegaChartUltimate'
 
 export default function Home() {
   return (
