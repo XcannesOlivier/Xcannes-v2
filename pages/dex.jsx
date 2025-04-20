@@ -14,9 +14,10 @@ import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
 
 // 📈 Chart dynamique sans SSR
-const XrplCandleChartRaw = dynamic(() => import("../components/XrplCandleChartRaw"), {
+const XrplCandleChartRaw = dynamic(() => import("../components/MegaChartUltimate"), {
   ssr: false,
 });
+
 
 // 🎯 Liste des paires disponibles (clefs utilisées dans getBookIdFromPair)
 const PAIRS = ["XCS/XRP", "XCS/USD", "XCS/EUR", "XCS/RLUSD", "XRP/RLUSD"];

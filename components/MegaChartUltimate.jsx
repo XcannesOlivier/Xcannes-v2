@@ -5,14 +5,13 @@ import { createChart } from "lightweight-charts";
 import { getBookIdFromPair } from "../utils/xrpl";
 import { calcRSI, calcMACD, calcBollinger } from "../utils/Technicallndicators";
 
-export default function MegaChartUltimate({ pair = "XRP/RLUSD" }) {
+export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" }) {
   const chartRef = useRef();
   const rsiRef = useRef();
   const [theme, setTheme] = useState("dark");
   const [showRSI, setShowRSI] = useState(true);
   const [showMACD, setShowMACD] = useState(true);
   const [showBB, setShowBB] = useState(true);
-  const [interval, setInterval] = useState("1d");
 
   const fetchData = async () => {
     const book = getBookIdFromPair(pair);
@@ -148,41 +147,22 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD" }) {
 
   return (
     <div className="w-full relative px-2">
-      <div className="flex flex-wrap gap-2 justify-between mb-2">
-        <div className="flex flex-wrap gap-2">
-          {["1m", "5m", "15m", "1h", "1d"].map((i) => (
-            <button
-              key={i}
-              onClick={() => setInterval(i)}
-              className={`px-2 py-1 text-sm rounded ${interval === i ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-            >
-              {i}
-            </button>
-          ))}
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
-            className="px-3 py-1 bg-gray-700 text-white rounded text-sm"
-          >
-            {theme === "dark" ? "Clair" : "Sombre"}
-          </button>
-          <button
-            onClick={handleFullscreen}
-            className="px-3 py-1 bg-blue-600 text-white rounded text-sm"
-          >
-            Plein écran
-          </button>
-          <label className="text-sm">
-            <input type="checkbox" checked={showRSI} onChange={() => setShowRSI(!showRSI)} className="mr-1" />RSI
-          </label>
-          <label className="text-sm">
-            <input type="checkbox" checked={showMACD} onChange={() => setShowMACD(!showMACD)} className="mr-1" />MACD
-          </label>
-          <label className="text-sm">
-            <input type="checkbox" checked={showBB} onChange={() => setShowBB(!showBB)} className="mr-1" />Bollinger
-          </label>
-        </div>
+      <div className="flex flex-wrap gap-2 mb-2">
+        <button onClick={() => setTheme(t => (t === "dark" ? "light" : "dark"))} className="px-3 py-1 bg-gray-700 text-white rounded text-sm">
+          {theme === "dark" ? "Clair" : "Sombre"}
+        </button>
+        <button onClick={handleFullscreen} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+          Plein écran
+        </button>
+        <label className="text-sm">
+          <input type="checkbox" checked={showRSI} onChange={() => setShowRSI(!showRSI)} className="mr-1" />RSI
+        </label>
+        <label className="text-sm">
+          <input type="checkbox" checked={showMACD} onChange={() => setShowMACD(!showMACD)} className="mr-1" />MACD
+        </label>
+        <label className="text-sm">
+          <input type="checkbox" checked={showBB} onChange={() => setShowBB(!showBB)} className="mr-1" />Bollinger
+        </label>
       </div>
       <div ref={chartRef} className="w-full" />
       {showRSI && (
