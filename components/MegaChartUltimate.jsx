@@ -24,10 +24,10 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
     "1M": 2628000,
     "1y": 31536000,
   };
-  
+
   const getStartEndTimestamps = (interval) => {
     const now = new Date();
-  
+
     let durationInDays;
     if (interval === "30s" || interval === "1m") durationInDays = 1;
     else if (interval === "5m") durationInDays = 2;
@@ -38,28 +38,26 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
     else if (interval === "1M") durationInDays = 365;
     else if (interval === "1y") durationInDays = 365 * 5;
     else durationInDays = 1;
-  
+
     const durationMs = durationInDays * 24 * 60 * 60 * 1000;
     const start = new Date(now.getTime() - durationMs);
-  
+
     return { start: start.toISOString(), end: undefined };
   };
-  
-
 
   const fetchData = async () => {
     const book = getBookIdFromPair(pair);
     if (!book?.url) return [];
-  
+
     const { start, end } = getStartEndTimestamps(interval);
-  
+
     const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}` +
                 (end ? `&end=${end}` : '');
-  
+
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
-  
+
     return json.map(c => ({
       time: Math.floor(new Date(c.timestamp).getTime() / 1000),
       open: c.open,
@@ -69,7 +67,6 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
       volume: c.volume || 0,
     }));
   };
-  
 
   useEffect(() => {
     let chart, rsiChart;
@@ -173,26 +170,21 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
     };
 
     const observer = new ResizeObserver(() => {
-      chart.applyOptions({ width: container.clientWidth });
+      if (chart) chart.applyOptions({ width: container.clientWidth });
       if (rsiChart && rsiRef.current) {
         rsiChart.applyOptions({ width: rsiRef.current.clientWidth });
       }
     });
-    
+
     observer.observe(container);
     if (rsiRef.current) observer.observe(rsiRef.current);
-    
+
+    draw();
+
     return () => {
       if (chart) chart.remove();
       if (rsiChart) rsiChart.remove();
       observer.disconnect();
-    };
-    
-
-    draw();
-    return () => {
-      if (chart) chart.remove();
-      if (rsiChart) rsiChart.remove();
     };
   }, [pair, theme, showRSI, showMACD, showBB, interval]);
 
