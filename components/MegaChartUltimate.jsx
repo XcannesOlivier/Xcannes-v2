@@ -172,6 +172,23 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
       }
     };
 
+    const observer = new ResizeObserver(() => {
+      chart.applyOptions({ width: container.clientWidth });
+      if (rsiChart && rsiRef.current) {
+        rsiChart.applyOptions({ width: rsiRef.current.clientWidth });
+      }
+    });
+    
+    observer.observe(container);
+    if (rsiRef.current) observer.observe(rsiRef.current);
+    
+    return () => {
+      if (chart) chart.remove();
+      if (rsiChart) rsiChart.remove();
+      observer.disconnect();
+    };
+    
+
     draw();
     return () => {
       if (chart) chart.remove();
