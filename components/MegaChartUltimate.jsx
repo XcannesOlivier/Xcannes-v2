@@ -53,24 +53,30 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
   const fetchData = async () => {
     const book = getBookIdFromPair(pair);
     if (!book?.url) return [];
-
-    const { start, end } = getStartEndTimestamps(interval);
-    const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}` +
-                (end ? `&end=${end}` : '');
-
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-
-    return json.map(c => ({
-      time: Math.floor(new Date(c.timestamp).getTime() / 1000),
-      open: c.open,
-      high: c.high,
-      low: c.low,
-      close: c.close,
-      volume: c.volume || 0,
-    }));
+  
+    const { start } = getStartEndTimestamps(interval); // plus besoin de `end`
+  
+    const url = `https://data.xrplf.org/v1/iou/market_data/${book.url}?interval=${interval}&start=${start}`;
+  
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+  
+      return json.map(c => ({
+        time: Math.floor(new Date(c.timestamp).getTime() / 1000),
+        open: c.open,
+        high: c.high,
+        low: c.low,
+        close: c.close,
+        volume: c.volume || 0,
+      }));
+    } catch (err) {
+      console.error("Erreur fetch:", err);
+      return [];
+    }
   };
+  
 
   useEffect(() => {
     let chart, rsiChart;
