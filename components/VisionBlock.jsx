@@ -68,7 +68,7 @@ export default function VisionBlock() {
       </div>
 
       {/* Slogan */}
-      <div className="absolute bottom-0.5 w-full text-center text-[0.7rem] text-white italic z-10 tracking-wide font-light">
+      <div className="absolute bottom-0.5 w-full text-center text-[0.6rem] text-white italic z-10 tracking-wide font-light">
         * Léro, le héros qui brille sous les projecteurs… et surveille les coulisses.
       </div>
     </section>
