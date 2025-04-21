@@ -26,27 +26,18 @@ export default function Home() {
       
       <main className="flex flex-col items-center justify-center pt-28 pb-10 px-4 text-center font-montserrat font-[300]">
 
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-orbitron font-[500] mb-6 flex items-end gap-[0.25rem] leading-tight">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-orbitron font-[500] mb-6 flex flex-wrap items-center justify-center gap-2 leading-tight text-white">
   Bienvenue sur
-  <div className="flex items-end gap-[0.25rem] leading-tight">
-  <img
-    src="/assets/img/ui/navHeadergreen.png"
-    alt="Logo XCannes"
-    className="
-      h-[3.0rem] sm:h-[4rem] md:h-[5.5rem]
-
-      w-auto inline-block
-      relative 
-      sm:top-[0.80rem] md:top-[1.4rem]
-      brightness-110 saturate-150 
-      p-0
-      -mr-4
-    "
-  />
-  <span className="text-xcannes-green font-orbitron font-[500]">Cannes</span>
-</div>
-
+  <span className="flex items-center gap-2 ml-2">
+    <img
+      src="/assets/img/ui/navHeadergreen.png"
+      alt="Logo XCannes"
+      className="h-[2.2rem] sm:h-[2.8rem] md:h-[3.4rem] w-auto max-w-full brightness-110 saturate-150"
+    />
+    <span className="text-xcannes-green font-orbitron font-[500]">Cannes</span>
+  </span>
 </h1>
+
 
 
 
