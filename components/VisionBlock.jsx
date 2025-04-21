@@ -25,7 +25,7 @@ export default function VisionBlock() {
         onMouseMove={handleMouseMove}
       >
         <div
-          className="relative w-full max-w-5xl px-8 py-10 text-center bg-black/30 backdrop-blur-[1px] border border-white/10 shadow-xl rounded-2xl overflow-hidden"
+          className="relative w-full max-w-5xl px-8 py-10 text-center bg-black/20 backdrop-blur-[1px] border border-white/10 shadow-xl rounded-2xl overflow-hidden"
           style={{
             clipPath: 'polygon(0 0, 100% 8%, 100% 100%, 0% 92%)',
           }}
