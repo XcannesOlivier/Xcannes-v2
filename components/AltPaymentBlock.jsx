@@ -61,7 +61,6 @@ export default function AltPaymentBlock({ title = "Accédez à XCS en toute simp
         {[
           { alt: "Visa", src: "visa.png" },
           { alt: "MasterCard", src: "mastercard.png" },
-          { alt: "PayPal", src: "paypal.png" },
           { alt: "Apple Pay", src: "applepay.png" }
         ].map(({ alt, src }) => (
           <div
@@ -89,10 +88,10 @@ export default function AltPaymentBlock({ title = "Accédez à XCS en toute simp
         }}
         className="bg-xcannes-green text-white font-montserrat font-[500] px-6 py-2 border border-xcannes-green rounded transition duration-300 transform hover:scale-105"
       >
-        Acheter par Carte / PayPal
+        Acheter par Carte / ApplePay
       </button>
 
-      <p className="mt-3 text-xs text-yellow-400 italic">
+      <p className="mt-3 text-xs text-xcannes-yellow italic">
         {isConnected
           ? "✅ Votre wallet est connecté, vous recevrez vos XCS automatiquement après le paiement."
           : "⚠️ Pour recevoir vos XCS après paiement, veuillez connecter votre wallet XRPL ou fournir votre adresse."}
