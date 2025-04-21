@@ -53,7 +53,7 @@ export default function VisionBlock() {
 
 
 
-          <p className="text-base md:text-lg text-gray-200 mb-6">
+          <p className="text-base md:text-lg text-gray-100 mb-6">
             Propulser Cannes dans l’économie numérique avec une technologie
             <span className="text-xcannes-green font-semibold"> rapide</span>,
             <span className="text-xcannes-green font-semibold"> éthique</span> et
@@ -68,7 +68,7 @@ export default function VisionBlock() {
       </div>
 
       {/* Slogan */}
-      <div className="absolute bottom-0.5 w-full text-center text-[0.6rem] text-white italic z-10 tracking-wide font-light">
+      <div className="absolute bottom-0.5 w-full text-center md:text-[0.7rem] sm:text-[0.7rem] text-[0.6rem] text-white italic z-10 tracking-wide font-light">
         * Léro, le héros qui brille sous les projecteurs… et surveille les coulisses.
       </div>
     </section>
