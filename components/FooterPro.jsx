@@ -36,7 +36,7 @@ export default function FooterPro() {
             <div className="mt-6">
               <a
                 href="/whitepaper"
-                className="inline-block  text-white font-medium py-2 px-6 rounded-xl hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
+                className="inline-block  text-white font-bold py-2 px-6 rounded-xl hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
               >
                 📖 Livre Blanc
               </a>
@@ -47,8 +47,8 @@ export default function FooterPro() {
     className="flex items-center justify-center gap-1 text-xs sm:text-sm font-medium text-white transition transform hover:scale-105 duration-300  ease-in-out"
   >
     
-    <span className="text-center leading-tight">
-    ♦️Dragon<br />Casino♥️
+    <span className="text-center font-bold leading-tight">
+    Dragon<br />Casino
     </span>
   </Link>
 </li>
