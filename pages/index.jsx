@@ -37,7 +37,7 @@ export default function Home() {
 
       w-auto inline-block
       relative 
-      top-[0.5rem] sm:top-[0.80rem] md:top-[1.4rem]
+      sm:top-[0.80rem] md:top-[1.4rem]
       brightness-110 saturate-150 
       p-0
       -mr-4
