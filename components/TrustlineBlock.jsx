@@ -14,8 +14,8 @@ export default function TrustlineBlock() {
 
   return (
     <section
-      className="text-black font-montserrat font-[300] border border-[2.5px] border-white shadow-2xl shadow-white/20b rounded-xl p-6 sm:p-8 my-10 max-w-3xl mx-auto"
-      style={{ backgroundColor: "#f5f5f5/90" }}
+    className="text-black bg-[#f5f5f5]/90 font-montserrat font-[300] border border-[2.5px] border-white shadow-2xl shadow-white/20 rounded-xl p-6 sm:p-8 my-10 max-w-3xl mx-auto"
+  
     >
       <h2
         className="text-2xl sm:text-3xl font-orbitron font-[500] text-center mb-6"
