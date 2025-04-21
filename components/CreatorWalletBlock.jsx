@@ -13,7 +13,7 @@ export default function CreatorWalletBlock() {
 
   return (
     <section
-      className="max-w-xl mx-auto border-[0.5px] border-white border-opacity-50 p-6 rounded-xl shadow mt-10 mb-10 text-center bg-black text-white font-montserrat font-[300]"
+      className="max-w-xl mx-auto border-[0.5px] border-white border-opacity-30 p-6 rounded-xl shadow mt-10 mb-10 text-center bg-black text-white font-montserrat font-[300]"
     >
       <h2
         className="text-xl font-orbitron font-[500] mb-4"
