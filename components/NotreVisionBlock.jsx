@@ -25,7 +25,8 @@ export default function NotreVisionBlock() {
         >
           Notre vision
         </h2>
-        <p className="text-xl font-medium text-white mb-10" data-aos="fade-up" data-aos-delay="100">
+        <p className="text-xl font-medium text-gray-300
+ mb-10" data-aos="fade-up" data-aos-delay="100">
           Construire la communauté décentralisée la plus innovante du Web3 européen
         </p>
 
