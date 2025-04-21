@@ -12,14 +12,12 @@ export default function FooterPro() {
   
 
   const socials = [
-    { name: "Twitter", icon: "twitter.png", url: "https://twitter.com/xrdoge" },
-    { name: "Telegram", icon: "reddit.png", url: "https://t.me/xrdoge" },
-    { name: "Discord", icon: "discord.png", url: "https://discord.gg/xrdoge" },
+    { name: "Twitter", icon: "twitter.png", url: "#" },
     { name: "YouTube", icon: "youtube.png", url: "#" },
     { name: "Instagram", icon: "instagram.png", url: "#" },
     { name: "TikTok", icon: "tictoc.png", url: "#" },
     { name: "Facebook", icon: "facebook.png", url: "#" },
-    { name: "Linktree", icon: "whatszapp.png", url: "#" }
+    
   ];
 
   return (
@@ -115,24 +113,6 @@ export default function FooterPro() {
           </ul>
         </div>
       </div>
-
-      <div style={{ marginTop: "1rem", textAlign: "center" }}>
-  <a
-    href="/test-chart"
-    style={{
-      display: "inline-block",
-      padding: "8px 16px",
-      backgroundColor: "#16b303",
-      color: "#fff",
-      borderRadius: "6px",
-      fontSize: "14px",
-      textDecoration: "none",
-      fontWeight: "bold",
-    }}
-  >
-    🔧 Test Chart
-  </a>
-</div>
 
       <div className="text-center text-xs text-white mt-6">
         &copy;  {new Date().getFullYear()} -Xcannes LLC – Delaware, USA  
