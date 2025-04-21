@@ -3,7 +3,7 @@ export default function BuyXCSSection() {
     <section className="relative w-screen to-white py-24 px-4 sm:px-6 text-black overflow-hidden font-montserrat font-[300]">
       {/* Background image */}
       <div
-        className="absolute inset-0 opacity-10 animate-fade-in"
+        className="absolute inset-0  animate-fade-in"
         style={{
           backgroundImage: "url('/assets/img/bg-buy-xcs1.png')",
           backgroundSize: "cover",

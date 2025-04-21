@@ -44,7 +44,7 @@ export default function NotreVisionBlock() {
    <img
   src="/assets/img/ui/biglogoXcannes.png"
   alt="Logo XCannes"
-  className="h-[30rem] sm:h-[55rem] md:h-[55rem]"
+  className="h-[25rem] sm:h-[55rem] md:h-[55rem]"
 />
 
 </div>
