@@ -16,7 +16,7 @@ module.exports = {
         "xcannes-green-weight": "#16650c",
         "xcannes-red": "#930606",
         "xcannes-red-light": "#e70707",
-        "xcannes-yellow": "#fbff00",
+        "xcannes-yellow": "#e3ca06",
         "xcannes-yellow-weight": "#797b06",
         "xcannes-gray": "#414139",
         "xcannes-gray-light": "#51514a",
