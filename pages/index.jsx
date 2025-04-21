@@ -31,7 +31,7 @@ export default function Home() {
     <img
       src="/assets/img/ui/xcannesgreen.png"
       alt="Logo X"
-      className="h-[14.8rem] sm:h-[15.2rem] md:h-[15.4rem] w-auto max-w-full brightness-110 saturate-150 pb-4 sm:pb-0 md:pd-0 -mt-10 sm:mt-0 md:mt-0"
+      className="h-[14.8rem] sm:h-[15.2rem] md:h-[15.4rem] w-auto max-w-full brightness-110 saturate-150 pb-4 sm:pb-0 md:pd-0 -mt-12 sm:mt-0 md:mt-0"
     />
   </span>
 </h1>
