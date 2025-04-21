@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function CreatorWalletBlock() {
   const [copied, setCopied] = useState(false);
-  const creatorWallet = "FUAfBo2jgks6gB4Z4LfN983jKLw8h39AkDfGZ2K";
+  const creatorWallet = "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(creatorWallet).then(() => {
@@ -13,7 +13,7 @@ export default function CreatorWalletBlock() {
 
   return (
     <section
-      className="max-w-xl mx-auto border-[0.5px] border-white border-opacity-30 p-6 rounded-xl shadow mt-10 mb-10 text-center bg-black text-white font-montserrat font-[300]"
+      className="max-w-xl mx-auto border-[1.5px] border-white border-opacity-30 p-6 rounded-xl shadow mt-10 mb-10 text-center bg-black text-white font-montserrat font-[300]"
     >
       <h2
         className="text-xl font-orbitron font-[500] mb-4"
