@@ -78,7 +78,7 @@ export default function BuyXCSSection() {
             <div className="flex flex-col gap-2">
             <a
   href="/dex"
-  className="text-sm font-[500] text-gray-300 bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105brightness-110 saturate-150 "
+  className="text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105brightness-110 saturate-150 "
 >
   Acheter sur XCannes Dex
 </a>

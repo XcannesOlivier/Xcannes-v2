@@ -186,7 +186,7 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
             horzLines: { color: "#363C4E" },
           },
         });
-        rsiChart.addLineSeries({ color: "#00ff00" }).setData(rsi);
+        rsiChart.addLineSeries({ color: "#16b303" }).setData(rsi);
       }
     };
 
