@@ -29,7 +29,7 @@ export default function Home() {
   Bienvenue sur
   <span className="flex items-center ml-1 -ml-[0.1rem]">
     <img
-      src="/assets/img/ui/navHeadergreen.png"
+      src="/assets/img/ui/xcannesgreen.png"
       alt="Logo X"
       className="h-[2.8rem] sm:h-[3.2rem] md:h-[3.4rem] w-auto max-w-full brightness-110 saturate-150 mb-[0.1rem]"
     />
