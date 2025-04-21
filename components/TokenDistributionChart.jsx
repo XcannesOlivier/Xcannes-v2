@@ -19,7 +19,7 @@ const data = [
   {
     name: "Communauté",
     value: 20,
-    color: "#fbff00",
+    color: "#e3ca06",
     icon: "🤝",
     desc: "Favorise l’adoption et la croissance",
   },
