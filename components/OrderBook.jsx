@@ -67,8 +67,8 @@ export default function OrderBook({ pair }) {
         <ul className="space-y-1">
           {asks.map((order, idx) => (
             <li key={idx} className="flex justify-between">
-              <span className="text-red-500">{order.price?.toFixed(6)}</span>
-              <span className="text-gray-300">{order.amount?.toFixed(2)}</span>
+              <span className="text-xcannes-red">{order.price?.toFixed(6)}</span>
+              <span className="text-white">{order.amount?.toFixed(2)}</span>
             </li>
           ))}
         </ul>
@@ -80,8 +80,8 @@ export default function OrderBook({ pair }) {
         <ul className="space-y-1">
           {bids.map((order, idx) => (
             <li key={idx} className="flex justify-between">
-              <span className="text-green-500">{order.price?.toFixed(6)}</span>
-              <span className="text-gray-300">{order.amount?.toFixed(2)}</span>
+              <span className="text-xcannes-green font-[500]">{order.price?.toFixed(6)}</span>
+              <span className="text-white">{order.amount?.toFixed(2)}</span>
             </li>
           ))}
         </ul>
