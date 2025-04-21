@@ -28,7 +28,7 @@ export default function FooterPro() {
     >
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 mb-10 text-center md:text-center">
         <div className="space-y-2 order-1">
-          <h4 className="font-semibold text-white">Pages</h4>
+          <h4 className="font-bold text-white">Pages</h4>
           <ul className="text-sm space-y-1">
             <li><Link href="/disclaimer">Disclaimer</Link></li>
             <li><Link href="/">Home</Link></li>
@@ -48,7 +48,7 @@ export default function FooterPro() {
   >
     
     <span className="text-center font-bold leading-tight">
-    Dragon<br />Casino
+    Dragon Casino
     </span>
   </Link>
 </li>
@@ -58,7 +58,7 @@ export default function FooterPro() {
                 href="/tokenomics"
                 className="inline-block text-white font-bold py-2 px-6 rounded-xl  hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
               >
-                📊 Tokenomics
+                 Tokenomics
               </a>
             </div>
           </ul>
