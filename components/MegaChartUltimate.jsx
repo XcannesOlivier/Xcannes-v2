@@ -117,7 +117,15 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
         },
       });
 
-      const candleSeries = chart.addCandlestickSeries();
+      const candleSeries = chart.addCandlestickSeries({
+        upColor: "#16b303",           // 💚 Bougie verte haussière (corps)
+        borderUpColor: "#16b303",     // 💚 Contour de la bougie haussière
+        wickUpColor: "#16b303",       // 💚 Mèche haute haussière
+        downColor: "#e70707",         // ❤️ Bougie rouge baissière (corps)
+        borderDownColor: "#e70707",   // ❤️ Contour de la bougie baissière
+        wickDownColor: "#e70707",     // ❤️ Mèche basse baissière
+      });
+      
       candleSeries.setData(data);
 
       if (showBB) {
