@@ -61,7 +61,7 @@ export default function VisionBlock() {
           </p>
 
           <button className="bg-xcannes-green hover:bg-xcannes-green font-[500] text-white hover:text-white transition px-1 sm:px-6 py-1 sm:py-3 text-sm sm:text-base rounded-xl shadow-md hover:shadow-xl hover:scale-105 duration-300 w-full sm:w-auto">
-  Onboard ici
+  rejoignez la communauté !
 </button>
 
         </div>
