@@ -27,7 +27,7 @@ export default function Home() {
       <main className="flex flex-col items-center justify-center pt-28 pb-10 px-4 text-center font-montserrat font-[300]">
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-orbitron font-[500] mb-6 flex items-center justify-center flex-wrap text-white leading-tight">
   Bienvenue sur
-  <span className="flex items-center ml-1 -ml-[0.8rem]">
+  <span className="flex items-center ml-1 -ml-[0.1rem]">
     <img
       src="/assets/img/ui/navHeadergreen.png"
       alt="Logo X"
