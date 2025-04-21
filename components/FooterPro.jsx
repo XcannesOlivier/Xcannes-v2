@@ -29,14 +29,14 @@ export default function FooterPro() {
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 mb-10 text-center md:text-center">
         <div className="space-y-2 order-1">
           <h4 className="font-bold text-white">Pages</h4>
-          <ul className="text-sm space-y-1">
+          <ul className="text-sm font-medium space-y-1">
             <li><Link href="/disclaimer">Disclaimer</Link></li>
             <li><Link href="/">Home</Link></li>
             <li><Link href="/dex">Dex</Link></li>
             <div className="mt-6">
               <a
                 href="/whitepaper"
-                className="inline-block  text-white font-bold py-2 px-6 rounded-xl hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
+                className="inline-block  text-white font-medium py-2 px-6 rounded-xl hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
               >
                 📖 Livre Blanc
               </a>
@@ -47,7 +47,7 @@ export default function FooterPro() {
     className="flex items-center justify-center gap-1 text-xs sm:text-sm font-medium text-white transition transform hover:scale-105 duration-300  ease-in-out"
   >
     
-    <span className="text-center font-bold leading-tight">
+    <span className="text-center font-medium leading-tight">
     Dragon Casino
     </span>
   </Link>
@@ -56,7 +56,7 @@ export default function FooterPro() {
             <div className="mt-6">
               <a
                 href="/tokenomics"
-                className="inline-block text-white font-bold py-2 px-6 rounded-xl  hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
+                className="inline-block text-white font-medium py-2 px-6 rounded-xl  hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
               >
                  Tokenomics
               </a>
@@ -103,8 +103,8 @@ export default function FooterPro() {
         </div>
 
         <div className="space-y-2 order-2 md:order-3">
-          <h4 className="font-semibold text-white">Links</h4>
-          <ul className="text-sm space-y-1">
+          <h4 className="font-bold text-white">Links</h4>
+          <ul className="text-sm  font-medium space-y-1">
             <li><a href="https://coinmarketcap.com" target="_blank" rel="noreferrer">CoinMarketCap</a></li>
             <li><a href="https://coingecko.com" target="_blank" rel="noreferrer">CoinGecko</a></li>
             <li><a href="https://xrpscan.com" target="_blank" rel="noreferrer">XrpScan</a></li>
