@@ -60,9 +60,10 @@ export default function VisionBlock() {
             <span className="text-xcannes-green font-semibold"> décentralisée</span>.
           </p>
 
-          <button className="bg-xcannes-green hover:bg-xcannes-green font-[500] text-white hover:text-white transition px-6 py-3 rounded-xl shadow-md hover:shadow-xl hover:scale-105 duration-300">
-            Rejoignez la communauté ici
-          </button>
+          <button className="bg-xcannes-green hover:bg-xcannes-green font-[500] text-white hover:text-white transition px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-xl shadow-md hover:shadow-xl hover:scale-105 duration-300 w-full sm:w-auto">
+  Rejoignez la communauté ici
+</button>
+
         </div>
       </div>
 
