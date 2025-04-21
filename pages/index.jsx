@@ -25,16 +25,17 @@ export default function Home() {
       <VisionBlock />
       
       <main className="flex flex-col items-center justify-center pt-28 pb-10 px-4 text-center font-montserrat font-[300]">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-orbitron font-[500] mb-6 flex items-center justify-center flex-wrap text-white ">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-orbitron font-[500] mb-6 flex items-center justify-center flex-wrap text-white leading-tight sm:leading-normal">
   Bienvenue sur
-  <span className="flex items-center ml-1 -ml-[0.1rem]">
+  <span className="flex items-center ml-1 -mt-12 sm:mt-0">
     <img
       src="/assets/img/ui/xcannesgreen.png"
       alt="Logo X"
-      className="h-[14.8rem] sm:h-[17.2rem] md:h-[18.9rem] w-auto max-w-full brightness-110 saturate-150  leading-tight -mt-14 sm:mt-0 sm:leading-normal md:mt-0"
+      className="h-[4.8rem] sm:h-[6.2rem] md:h-[7.5rem] w-auto max-w-full brightness-110 saturate-150"
     />
   </span>
 </h1>
+
 
         <p className="text-lg max-w-xl text-gray-300 mb-8">
           Échangez le token <strong>XCannes (XCS)</strong> directement sur le XRP Ledger. Participez, gagnez, contribuez.
