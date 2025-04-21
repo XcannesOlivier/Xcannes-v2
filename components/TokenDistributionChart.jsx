@@ -64,7 +64,7 @@ export default function TokenDistributionChart() {
         backgroundColor: "#202320"
       }}
     >
-      <div className="max-w-4xl mx-auto bg-black border-[0.5px] border-opacity-40 border-white rounded-xl shadow-lg p-6">
+      <div className="max-w-4xl mx-auto bg-black border-[1.5px] border-opacity-40 border-white rounded-xl shadow-lg p-6">
         {/* Bloc graphique */}
         <div className="bg-[#202320] text-black rounded-xl shadow-lg p-6 mb-10">
           <h2 className="text-3xl font-orbitron font-[500] text-center mb-10" style={{ color: "#16b303" }}>
