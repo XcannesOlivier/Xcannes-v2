@@ -33,9 +33,6 @@ export default function Home() {
       alt="Logo X"
       className="h-[2.8rem] sm:h-[3.2rem] md:h-[3.4rem] w-auto max-w-full brightness-110 saturate-150 mb-[0.1rem]"
     />
-    <span className="text-xcannes-green font-orbitron font-[500] text-[1.8rem] sm:text-[2.1rem] md:text-[2.4rem] -ml-[0.1rem]">
-      Cannes
-    </span>
   </span>
 </h1>
 
