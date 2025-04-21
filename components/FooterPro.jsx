@@ -58,7 +58,7 @@ export default function FooterPro() {
             <div className="mt-6">
               <a
                 href="/tokenomics"
-                className="inline-block bg-xcannes-yellow/40 text-white font-bold py-2 px-6 rounded-xl hover:bg-xcannes-blue/40 hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
+                className="inline-block bg-xcannes-yellow text-white font-bold py-2 px-6 rounded-xl hover:bg-xcannes-yellow/40 hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
               >
                 📊 Tokenomics
               </a>
