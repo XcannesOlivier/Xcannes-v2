@@ -91,7 +91,7 @@ export default function FooterPro() {
             href="/donate"
             className="inline-block bg-xcannes-green text-white font-medium py-2 px-6 rounded-xl hover:bg-lime-500 transition"
           >
-            Donate now
+            Onboard now
           </a>
 
           <p className="text-sm mt-4">Email : <a href="mailto:xcannesdao@gmail.com" className="underline">xcannesdao@gmail.com</a></p>
