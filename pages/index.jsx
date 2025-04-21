@@ -73,7 +73,7 @@ export default function Home() {
 
 
         
-  <LangDebug />
+  
   <LangueActive />
   <CreatorWalletBlock />
   <AltPaymentBlock title="Achetez XCS avec votre moyen de paiement préféré" />
