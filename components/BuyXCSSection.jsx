@@ -56,7 +56,7 @@ export default function BuyXCSSection() {
 
           {/* Étape 2 */}
           <div className="bg-[#202320]/40 text-white shadow-md border-l-4 border-[#16b303] rounded-lg p-5 hover:shadow-xl transition hover:scale-[1.02] ">
-            <h3 className="text-lg sm:text-xl font-[500] mb-2">2. Ajoutez la Trustline</h3>
+            <h3 className="text-lg sm:text-xl font-[500] mb-2bg-[#202320]/40 ">2. Ajoutez la Trustline</h3>
             <p className="mb-4 text-sm">
             Ajoutez une trustline pour autoriser votre wallet à recevoir le jeton XCS en toute sécurité.
             </p>
