@@ -49,14 +49,14 @@ export default function Header() {
         </Link>
 
         <Link href="/donate" className="transition transform hover:scale-105 duration-300">
-          Onboard now
+          Onboard<br />now
         </Link>
 
         <Link
           href="/games"
           className="block text-xs sm:text-sm text-center font-medium text-xcannes-blue-light transition transform hover:scale-105 duration-300 hover:text-blue-800"
         >
-          ♦️Dragon<br />Casino♥️
+          Dragon<br />Casino
         </Link>
 
         {isDex ? (
@@ -65,7 +65,7 @@ export default function Header() {
           </Link>
         ) : (
           <div className="relative group">
-            <a href="#vision" className="cursor-pointer transition transform hover:scale-105 hover:text-xrdoge-green duration-300">
+            <a href="#vision" className="cursor-pointer transition transform hover:scale-105 hover:text-xcannes-green duration-300">
               Vision
             </a>
             <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none whitespace-nowrap">
