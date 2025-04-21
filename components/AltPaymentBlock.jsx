@@ -51,7 +51,7 @@ export default function AltPaymentBlock({ title = "Accédez à XCS en toute simp
         </span>
       </h2>
 
-      <p className="mb-4 text-gray-300 text-sm">par carte bancaire, PayPal ...</p>
+      <p className="mb-4 text-gray-300 text-sm">par carte bancaire, ApplePay ...</p>
 
       <div
         className={`flex justify-center gap-2 mb-6 rounded-xl p-0 ${
