@@ -44,7 +44,7 @@ export default function NotreVisionBlock() {
    <img
   src="/assets/img/ui/biglogoXcannes.png"
   alt="Logo XCannes"
-  className="h-[40rem] sm:h-[55rem] md:h-[55rem]"
+  className="h-[30rem] sm:h-[55rem] md:h-[55rem]"
 />
 
 </div>
@@ -54,9 +54,9 @@ export default function NotreVisionBlock() {
 
           {/* Pyramide */}
           <div className="text-center text-lg font-semibold text-gray-100 space-y-3 leading-tight mt-10" data-aos="fade-up">
-            {[ ["X – XCANNES", "C – Connectée", "A – L’Avenir"],
-               ["N – Numérique", "N – & la Nouvelle"],
-               ["E – Énergie", "S – Souveraine"] ].map((row, i) => (
+            {[ ["XCANNES", "Connectée", "L’Avenir"],
+               ["Numérique", "& la Nouvelle"],
+               ["Énergie", "Souveraine"] ].map((row, i) => (
               <div key={i} className="flex justify-center gap-3 sm:gap-6">
                 {row.map((item, j) => (
                   <div key={j} className="transform perspective-1000 rotate-x-6">{item}</div>
