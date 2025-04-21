@@ -54,7 +54,7 @@ export default function NotreVisionBlock() {
 
 
           {/* Pyramide */}
-          <div className="text-center text-lg font-semibold text-gray-100 space-y-3 leading-tight mt-10" data-aos="fade-up">
+          <div className="text-center text-lg font-semibold text-gray-300 space-y-3 leading-tight mt-10" data-aos="fade-up">
             {[ ["XCANNES", "Connectée", "L’Avenir"],
                ["Numérique", "& la Nouvelle"],
                ["Énergie", "Souveraine"] ].map((row, i) => (
@@ -80,7 +80,7 @@ export default function NotreVisionBlock() {
           {/* Piliers */}
           <div className="space-y-2" data-aos="fade-right">
             <h3 className="text-2xl font-semibold text-xcannes-green">Nos piliers</h3>
-            <ul className="space-y-1 text-gray-200">
+            <ul className="space-y-1 text-gray-300">
               {[ ["Liberté", "Reprendre le contrôle de notre avenir"],
                  ["Innovation", "Créer des usages concrets, utiles"],
                  ["Clarté", "Une gouvernance transparente"],
