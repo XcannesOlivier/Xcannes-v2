@@ -62,7 +62,7 @@ export default function Home() {
             </button>
           </Link>
           <Link href="/mxga">
-            <button className="bg-blue-700 text-white px-6 py-3 rounded-xl font-[500] hover:bg-blue-800 hover:text-white transition transform hover:scale-105">
+            <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-[500] hover:bg-blue-700 hover:text-white transition transform hover:scale-105">
               Découvrez XCS
             </button>
           </Link>
