@@ -121,8 +121,8 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
       candleSeries.setData(data);
 
       if (showBB) {
-        chart.addLineSeries({ color: "#ff9900" }).setData(bb.map(b => ({ time: b.time, value: b.upper })));
-        chart.addLineSeries({ color: "#ff9900" }).setData(bb.map(b => ({ time: b.time, value: b.lower })));
+        chart.addLineSeries({ color: "#e3ca06" }).setData(bb.map(b => ({ time: b.time, value: b.upper })));
+        chart.addLineSeries({ color: "#e3ca06" }).setData(bb.map(b => ({ time: b.time, value: b.lower })));
         chart.addLineSeries({ color: "#999" }).setData(bb.map(b => ({ time: b.time, value: b.basis })));
       }
 
@@ -133,8 +133,8 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
       }).setData(data.map(d => ({ time: d.time, value: d.volume })));
 
       if (showMACD) {
-        chart.addLineSeries({ color: "#00ffff" }).setData(macdData.map(d => ({ time: d.time, value: d.macd })));
-        chart.addLineSeries({ color: "#ffa500" }).setData(macdData.map(d => ({ time: d.time, value: d.signal })));
+        chart.addLineSeries({ color: "#0695d9" }).setData(macdData.map(d => ({ time: d.time, value: d.macd })));
+        chart.addLineSeries({ color: "#e3ca06" }).setData(macdData.map(d => ({ time: d.time, value: d.signal })));
         chart.addHistogramSeries({ color: "#ccc" }).setData(macdData.map(d => ({ time: d.time, value: d.histogram })));
       }
 
