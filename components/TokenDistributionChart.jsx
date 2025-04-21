@@ -108,7 +108,7 @@ export default function TokenDistributionChart() {
                     if (active && payload && payload.length) {
                       const item = payload[0].payload;
                       return (
-                        <div className="bg-[#202320] text-black rounded shadow p-2 text-sm font-semibold">
+                        <div className="bg-[#202320] text-white rounded shadow p-2 text-sm font-semibold border-[0.5px] border-opacity-80 border-white">
                           {item.icon} {item.name} — {item.value}%<br />
                           <span className="text-xs font-normal">{item.desc}</span>
                         </div>
@@ -127,12 +127,12 @@ export default function TokenDistributionChart() {
           {data.map((item, index) => (
             <div
               key={index}
-              className="bg-white/90 text-white p-4 rounded shadow hover:scale-[1.02] transition"
+              className="bg-[#202320] text-white p-4 rounded shadow hover:scale-[1.02] transition"
             >
               <h3 className="text-lg font-[500] mb-1">
                 {item.icon} {item.name} ({item.value}%)
               </h3>
-              <p className="text-sm text-gray-900 font-[300]">{item.desc}</p>
+              <p className="text-sm text-white font-[300]">{item.desc}</p>
             </div>
           ))}
         </div>
