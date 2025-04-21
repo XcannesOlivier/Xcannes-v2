@@ -48,8 +48,8 @@ export default function Header() {
           {isDex ? "home" : "DEX"}
         </Link>
 
-        <Link href="/donate" className="transition transform hover:scale-105 duration-300 leading-tight">
-          Onboard now
+        <Link href="/donate" className="block text-xs sm:text-sm text-center font-medium text-white transition transform hover:scale-105 duration-300 hover:text-white">
+          Onboard<br />now
         </Link>
 
         <Link
