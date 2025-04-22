@@ -252,7 +252,7 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
           <input type="checkbox" checked={showBB} onChange={() => setShowBB(!showBB)} className="mr-1" />Bollinger
         </label>
       </div>
-      <div ref={chartRef} className="w-full border border-white/40" />
+      <div ref={chartRef} className="w-full border border-white/40 rounded" />
       {showRSI && (
         <div className="mt-4">
           <h3 className="text-sm font-semibold mb-1">RSI (14)</h3>
