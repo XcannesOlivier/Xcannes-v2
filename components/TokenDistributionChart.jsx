@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 const data = [
@@ -45,10 +46,7 @@ export default function TokenDistributionChart() {
       <div className="max-w-4xl mx-auto bg-black border-[1.5px] border-opacity-40 border-white rounded-xl shadow-lg p-6">
         {/* Bloc graphique */}
         <div className="bg-[#202320] text-black rounded-xl shadow-lg p-6 mb-10">
-          <h2
-            className="text-3xl font-orbitron font-[500] text-center mb-10"
-            style={{ color: "#16b303" }}
-          >
+          <h2 className="text-3xl font-orbitron font-[500] text-center mb-10" style={{ color: "#16b303" }}>
             Répartition des tokens XCS
           </h2>
 
@@ -59,13 +57,33 @@ export default function TokenDistributionChart() {
                   data={data}
                   cx="50%"
                   cy="50%"
-                  innerRadius={80}
-                  outerRadius={120}
-                  dataKey="value"
-                  label={({ name, percent }) =>
-                    `${name} ${(percent * 100).toFixed(0)}%`
-                  }
+                  innerRadius={60}
+                  outerRadius={100}
                   isAnimationActive={true}
+                  label={({ cx, cy, midAngle, innerRadius, outerRadius, name, percent }) => {
+                    const RADIAN = Math.PI / 180;
+                    const isMobile = typeof window !== "undefined" && window.innerWidth < 500;
+                    const radius = isMobile
+                      ? innerRadius + (outerRadius - innerRadius) * 0.4
+                      : innerRadius + (outerRadius - innerRadius) * 0.5;
+                    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+                    return (
+                      <text
+                        x={x}
+                        y={y}
+                        fill="#fff"
+                        textAnchor={x > cx ? "start" : "end"}
+                        dominantBaseline="central"
+                        style={{ fontSize: isMobile ? "10px" : "12px" }}
+                      >
+                        {`${name} ${(percent * 100).toFixed(0)}%`}
+                      </text>
+                    );
+                  }}
+                  labelLine={false}
+                  dataKey="value"
                 >
                   {data.map((entry, index) => (
                     <Cell
