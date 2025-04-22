@@ -57,7 +57,7 @@ export default function TradeHistory({ pair }) {
   }, [pair]);
 
   return (
-    <div className="mt-8 bg-black p-4 border border-white border-opacity-40 rounded text-sm font-montserrat font-[300]">
+    <div className=" bg-black p-4 border border-white border-opacity-40 rounded text-sm font-montserrat font-[300]">
       <h2 className="text-white text-lg font-[500] mb-2">Historique des transactions</h2>
       <table className="w-full text-left text-white">
         <thead>

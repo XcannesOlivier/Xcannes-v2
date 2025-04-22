@@ -254,7 +254,7 @@ export default function MegaChartUltimate({ pair = "XRP/RLUSD", interval = "1d" 
       </div>
       <div ref={chartRef} className="w-full border border-white/40 " />
       {showRSI && (
-        <div className="mt-4">
+        <div className="mt-0">
           <h3 className="text-3m font-semibold ">RSI (14)</h3>
           <div ref={rsiRef} className="w-full" />
         </div>

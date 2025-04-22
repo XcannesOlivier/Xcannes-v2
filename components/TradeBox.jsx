@@ -74,7 +74,7 @@ export default function TradeBox({ pair = "XCS/XRP" }) {
   const counter = pair.split("/")[1];
 
   return (
-    <div className="bg-black border border-white border-opacity-40 rounded-xl p-4 text-white w-full font-montserrat font-[300]">
+    <div className="bg-black border border-white border-opacity-40 rounded-xl p-4 text-white w-full font-orbitron font-[300]">
       <div className="flex justify-between mb-4">
         <h2 className="text-xl font-[500] text-xcannes-green">Trade {base}</h2>
         <div className="flex gap-2">
@@ -82,7 +82,7 @@ export default function TradeBox({ pair = "XCS/XRP" }) {
             <button
               key={opt}
               onClick={() => setMode(opt)}
-              className={`px-4 py-1 rounded text-sm border font-[500] ${
+              className={`px-4 py-1 rounded text-sm border font-montserrat font-[500] ${
                 mode === opt
                   ? "bg-xcannes-green text-white border-xcannes-green"
                   : "bg-xcannes-red border-xcannes-red"
