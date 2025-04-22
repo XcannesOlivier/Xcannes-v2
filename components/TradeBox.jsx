@@ -74,9 +74,9 @@ export default function TradeBox({ pair = "XCS/XRP" }) {
   const counter = pair.split("/")[1];
 
   return (
-    <div className="bg-black border border-white border-opacity-40 rounded-xl p-4 text-white w-full font-orbitron font-[300]">
+    <div className="bg-black border border-white border-opacity-40 rounded-xl p-4 text-white w-full font-montserrat font-[300]">
       <div className="flex justify-between mb-4">
-        <h2 className="text-xl font-montserrat font-[500] text-xcannes-green">Trade {base}</h2>
+        <h2 className="text-xl font-orbitron font-[500] text-xcannes-green">Trade {base}</h2>
         <div className="flex gap-2">
           {["BUY", "SELL"].map((opt) => (
             <button
@@ -140,7 +140,7 @@ export default function TradeBox({ pair = "XCS/XRP" }) {
 
       <button
         onClick={handleSubmit}
-        className="bg-xcannes-green hover:bg-green-500 transition text-black px-4 py-2 rounded text-sm font-[500] w-full"
+        className="bg-xcannes-green hover:bg-green-200 transition text-white px-4 py-2 rounded text-sm font-[500] w-full"
       >
         🔁 Simuler l'ordre
       </button>
