@@ -26,20 +26,21 @@ export default function CreatorWalletBlock() {
         Voici l’adresse publique du wallet fondateur de la cryptomonnaie XCS.
       </p>
 
-      <div className="flex items-center bg-[#f9f6f6]  rounded-1g overflow-hidden">
-        <input
-          type="text"
-          value={creatorWallet}
-          readOnly
-          className="flex-1 px-4 py-2 bg-transparent text-black font-[400] text-sm outline-none"
-        />
-        <button
-          onClick={handleCopy}
-          className="px-4 py-2 text-sm font-[600] bg-xcannes-green text-white hover:bg-xcannes-blue-light hover:text-white transition"
-        >
-          {copied ? "✅ Copié" : "📋 Copier"}
-        </button>
-      </div>
+      <div className="flex items-center bg-[#f9f6f6] rounded-lg overflow-hidden px-4 py-2">
+  <p
+    className="flex-1 text-black text-sm font-[400] truncate whitespace-nowrap overflow-hidden max-w-[220px] sm:max-w-full"
+    title={creatorWallet}
+  >
+    {creatorWallet}
+  </p>
+  <button
+    onClick={handleCopy}
+    className="ml-4 px-4 py-2 text-sm font-[600] bg-xcannes-green text-white hover:bg-xcannes-blue-light hover:text-white transition"
+  >
+    {copied ? "✅ Copié" : "📋 Copier"}
+  </button>
+</div>
+
     </section>
   );
 }
