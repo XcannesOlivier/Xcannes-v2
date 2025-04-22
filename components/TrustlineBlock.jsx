@@ -32,9 +32,16 @@ export default function TrustlineBlock() {
 
       {/* Bloc noir avec écriture blanche */}
       <div className="bg-black text-white rounded-xl p-6 text-sm sm:text-base mb-6 relative">
-  <p className="mb-1">
-    <span className="font-semibold">Issuer :</span> rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx
-  </p>
+      <p className="flex gap-1 text-sm">
+  <span className="font-semibold">Issuer :</span>
+  <span
+    className="truncate inline-block max-w-[calc(100vw-9rem)]"
+    title="rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx"
+  >
+    rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx
+  </span>
+</p>
+
   <p className="mb-1">
     <span className="font-semibold">Currency :</span> XCS
   </p>
