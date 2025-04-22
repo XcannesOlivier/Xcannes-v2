@@ -140,7 +140,7 @@ export default function TradeBox({ pair = "XCS/XRP" }) {
 
       <button
         onClick={handleSubmit}
-        className="bg-xcannes-green hover:scale-150 transition text-white px-4 py-2 rounded text-sm font-[500] w-full"
+        className="bg-xcannes-green hover:scale-110 transition text-white px-4 py-2 rounded text-sm font-[500] w-full"
       >
         🔁 Simuler l'ordre
       </button>
