@@ -62,12 +62,19 @@ export default function TokenDistributionChart() {
                   isAnimationActive={true}
                   label={({ cx, cy, midAngle, innerRadius, outerRadius, name, percent }) => {
                     const RADIAN = Math.PI / 180;
-                    const isMobile = typeof window !== "undefined" && window.innerWidth < 500;
-                    const radius = isMobile
-                      ? innerRadius + (outerRadius - innerRadius) * 0.4
-                      : innerRadius + (outerRadius - innerRadius) * 0.5;
+                    const radius = outerRadius + 10;
                     const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                  
+                    // 💡 Placement vertical personnalisé
+                    let y = cy + radius * Math.sin(-midAngle * RADIAN);
+                  
+                    // 🔽 Ajustements selon le segment
+                    if (name === "Communauté" || name === "Liquidité") {
+                      y += 12; // descendre
+                    } else if (name === "Team" || name === "Trésorerie") {
+                      y -= 8; // monter
+                    }
+                  
 
                     return (
                       <text
