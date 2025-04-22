@@ -27,53 +27,27 @@ export default function FooterPro() {
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 mb-10 text-center md:text-center">
         {/* Colonne 1 - Pages */}
         <div className="space-y-2 order-1">
-          <h4 className="font-bold text-white">Pages</h4>
-          <ul className="text-sm font-medium space-y-1">
-            {[
-              { href: "/disclaimer", label: "Disclaimer" },
-              { href: "/", label: "Home" },
-              { href: "/dex", label: "Dex" },
-            ].map(({ href, label }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className="inline-block transition-transform duration-200 hover:scale-105 hover:text-xcannes-green"
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-2">
-            <a
-              href="/whitepaper"
-              className="inline-block text-white font-medium py-2 px-6 rounded-xl hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
-            >
-              📖 Livre Blanc
-            </a>
-          </div>
-
-          <li>
-            <Link
-              href="/games"
-              className="flex items-center justify-center gap-1 text-xs sm:text-sm font-medium text-white transition transform hover:scale-105 duration-300 ease-in-out"
-            >
-              <span className="text-center font-medium leading-tight">
-                Dragon Casino
-              </span>
-            </Link>
-          </li>
-
-          <div className="mt-2">
-            <a
-              href="/tokenomics"
-              className="inline-block text-white font-medium py-2 px-6 rounded-xl hover:text-white transition duration-300 transform hover:scale-105 hover:shadow-xl shadow-md"
-            >
-              Tokenomics
-            </a>
-          </div>
-        </div>
+  <h4 className="font-bold text-white">Pages</h4>
+  <ul className="text-sm font-medium space-y-1">
+    {[
+      { href: "/", label: "Home" },
+      { href: "/dex", label: "Dex" },
+      { href: "/disclaimer", label: "Disclaimer" },
+      { href: "/games", label: "Dragon Casino" },
+      { href: "/whitepaper", label: "📖 Livre Blanc" },
+      { href: "/tokenomics", label: "Tokenomics" },
+    ].map(({ href, label }) => (
+      <li key={href}>
+        <Link
+          href={href}
+          className="inline-block transition-transform duration-200 hover:scale-105 hover:text-xcannes-green"
+        >
+          {label}
+        </Link>
+      </li>
+    ))}
+  </ul>
+</div>
 
         {/* Colonne 2 - Logo + Réseaux + Wallet */}
         <div className="col-span-2 md:col-span-1 flex flex-col items-center justify-center order-3 md:order-2">
@@ -124,45 +98,29 @@ export default function FooterPro() {
 
         {/* Colonne 3 - Liens externes */}
         <div className="space-y-2 order-2 md:order-3">
-          <h4 className="font-bold text-white">Links</h4>
-          <ul className="text-sm hover:scale-105 font-medium space-y-1">
-            <li>
-              <a
-                href="https://coinmarketcap.com"
-                target="_blank"
-                rel="noreferrer"
-              >
-                CoinMarketCap
-              </a>
-            </li>
-            <li>
-              <a href="https://coingecko.com" target="_blank" rel="noreferrer">
-                CoinGecko
-              </a>
-            </li>
-            <li>
-              <a href="https://xrpscan.com" target="_blank" rel="noreferrer">
-                XrpScan
-              </a>
-            </li>
-            <li>
-              <a href="https://firstledger.dev" target="_blank" rel="noreferrer">
-                FirstLedger
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://dexscreener.com/xrpl"
-                target="_blank"
-                rel="noreferrer"
-              >
-                DexScreener
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
+  <h4 className="font-bold text-white">Links</h4>
+  <ul className="text-sm font-medium space-y-1">
+    {[
+      { label: "CoinMarketCap", url: "https://coinmarketcap.com" },
+      { label: "CoinGecko", url: "https://coingecko.com" },
+      { label: "XrpScan", url: "https://xrpscan.com" },
+      { label: "FirstLedger", url: "https://firstledger.dev" },
+      { label: "DexScreener", url: "https://dexscreener.com/xrpl" },
+    ].map(({ label, url }) => (
+      <li key={url}>
+        <a
+          href={url}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-block transition-transform duration-200 hover:scale-105 hover:text-xcannes-green"
+        >
+          {label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+</div>
       {/* Footer final */}
       <div className="text-center text-xs text-white mt-6">
         &copy; {new Date().getFullYear()} - Xcannes LLC – Delaware, USA
