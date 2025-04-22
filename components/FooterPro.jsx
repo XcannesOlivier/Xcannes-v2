@@ -52,7 +52,7 @@ export default function FooterPro() {
         {/* Colonne 2 - Logo + Réseaux + Wallet */}
         <div className="col-span-2 md:col-span-1 flex flex-col items-center justify-center order-3 md:order-2">
           <img
-            src="/assets/img/ui/dragonshort.png"
+            src="/assets/img/ui/dragon-mascotte.png"
             alt="Mascotte Xcannes"
             className="w-32 md:w-40 max-w-full object-contain mb-4"
           />
