@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+"use client";
+
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 const data = [
@@ -33,41 +34,21 @@ const data = [
 ];
 
 export default function TokenDistributionChart() {
-  const sectionRef = useRef();
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) observer.disconnect();
-    };
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
-      className={`scroll-animate ${visible ? "visible" : ""} w-screen bg-cover bg-center bg-no-repeat text-white py-20 px-6 font-montserrat font-[300]`}
+      className="w-screen bg-cover bg-center bg-no-repeat text-white py-20 px-6 font-montserrat font-[300]"
       style={{
         backgroundImage: "url('/assets/img/ui/backgroundNotreVision1.png')",
-        backgroundColor: "#202320"
+        backgroundColor: "#202320",
       }}
     >
       <div className="max-w-4xl mx-auto bg-black border-[1.5px] border-opacity-40 border-white rounded-xl shadow-lg p-6">
         {/* Bloc graphique */}
         <div className="bg-[#202320] text-black rounded-xl shadow-lg p-6 mb-10">
-          <h2 className="text-3xl font-orbitron font-[500] text-center mb-10" style={{ color: "#16b303" }}>
+          <h2
+            className="text-3xl font-orbitron font-[500] text-center mb-10"
+            style={{ color: "#16b303" }}
+          >
             Répartition des tokens XCS
           </h2>
 
@@ -90,12 +71,6 @@ export default function TokenDistributionChart() {
                     <Cell
                       key={`cell-${index}`}
                       fill={entry.color}
-                      onMouseEnter={(e) =>
-                        (e.target.style.transform = "scale(1.05)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.transform = "scale(1)")
-                      }
                       style={{
                         transition: "transform 0.3s ease-in-out",
                         transformOrigin: "center",
