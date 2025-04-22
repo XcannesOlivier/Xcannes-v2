@@ -12,7 +12,7 @@ export default function TrustlineDex() {
   };
 
   return (
-    <div className="bg-[#f5f5f5]/10 border border-white/20 rounded-lg p-4 font-montserrat text-white text-sm w-full">
+    <div className="bg-[#f5f5f5]/10 border border-white/20 rounded-lg p-4 font-montserrat text-white text-sm ">
       <h3 className="text-lg font-semibold text-xcannes-green mb-3">⚡ Trustline</h3>
       <div className="flex items-center gap-2">
         <a
