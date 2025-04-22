@@ -23,7 +23,7 @@ export default function Home() {
       <Header />
       <VisionBlock />
       
-      <main className="flex flex-col items-center justify-center pt-18 sm:pt-15 md:pt-15 pb-5 px-4 text-center font-montserrat font-[300]">
+      <main className="flex flex-col items-center justify-center pt-18 sm:pt-5 md:pt-5 pb-5 px-4 text-center font-montserrat font-[300]">
       <h1 className="text-2xl sm:text-4xl md:text-5xl font-orbitron font-[500] mb-6 sm:mb-6  md:mb-6  pt-0 sm:pt-0 md:pt-0 flex items-center justify-center flex-wrap text-white ">
   Bienvenue sur
   <span className="flex items-center ml-1 -mt-12 sm:mt-0">
