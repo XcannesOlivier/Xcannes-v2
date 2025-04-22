@@ -91,9 +91,9 @@ export default function Dex() {
 
 <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
   <TradeBox pair={selectedPair} />
-  <TrustlineBlock />
   <div className="space-y-6">
     <AltPaymentBlock isDex={isDex} />
+    <TrustlineBlock />
   </div>
 </div>
 
