@@ -27,7 +27,7 @@ export default function AltPaymentBlock({ title = "Accédez à XCS en toute simp
   return (
     <div
       ref={blockRef}
-      className={`p-6 rounded-xl my-10 text-center scroll-animate mt-0 mb-0 text-white font-montserrat font-[400] items-start border ${
+      className={`p-6 rounded-xl my-10 text-center mt-0 mb-0 text-white font-montserrat font-[400] items-start border ${
         isDex ? "bg-black/80" : "bg-black"
       } ${isDex ? "" : "border border-white border-opacity-50"} ${visible ? "visible" : ""}`}
       style={isDex ? { borderColor: "rgba(174, 175, 174, 0.5)" } : {}}
