@@ -95,9 +95,9 @@ export default function Dex() {
   </div>
 
 
-          <TrustlineDex />
-          <TradeHistory pair={selectedPair} />
+          <TrustlineDex /> 
           <OrderBook pair={selectedPair} />
+          <TradeHistory pair={selectedPair} />
 
           <div className="my-12 text-center">
             <XummConnectButton />
