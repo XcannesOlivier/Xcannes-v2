@@ -12,7 +12,7 @@ import AltPaymentBlock from "../components/AltPaymentBlock";
 import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
-import TrustlineBlock from "../components/TrustlineBlock";
+import TrustlineDex from "../components/TrustlineDex";
 
 
 // 📈 Chart dynamique sans SSR
@@ -93,7 +93,7 @@ export default function Dex() {
   <TradeBox pair={selectedPair} />
   <div className="space-y-6">
     <AltPaymentBlock isDex={isDex} />
-    <TrustlineBlock />
+    <TrustlineDex />
   </div>
 </div>
 
