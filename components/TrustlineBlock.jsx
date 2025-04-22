@@ -31,24 +31,33 @@ export default function TrustlineBlock() {
       </p>
 
       {/* Bloc noir avec écriture blanche */}
-      <div className="bg-black text-white  rounded-xl p-6 text-sm sm:text-base mb-6 relative ">
-        <p>
-          <span className="font-semibold">Issuer :</span> rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx
-        </p>
-        <p>
-          <span className="font-semibold">Currency :</span> XCS
-        </p>
-        <p>
-          <span className="font-semibold">Limit :</span> 2 006 400
-        </p>
+      <div className="bg-black text-white rounded-xl p-6 text-sm sm:text-base mb-6 relative">
+  <p className="mb-1">
+    <span className="font-semibold">Issuer :</span> rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx
+  </p>
+  <p className="mb-1">
+    <span className="font-semibold">Currency :</span> XCS
+  </p>
+  <p className="mb-4">
+    <span className="font-semibold">Limit :</span> 2 006 400
+  </p>
 
-        <button
-          onClick={handleCopy}
-          className="absolute top-3 right-3 text-xs font-[500] bg-xcannes-green text-white px-4 py-2 rounded hover:bg-xcannes-blue-light hover:text-white transition"
-        >
-          {copied ? "Copié ✅" : "📋 Copier"}
-        </button>
-      </div>
+  <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg overflow-hidden">
+    <p
+      className="flex-1 text-xs sm:text-sm text-white truncate whitespace-nowrap overflow-hidden max-w-[200px] sm:max-w-full"
+      title={trustlineURL}
+    >
+      {trustlineURL}
+    </p>
+    <button
+      onClick={handleCopy}
+      className="text-xs font-[500] bg-xcannes-green text-white px-4 py-2 rounded hover:bg-xcannes-blue-light hover:text-white transition"
+    >
+      {copied ? "Copié ✅" : "📋 Copier"}
+    </button>
+  </div>
+</div>
+
 
       <div className="text-center">
         <a
