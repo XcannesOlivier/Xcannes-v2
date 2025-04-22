@@ -12,7 +12,7 @@ export default function VisionBlock() {
   };
 
   return (
-    <section className="relative w-screen overflow-hidden text-white pt-10 mt-2 font-montserrat font-[300]">
+    <section className="relative w-screen overflow-hidden text-white pt-10 mb-6 sm:mb-6  md:mb-6 mt-8 sm:mt-0 md:mt-0 font-montserrat font-[300]">
       <img
         src="/assets/img/ui/dragoncouple.png"
         alt="Vision Xcannes"
