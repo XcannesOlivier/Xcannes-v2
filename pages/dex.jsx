@@ -12,6 +12,8 @@ import AltPaymentBlock from "../components/AltPaymentBlock";
 import TradeBox from "../components/TradeBox";
 import XummConnectButton from "../components/XummConnectButton";
 import { useXumm } from "../context/XummContext";
+import TrustlineBlock from "../components/TrustlineBlock";
+
 
 // 📈 Chart dynamique sans SSR
 const XrplCandleChartRaw = dynamic(() => import("../components/MegaChartUltimate"), {
@@ -87,10 +89,14 @@ export default function Dex() {
             interval={interval}
           />
 
-          <div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
-            <TradeBox pair={selectedPair} />
-            <AltPaymentBlock isDex={isDex} />
-          </div>
+<div className="grid md:grid-cols-[2fr_1fr] gap-6 mt-5 items-start">
+  <TradeBox pair={selectedPair} />
+  <TrustlineBlock />
+  <div className="space-y-6">
+    <AltPaymentBlock isDex={isDex} />
+  </div>
+</div>
+
 
           <TradeHistory pair={selectedPair} />
           <OrderBook pair={selectedPair} />
