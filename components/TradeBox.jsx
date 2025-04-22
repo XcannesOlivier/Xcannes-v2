@@ -82,7 +82,7 @@ export default function TradeBox({ pair = "XCS/XRP" }) {
             <button
               key={opt}
               onClick={() => setMode(opt)}
-              className={`px-4 py-1 rounded text-sm border font-montserrat font-[500] ${
+              className={`px-4 py-1 rounded text-sm border hover:scale-105 font-montserrat font-[500] ${
                 mode === opt
                   ? "bg-xcannes-green text-white border-xcannes-green"
                   : "bg-xcannes-red border-xcannes-red"
@@ -140,7 +140,7 @@ export default function TradeBox({ pair = "XCS/XRP" }) {
 
       <button
         onClick={handleSubmit}
-        className="bg-xcannes-green hover:scale-100 transition text-white px-4 py-2 rounded text-sm font-[500] w-full"
+        className="bg-xcannes-green hover:scale-105 transition text-white px-4 py-2 rounded text-sm font-[500] w-full"
       >
         🔁 Simuler l'ordre
       </button>
