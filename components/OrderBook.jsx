@@ -58,8 +58,7 @@ export default function OrderBook({ pair }) {
 
   return (
     <div
-      className="grid grid-cols-2 gap-4 text-sm bg-black p-4 rounded border font-montserrat font-[300]"
-      style={{ borderColor: "rgba(174 175 174)" }}
+      className="grid grid-cols-2 gap-4 text-sm bg-black p-4 rounded border border-white/40font-montserrat font-[300]"
     >
       {/* VENTES (ASKS) */}
       <div>
