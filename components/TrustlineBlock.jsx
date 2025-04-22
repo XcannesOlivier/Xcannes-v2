@@ -25,7 +25,7 @@ export default function TrustlineBlock() {
         ⚡ Ajouter la Trustline
       </h2>
 
-      <p className="text-sm sm:text-base text-white font-[400] mb-6 text-center">
+      <p className="text-sm sm:text-base text-white font-montserrat font-[300] mb-6 text-center">
         Pour recevoir des tokens <strong>XCS</strong> sur votre wallet XRPL (comme Xaman/Xumm),
         vous devez d’abord autoriser le jeton en ajoutant une Trustline.
       </p>

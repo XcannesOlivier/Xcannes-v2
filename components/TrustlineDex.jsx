@@ -12,20 +12,20 @@ export default function TrustlineDex() {
   };
 
   return (
-    <div className="bg-[#f5f5f5]/10 border border-white/20 rounded-lg p-4 font-montserrat text-white text-sm ">
-      <h3 className="text-lg font-semibold text-xcannes-green mb-3">⚡ Trustline</h3>
+    <div className="bg-black border border-white/20 rounded-lg p-4 font-orbitron font-[500] text-white text-sm ">
+      <h3 className="text-lg text-xcannes-green mb-3">⚡ Ajouter la Trustline</h3>
       <div className="flex items-center gap-2">
         <a
           href={trustlineURL}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 bg-black text-white px-4 py-2 rounded hover:underline truncate"
+          className="flex-1 bg-white text-black px-4 py-2 font-[400] rounded hover:underline truncate"
         >
           {trustlineURL}
         </a>
         <button
           onClick={handleCopy}
-          className="px-3 py-2 text-xs bg-xcannes-green text-black rounded hover:bg-xcannes-blue-light hover:text-white transition"
+          className="px-3 py-2 text-xs bg-xcannes-green text-white rounded hover:bg-xcannes-blue-light hover:text-white transition"
         >
           {copied ? "✅ Copié" : "📋 Copier"}
         </button>
