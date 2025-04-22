@@ -89,7 +89,7 @@ export default function Dex() {
             interval={interval}
           />
 
-<div className="grid md:grid-cols-[1fr_1fr] gap-6 mt-5 items-start">
+<div className="grid md:grid-cols-[1fr_1fr] gap-6 mt-5  mb-5 items-start">
   <TradeBox pair={selectedPair} />
   <AltPaymentBlock isDex={isDex} />
   </div>
