@@ -76,7 +76,7 @@ export default function TradeBox({ pair = "XCS/XRP" }) {
   return (
     <div className="bg-black border border-white border-opacity-40 rounded-xl p-4 text-white w-full font-orbitron font-[300]">
       <div className="flex justify-between mb-4">
-        <h2 className="text-xl font-[500] text-xcannes-green">Trade {base}</h2>
+        <h2 className="text-xl font-montserrat font-[500] text-xcannes-green">Trade {base}</h2>
         <div className="flex gap-2">
           {["BUY", "SELL"].map((opt) => (
             <button
