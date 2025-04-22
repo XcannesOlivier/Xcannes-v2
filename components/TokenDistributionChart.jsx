@@ -55,7 +55,7 @@ export default function TokenDistributionChart() {
               <PieChart>
                 <Pie
                   data={data}
-                  cx="70%"
+                  cx="50%"
                   cy="50%"
                   innerRadius={60}
                   outerRadius={100}
