@@ -28,7 +28,7 @@ export default function CreatorWalletBlock() {
 
       <div className="flex items-center bg-[#f9f6f6] rounded-lg overflow-hidden px-4 py-2">
   <p
-    className="flex-1 text-black text-sm font-[400] truncate whitespace-nowrap overflow-hidden max-w-[210px] sm:max-w-full"
+    className="flex-1 text-black text-sm font-[400] truncate whitespace-nowrap overflow-hidden max-w-[200px] sm:max-w-full"
     title={creatorWallet}
   >
     {creatorWallet}
