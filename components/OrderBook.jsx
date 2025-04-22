@@ -58,7 +58,7 @@ export default function OrderBook({ pair }) {
 
   return (
     <div
-      className="grid grid-cols-2 gap-4 text-sm bg-black p-4 rounded border border-white/20 font-montserrat font-[300]"
+      className="grid grid-cols-2 gap-4 text-sm bg-black p-4 rounded border border-white/40 font-montserrat font-[300]"
     >
       {/* VENTES (ASKS) */}
       <div>
