@@ -12,14 +12,14 @@ export default function TrustlineDex() {
   };
 
   return (
-    <div className="bg-black border border-white/20 rounded-lg p-4 font-orbitron font-[500] text-white text-sm ">
+    <div className="bg-black border border-white/40 rounded-lg p-4 font-orbitron font-[500] text-white text-sm ">
       <h3 className="text-lg text-xcannes-green mb-3">⚡ Ajouter la Trustline</h3>
       <div className="flex items-center gap-2">
         <a
           href={trustlineURL}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 bg-white text-black px-4 py-2 font-[400] rounded hover:underline truncate"
+          className="flex-1 bg-white text-black px-4 py-2 font-montserrat font-[400] rounded hover:underline truncate"
         >
           {trustlineURL}
         </a>
