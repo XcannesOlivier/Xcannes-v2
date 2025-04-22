@@ -66,12 +66,19 @@ export default function TokenDistributionChart() {
                   label={({ name, percent }) =>
                     `${name} ${(percent * 100).toFixed(0)}%`
                   }
+                  labelLine={false}
                   isAnimationActive={true}
                 >
                   {data.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={entry.color}
+                      onMouseEnter={(e) =>
+                        (e.target.style.transform = "scale(1.05)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.style.transform = "scale(1)")
+                      }
                       style={{
                         transition: "transform 0.3s ease-in-out",
                         transformOrigin: "center",
