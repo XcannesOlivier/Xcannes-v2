@@ -26,7 +26,6 @@ export default function BuyXCSSection() {
   -mr-[8px] sm:-mr-[9px] md:-mr-[10px] 
   brightness-110 saturate-150
 "
-
     />
     CS ?
   </span>
@@ -43,15 +42,22 @@ export default function BuyXCSSection() {
             <p className="mb-4 text-sm">
             Téléchargez un wallet compatible avec le XRP Ledger comme <strong>Xaman (ex-Xumm)</strong> puis créez et sécurisez votre portefeuille pour recevoir vos tokens.
             </p>
-            <a
-  href="https://xumm.app/?lang=en"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-block  text-sm font-[500] text-white  bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 "
->
-  Installer le Wallet Xaman
-</a>
-
+            <div className="flex flex-col gap-2">
+              <a
+                href="https://xumm.app/?lang=en"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
+              >
+                Installer le Wallet Xaman
+              </a>
+              <a
+                href="/activate-wallet"
+                className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
+              >
+                Activer le Wallet
+              </a>
+            </div>
           </div>
 
           {/* Étape 2 */}
@@ -61,12 +67,11 @@ export default function BuyXCSSection() {
             Ajoutez une trustline pour autoriser votre wallet à recevoir le jeton XCS en toute sécurité.
             </p>
             <a
-  href="https://xrpl.services?issuer=rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx&currency=XCS&limit=2006400"
-  className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 "
->
-  Ajouter la Trustline
-</a>
-
+              href="https://xrpl.services?issuer=rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx&currency=XCS&limit=2006400"
+              className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
+            >
+              Ajouter la Trustline
+            </a>
           </div>
 
           {/* Étape 3 */}
@@ -75,24 +80,12 @@ export default function BuyXCSSection() {
             <p className="mb-4 text-sm">
             Achetez vos tokens XCS directement via notre DEX ou auprès de partenaires centralisés comme Bitrue.
             </p>
-            <div className="flex flex-col gap-2">
             <a
-  href="/dex"
-  className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 "
->
-  Acheter sur XCannes Dex
-</a>
-
-<a
-  href="https://www.bitrue.com"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 "
->
-  Acheter sur Bitrue
-</a>
-
-            </div>
+              href="/dex"
+              className="text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
+            >
+              Acheter sur XCannes Dex
+            </a>
           </div>
         </div>
 
@@ -156,4 +149,3 @@ export default function BuyXCSSection() {
     </section>
   );
 }
-
