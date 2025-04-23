@@ -78,7 +78,7 @@ export default function BuyXCSSection() {
             <div className="flex flex-col gap-2">
             <a
   href="/dex"
-  className="text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 "
+  className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 "
 >
   Acheter sur XCannes Dex
 </a>
@@ -87,7 +87,7 @@ export default function BuyXCSSection() {
   href="https://www.bitrue.com"
   target="_blank"
   rel="noopener noreferrer"
-  className="text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 "
+  className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 "
 >
   Acheter sur Bitrue
 </a>
