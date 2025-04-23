@@ -18,12 +18,12 @@ body {
     opacity: 0;
   }
   to {
-    opacity: 1;
+    opacity: 0;
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+  animation: fadeIn 0s ease-out forwards;
 }
 
 /* ✅ Animation scroll/FAQ (fade + slide up) */
@@ -33,7 +33,7 @@ body {
     transform: translateY(30px);
   }
   100% {
-    opacity: 1;
+    opacity: 0;
     transform: translateY(0);
   }
 }
@@ -42,12 +42,12 @@ body {
 .scroll-animate {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 1s ease-out;
+  transition: all 0s ease-out;
 }
 
 .faq-animate.visible,
 .scroll-animate.visible {
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fadeInUp 0s ease-out forwards;
 }
 
 .clip-diagonal {

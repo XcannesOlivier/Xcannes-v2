@@ -63,7 +63,7 @@ export default function FAQSection() {
       style={{ backgroundColor: "#202320" }}
     >
       {/* Superposition sombre */}
-      <div className="absolute inset-0 bg-black/45 #202320 z-0 rounded-3xl" />
+      <div className="absolute inset-0 bg-black/35 #202320 z-0 rounded-3xl" />
 
       {/* Contenu FAQ */}
       <div className="relative z-10 max-w-4xl mx-auto">

@@ -12,7 +12,7 @@ export default function LangueActive() {
 
   return (
     <div className="text-center text-sm text-gray-400 mt-8">
-      🌍 Langue actuelle : <span className="font-semibold text-xrdoge-green">
+      🌍 Langue actuelle : <span className="font-semibold text-xcannes-green">
         {labels[router.locale] || router.locale}
       </span>
     </div>
