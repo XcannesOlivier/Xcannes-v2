@@ -123,7 +123,7 @@ export default function NotreVisionBlock() {
       <img
         src={`/assets/img/socials/${s.icon}`}
         alt={s.name}
-        className="w-6 h-6"
+        className="w-10 h-10"
       />
     </a>
   ))}
