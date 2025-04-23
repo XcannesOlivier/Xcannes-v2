@@ -77,7 +77,7 @@ export default function FooterPro() {
 
           <a
             href="/disclaimer"
-            className="inline-block text-white font-medium py-2 px-6 rounded-xl hover:scale-105 transition"
+            className="inline-block text-white text-sm font-medium py-2 px-6 rounded-xl hover:scale-105 transition"
           >
             Mention légale
           </a>
