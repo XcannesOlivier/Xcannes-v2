@@ -69,7 +69,7 @@ export default function BuyXCSSection() {
             </p>
             <a
               href="https://xrpl.services?issuer=rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx&currency=XCS&limit=2006400"
-              className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
+              className=" justify-content text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
             >
               Ajouter la Trustline
             </a>
