@@ -32,7 +32,7 @@ export default function FooterPro() {
     {[
       { href: "/", label: "Home" },
       { href: "/dex", label: "Dex" },
-      { href: "/donate", label: "Rejoignez nous" },
+      { href: "/communauté", label: "Rejoignez nous" },
       { href: "/whitepaper", label: "Livre Blanc" },
       { href: "/tokenomics", label: "Tokenomics" },
       { href: "/XCannes,LLC", label: "XCannes,LLC" },

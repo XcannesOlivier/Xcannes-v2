@@ -5,7 +5,7 @@ import QRCode from "qrcode.react";
 import axios from "axios";
 import FooterPro from "../components/FooterPro";
 
-export default function Donate() {
+export default function communauté() {
   const [xummPayload, setXummPayload] = useState(null);
   const [signed, setSigned] = useState(false);
 
@@ -45,7 +45,7 @@ export default function Donate() {
 
       <main className="max-w-xl mx-auto px-4 pt-28 pb-10 text-center">
 
-        <h1 className="text-3xl font-bold text-xcannes-green mb-6">Soutenez XRdoge</h1>
+        <h1 className="text-3xl font-bold text-xcannes-green mb-6">Rejoignez XCannes</h1>
         <p className="text-gray-300 mb-6">
           En faisant un don, vous soutenez un projet communautaire basé sur l’innovation, la transparence et la passion.
         </p>

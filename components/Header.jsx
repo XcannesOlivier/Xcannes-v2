@@ -48,8 +48,8 @@ export default function Header() {
           {isDex ? "home" : "DEX"}
         </Link>
 
-        <Link href="/donate" className="block text-xs sm:text-sm text-center font-medium text-white transition transform hover:scale-105 duration-300 hover:text-white">
-          Onboard<br />ici
+        <Link href="/communauté" className="block text-xs sm:text-sm text-center font-medium text-white transition transform hover:scale-105 duration-300 hover:text-white">
+          Rejoignez<br />nous
         </Link>
 
         <Link
@@ -97,7 +97,7 @@ export default function Header() {
           <Link href={isDex ? "/" : "/dex"} onClick={() => setMenuOpen(false)}>
             {isDex ? "home" : "DEX"}
           </Link>
-          <Link href="/donate" onClick={() => setMenuOpen(false)}>Onboard ici</Link>
+          <Link href="/communauté" onClick={() => setMenuOpen(false)}>Rejoignez nous</Link>
           <Link href="/games" onClick={() => setMenuOpen(false)}>Games</Link>
           {isDex ? (
             <Link href="/mxga" onClick={() => setMenuOpen(false)}>Vision</Link>
