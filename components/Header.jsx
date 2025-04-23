@@ -107,7 +107,7 @@ export default function Header() {
           <select
           onChange={changeLanguage}
           value={router.locale}
-          className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer "
+          className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer font-emoji"
         >
           <option value="fr">🇫🇷 Français</option>
           <option value="en">🇬🇧 English</option>
