@@ -47,13 +47,13 @@ export default function BuyXCSSection() {
     href="https://xumm.app/?lang=en"
     target="_blank"
     rel="noopener noreferrer"
-    className="block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
+    className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
   >
     Installer le Wallet Xaman
   </a>
   <a
     href="/activate-wallet"
-    className="block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
+    className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
   >
     Activer le Wallet
     </a>
