@@ -36,7 +36,9 @@ export default function FooterPro() {
       { href: "/whitepaper", label: "Livre Blanc" },
       { href: "/tokenomics", label: "Tokenomics" },
       { href: "/XCannes,LLC", label: "XCannes,LLC" },
-    ].map(({ href, label }) => (
+    ]
+    .filter(({ href }) => href !== router.pathname) // 👈 filtre dynamique
+    .map(({ href, label }) => (
       <li key={href}>
         <Link
           href={href}
