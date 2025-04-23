@@ -50,13 +50,13 @@ export default function BuyXCSSection() {
     rel="noopener noreferrer"
     className="justify-content text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
   >
-    Installer le Wallet Xaman
+    Installer le Wallet
   </a>
   <a
     href="/activate-wallet"
     className="justify-content text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
   >
-    Activer le Wallet
+    Activer le Wallet Xaman
     </a>
     </div>
     </div>
