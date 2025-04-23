@@ -82,7 +82,7 @@ export default function BuyXCSSection() {
             </p>
             <a
               href="/dex"
-              className="text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
+              className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
             >
               Acheter sur XCannes Dex
             </a>
