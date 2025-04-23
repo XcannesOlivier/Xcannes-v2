@@ -42,23 +42,24 @@ export default function BuyXCSSection() {
             <p className="mb-4 text-sm">
             Téléchargez un wallet compatible avec le XRP Ledger comme <strong>Xaman (ex-Xumm)</strong> puis créez et sécurisez votre portefeuille pour recevoir vos tokens.
             </p>
-            <div className="flex flex-col gap-2">
-              <a
-                href="https://xumm.app/?lang=en"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
-              >
-                Installer le Wallet Xaman
-              </a>
-              <a
-                href="/activate-wallet"
-                className="inline-block text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105"
-              >
-                Activer le Wallet
-              </a>
-            </div>
-          </div>
+            <div className="flex flex-col sm:flex-row gap-2 sm:justify-center">
+  <a
+    href="https://xumm.app/?lang=en"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
+  >
+    Installer le Wallet Xaman
+  </a>
+  <a
+    href="/activate-wallet"
+    className="text-sm font-[500] text-white bg-[#16b303] px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
+  >
+    Activer le Wallet
+    </a>
+    </div>
+    </div>
+
 
           {/* Étape 2 */}
           <div className="bg-[#202320] text-white shadow-2xl border-1-4 border-[#16b303] rounded-lg p-5 hover:shadow-2xl transition hover:scale-[1.02] ">
