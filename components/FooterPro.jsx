@@ -35,7 +35,7 @@ export default function FooterPro() {
       { href: "/donate", label: "Rejoignez nous" },
       { href: "/whitepaper", label: "Livre Blanc" },
       { href: "/tokenomics", label: "Tokenomics" },
-      { href: "/games", label: "XCannes,LLC" },
+      { href: "/XCannes,LLC", label: "XCannes,LLC" },
     ].map(({ href, label }) => (
       <li key={href}>
         <Link
