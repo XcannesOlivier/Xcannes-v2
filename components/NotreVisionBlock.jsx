@@ -105,6 +105,30 @@ export default function NotreVisionBlock() {
               📄 Consulter le Livre Blanc
             </a>
           </div>
+          <div className="flex justify-center gap-4 mt-6">
+  {[
+    { name: "Twitter", icon: "twitter.png", url: "#" },
+    { name: "YouTube", icon: "youtube.png", url: "#" },
+    { name: "Instagram", icon: "instagram.png", url: "#" },
+    { name: "TikTok", icon: "tictoc.png", url: "#" },
+    { name: "Facebook", icon: "facebook.png", url: "#" },
+  ].map((s) => (
+    <a
+      key={s.name}
+      href={s.url}
+      target="_blank"
+      rel="noreferrer"
+      className="transition-transform transform hover:scale-125"
+    >
+      <img
+        src={`/assets/img/socials/${s.icon}`}
+        alt={s.name}
+        className="w-6 h-6"
+      />
+    </a>
+  ))}
+</div>
+
 
           <p className="text-xs text-center text-gray-400 mt-8">
             * Suivez-nous sur les réseaux sociaux, vous pouvez aussi consulter le Livre Blanc.
