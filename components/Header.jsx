@@ -70,7 +70,7 @@ export default function Header() {
 <select
           onChange={changeLanguage}
           value={router.locale}
-          className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer font-[system-ui,'Segoe_UI_Emoji','Apple_Color_Emoji','Noto_Color_Emoji',sans-serif]"
+          className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer"
         >
           <option value="fr">🇫🇷 Français</option>
           <option value="en">🇬🇧 English</option>
@@ -87,7 +87,7 @@ export default function Header() {
       </button>
 
       {menuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-black/70 backdrop-blur-sm text-white flex flex-col items-center gap-4 py-4 md:hidden transition-opacity duration-500 opacity-0 animate-fade-in font-[400]">
+        <div className="absolute top-16 left-0 w-full bg-black/70 backdrop-blur-sm text-white flex flex-col items-center gap-4 py-4 md:hidden transition-opacity duration-500 opacity">
           <Link href={isDex ? "/" : "/dex"} onClick={() => setMenuOpen(false)}>
             {isDex ? "home" : "DEX"}
           </Link>
@@ -107,7 +107,7 @@ export default function Header() {
           <select
           onChange={changeLanguage}
           value={router.locale}
-          className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer font-[system-ui,'Segoe_UI_Emoji','Apple_Color_Emoji','Noto_Color_Emoji',sans-serif]"
+          className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer"
         >
           <option value="fr">🇫🇷 Français</option>
           <option value="en">🇬🇧 English</option>
