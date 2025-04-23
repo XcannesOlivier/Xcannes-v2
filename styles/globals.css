@@ -15,32 +15,32 @@ body {
 /* ✅ Animation fade-in simple */
 @keyframes fadeIn {
   from {
-    opacity: 0;
+    opacity: 1;
   }
   to {
-    opacity: 0;
+    opacity: 1;
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0s ease-out forwards;
+  animation: fadeIn 1s ease-out forwards;
 }
 
 /* ✅ Animation scroll/FAQ (fade + slide up) */
 @keyframes fadeInUp {
   0% {
-    opacity: 0;
+    opacity: 1;
     transform: translateY(30px);
   }
   100% {
-    opacity: 0;
+    opacity: 1;
     transform: translateY(0);
   }
 }
 
 .faq-animate,
 .scroll-animate {
-  opacity: 0;
+  opacity: 1;
   transform: translateY(30px);
   transition: all 0s ease-out;
 }
