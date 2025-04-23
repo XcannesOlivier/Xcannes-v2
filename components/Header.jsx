@@ -49,14 +49,7 @@ export default function Header() {
         </Link>
 
         <Link href="/communauté" className="block text-xs sm:text-sm text-center font-medium text-white transition transform hover:scale-105 duration-300 hover:text-white">
-          Rejoignez<br />nous
-        </Link>
-
-        <Link
-          href="/games"
-          className="block text-xs sm:text-sm text-center font-medium text-white transition transform hover:scale-105 duration-300 hover:text-white"
-        >
-          Dragon<br />Casino
+          Communauté
         </Link>
 
         {isDex ? (
@@ -97,8 +90,7 @@ export default function Header() {
           <Link href={isDex ? "/" : "/dex"} onClick={() => setMenuOpen(false)}>
             {isDex ? "home" : "DEX"}
           </Link>
-          <Link href="/communauté" onClick={() => setMenuOpen(false)}>Rejoignez nous</Link>
-          <Link href="/games" onClick={() => setMenuOpen(false)}>Games</Link>
+          <Link href="/communauté" onClick={() => setMenuOpen(false)}>Communauté</Link>
           {isDex ? (
             <Link href="/mxga" onClick={() => setMenuOpen(false)}>Vision</Link>
           ) : (
