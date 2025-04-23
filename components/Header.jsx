@@ -67,16 +67,24 @@ export default function Header() {
           </div>
         )}
 
-        <select
-          onChange={changeLanguage}
-          value={router.locale}
-          className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer"
-        >
-          <option value="fr">🇫🇷 Français</option>
-          <option value="en">🇬🇧 English</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="ja">🇯🇵 日本語</option>
-        </select>
+<div className="flex gap-2 items-center">
+  {["fr", "en", "es", "ja"].map((lng) => (
+    <button
+      key={lng}
+      onClick={() => router.push(router.pathname, router.asPath, { locale: lng })}
+      className={`w-6 h-4 relative transition transform hover:scale-110 ${
+        router.locale === lng ? "opacity-100" : "opacity-40"
+      }`}
+    >
+      <img
+        src={`/assets/img/flags/${lng}.png`}
+        alt={lng}
+        className="w-full h-full object-cover rounded-sm"
+      />
+    </button>
+  ))}
+</div>
+
 
         <XummConnectButton small />
       </nav>
@@ -103,16 +111,24 @@ export default function Header() {
               </div>
             </div>
           )}
-          <select
-            onChange={changeLanguage}
-            value={router.locale}
-            className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer"
-          >
-            <option value="fr">🇫🇷 Français</option>
-            <option value="en">🇬🇧 English</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="ja">🇯🇵 日本語</option>
-          </select>
+          <div className="flex gap-2 items-center">
+  {["fr", "en", "es", "ja"].map((lng) => (
+    <button
+      key={lng}
+      onClick={() => router.push(router.pathname, router.asPath, { locale: lng })}
+      className={`w-6 h-4 relative transition transform hover:scale-110 ${
+        router.locale === lng ? "opacity-100" : "opacity-40"
+      }`}
+    >
+      <img
+        src={`/assets/img/flags/${lng}.png`}
+        alt={lng}
+        className="w-full h-full object-cover rounded-sm"
+      />
+    </button>
+  ))}
+</div>
+
           <XummConnectButton small />
         </div>
       )}
