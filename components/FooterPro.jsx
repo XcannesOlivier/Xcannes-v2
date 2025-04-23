@@ -33,9 +33,9 @@ export default function FooterPro() {
       { href: "/", label: "Home" },
       { href: "/dex", label: "Dex" },
       { href: "/donate", label: "Rejoignez nous" },
-      { href: "/games", label: "Dragon Casino" },
-      { href: "/whitepaper", label: "📖 Livre Blanc" },
+      { href: "/whitepaper", label: "Livre Blanc" },
       { href: "/tokenomics", label: "Tokenomics" },
+      { href: "/games", label: "XCannes,LLC" },
     ].map(({ href, label }) => (
       <li key={href}>
         <Link
@@ -102,7 +102,7 @@ export default function FooterPro() {
   <ul className="text-sm font-medium space-y-1">
     {[
       { label: "CoinMarketCap", url: "https://coinmarketcap.com" },
-      { label: "CoinGecko", url: "https://coingecko.com" },
+      { label: "Info Compagnie", url: "https://coingecko.com" },
       { label: "XrpScan", url: "https://xrpscan.com" },
       { label: "FirstLedger", url: "https://firstledger.dev" },
       { label: "DexScreener", url: "https://dexscreener.com/xrpl" },
@@ -123,10 +123,19 @@ export default function FooterPro() {
 </div>
       {/* Footer final */}
       <div className="text-center text-xs text-white mt-6">
-        &copy; {new Date().getFullYear()} - Xcannes LLC – Delaware, USA
-        <br />
-        Powered by XRP Ledger – Built for Sovereignty
-      </div>
+  &copy; {new Date().getFullYear()} - XCannes LLC – Delaware, USA –
+  <a
+    href="https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="underline underline-offset-2 hover:text-xcannes-green ml-1"
+  >
+    Reg. No. 10157026
+  </a>
+  <br />
+  Powered on XRP Ledger – Created to simplify Web3
+</div>
+
     </footer>
   );
 }
