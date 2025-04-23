@@ -27,12 +27,12 @@ export default function FooterPro() {
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 mb-10 text-center md:text-center">
         {/* Colonne 1 - Pages */}
         <div className="space-y-2 order-1">
-  <h4 className="font-bold text-white">Pages</h4>
+  <h4 className="font-bold text-white">Espaces</h4>
   <ul className="text-sm font-medium space-y-1">
     {[
       { href: "/", label: "Home" },
       { href: "/dex", label: "Dex" },
-      { href: "/disclaimer", label: "Disclaimer" },
+      { href: "/donate", label: "Rejoignez nous" },
       { href: "/games", label: "Dragon Casino" },
       { href: "/whitepaper", label: "📖 Livre Blanc" },
       { href: "/tokenomics", label: "Tokenomics" },
@@ -76,10 +76,10 @@ export default function FooterPro() {
           </div>
 
           <a
-            href="/donate"
-            className="inline-block bg-xcannes-green text-white font-medium py-2 px-6 rounded-xl hover:bg-lime-500 transition"
+            href="/disclaimer"
+            className="inline-block text-white font-medium py-2 px-6 rounded-xl hover:scale-105 transition"
           >
-            Onboard now
+            Mention légale
           </a>
 
           <p className="text-sm mt-4">
@@ -98,7 +98,7 @@ export default function FooterPro() {
 
         {/* Colonne 3 - Liens externes */}
         <div className="space-y-2 order-2 md:order-3">
-  <h4 className="font-bold text-white">Links</h4>
+  <h4 className="font-bold text-white">Portails</h4>
   <ul className="text-sm font-medium space-y-1">
     {[
       { label: "CoinMarketCap", url: "https://coinmarketcap.com" },
