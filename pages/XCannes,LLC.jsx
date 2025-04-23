@@ -27,7 +27,7 @@ export default function LegalInfo() {
             <li><strong>Numéro EIN (IRS) :</strong> 38-4351623</li>
           </ul>
           <p className="text-xs text-gray-400 mt-2">
-            📎 <a href="/assets/docs/XcannesLLC_EIN_IRS.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-xcannes-green">Voir le document officiel (EIN PDF)</a>
+            📎 <a href="/assets/docs/XCannesLLC_EIN_IRS.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-xcannes-green">Voir le document officiel (EIN PDF)</a>
           </p>
           <p className="text-xs text-gray-400">
             🔗 <a href="https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx" target="_blank" rel="noopener noreferrer" className="underline hover:text-xcannes-green">Consulter l’enregistrement sur le registre du Delaware</a>
@@ -38,7 +38,6 @@ export default function LegalInfo() {
           <h2 className="text-xl text-xcannes-green font-medium mb-2">📫 Contact & Communication</h2>
           <ul className="list-disc pl-5 text-sm space-y-1">
             <li>Email officiel : <a href="mailto:xcannesdao@gmail.com" className="underline hover:text-xcannes-green">xcannesdao@gmail.com</a></li>
-            <li>Responsable légal : à venir</li>
             <li>Agent enregistré : Legalinc Corporate Services Inc., Newark, DE</li>
           </ul>
         </section>
