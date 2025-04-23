@@ -38,7 +38,7 @@ export default function BuyXCSSection() {
 
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 text-left">
           {/* Étape 1 */}
-          <div className="bg-[#202320] text-white shadow-2xl border-l-4 border-[#16b303] rounded-lg p-5 hover:shadow-xl transition hover:scale-[1.02] ">
+          <div className="bg-[#202320] text-white shadow-2xl border-l-4 border-[#16b303] rounded-lg p-5 hover:shadow-2xl transition hover:scale-[1.02] ">
             <h3 className="text-lg sm:text-xl font-[500] mb-2">1. Installez un wallet XRPL</h3>
             <p className="mb-4 text-sm">
             Téléchargez un wallet compatible avec le XRP Ledger comme <strong>Xaman (ex-Xumm)</strong> puis créez et sécurisez votre portefeuille pour recevoir vos tokens.
@@ -55,7 +55,7 @@ export default function BuyXCSSection() {
           </div>
 
           {/* Étape 2 */}
-          <div className="bg-[#202320] text-white shadow-2xl border-1-4 border-[#16b303] rounded-lg p-5 hover:shadow-xl transition hover:scale-[1.02] ">
+          <div className="bg-[#202320] text-white shadow-2xl border-1-4 border-[#16b303] rounded-lg p-5 hover:shadow-2xl transition hover:scale-[1.02] ">
             <h3 className="text-lg sm:text-xl font-[500] mb-2">2. Ajoutez la Trustline</h3>
             <p className="mb-4 text-sm">
             Ajoutez une trustline pour autoriser votre wallet à recevoir le jeton XCS en toute sécurité.
@@ -70,7 +70,7 @@ export default function BuyXCSSection() {
           </div>
 
           {/* Étape 3 */}
-          <div className="bg-[#202320] text-white shadow-2xl border-l-4 border-[#16b303] rounded-lg p-5 hover:shadow-xl transition hover:scale-[1.02] ">
+          <div className="bg-[#202320] text-white shadow-2xl border-l-4 border-[#16b303] rounded-lg p-5 hover:shadow-2xl transition hover:scale-[1.02] ">
             <h3 className="text-lg sm:text-xl font-[500] mb-2">3. Achetez du XCS</h3>
             <p className="mb-4 text-sm">
             Achetez vos tokens XCS directement via notre DEX ou auprès de partenaires centralisés comme Bitrue.
