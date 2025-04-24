@@ -37,7 +37,7 @@ const data = [
 export default function TokenDistributionChart() {
   return (
     <section
-      className="w-screen bg-cover bg-center bg-no-repeat mt-10 text-white pb-15 pt-10 px-6 font-montserrat font-[300]"
+      className="w-screen bg-cover bg-center bg-no-repeat mt-0 text-white pb-15 pt-10 px-6 font-montserrat font-[300]"
       style={{
         backgroundImage: "url('/assets/img/ui/backgroundNotreVision1.png')",
         backgroundColor: "#202320",
