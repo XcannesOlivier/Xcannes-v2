@@ -22,7 +22,7 @@ export default function NotreVisionBlock() {
         <h2 className="text-5xl font-orbitron font-extrabold text-xcannes-green mb-4 drop-shadow-[0_2px_8px_rgba(22,179,3,0.3)]">
           Notre vision
         </h2>
-        <p className="text-xl font-medium text-gray-300 mb-10">
+        <p className="text-xl font-medium text-gray-300 mb-5">
           Construire la communauté décentralisée la plus innovante du Web3 européen
         </p>
 
@@ -36,12 +36,12 @@ export default function NotreVisionBlock() {
           </div>
 
           {/* Logo */}
-          <section className="flex justify-center items-center max-h-[28vh] relative">
+          <section className="flex justify-center mt-20 items-center max-h-[28vh] relative">
             <div className="relative">
               <img
                 src="/assets/img/ui/biglogoXcannes.png"
                 alt="Logo XCannes"
-                className="h-[25rem] sm:h-[40rem] md:h-[45rem]"
+                className="h-[20rem] sm:h-[35rem] md:h-[40rem]"
               />
             </div>
           </section>
