@@ -71,9 +71,8 @@ export default function Home() {
         <TokenDistributionChart />
         <BuyXCSSection />
         <FAQSection />
+        <FooterPro />
       </main>
-
-      <FooterPro />
     </>
   );
 }
