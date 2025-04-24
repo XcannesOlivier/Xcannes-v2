@@ -41,7 +41,7 @@ body {
 .faq-animate,
 .scroll-animate {
   opacity: 1;
-  transform: translateY(30px);
+  transform: translateY(0px);
   transition: all 0s ease-out;
 }
 
