@@ -36,7 +36,7 @@ export default function Home() {
 </h1>
 
 {/* Mobile : texte de la vision déplacé */}
-<p className="text-base text-gray-300 mb-15 mt-10 block sm:hidden max-w-xl">
+<p className="text-base text-gray-300 mb-15 -mt-15 block sm:hidden max-w-xl">
   Propulser Cannes dans l’économie numérique avec une technologie
   <span className="text-xcannes-green font-semibold"> rapide</span>,
   <span className="text-xcannes-green font-semibold"> éthique</span> et
@@ -44,7 +44,7 @@ export default function Home() {
 </p>
 
 {/* Desktop : texte d’intro classique */}
-<p className="text-lg max-w-xl text-gray-300 mb-15 mt-15 hidden sm:block">
+<p className="text-lg max-w-xl text-gray-300 mb-15 -mt-15 hidden sm:block">
   Échangez le token <strong>XCannes (XCS)</strong> directement sur le XRP Ledger. Participez, gagnez, contribuez.
 </p>
 
