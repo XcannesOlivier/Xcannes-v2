@@ -110,7 +110,7 @@ export default function Header() {
           className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer"
         >
           <option value="fr">🇫🇷 Français</option>
-          <option value="en">US English</option>
+          <option value="en">🇺🇸 US English</option>
           <option value="es">🇪🇸 Español</option>
           <option value="ja">🇯🇵 日本語</option>
         </select>
