@@ -5,7 +5,7 @@ export default function LangueActive() {
 
   const labels = {
     fr: "🇫🇷 Français",
-    en: "🇬🇧 English",
+    en: "🇺🇸 US English",
     es: "🇪🇸 Español",
     ja: "🇯🇵 日本語"
   };
