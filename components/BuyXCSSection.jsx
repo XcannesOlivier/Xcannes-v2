@@ -92,7 +92,7 @@ export default function BuyXCSSection() {
         </div>
 
         {/* Logos partenaires */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-14 items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-5 items-center">
           <a
             href="https://xumm.app/?lang=en"
             target="_blank"
