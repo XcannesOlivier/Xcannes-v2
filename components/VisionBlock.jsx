@@ -53,7 +53,7 @@ export default function VisionBlock() {
 
 
 
-          <p className="text-base md:text-lg text-gray-100 mb-6">
+        <p className="text-base md:text-lg text-gray-100 mb-6 hidden sm:block">
             Propulser Cannes dans l’économie numérique avec une technologie
             <span className="text-xcannes-green font-semibold"> rapide</span>,
             <span className="text-xcannes-green font-semibold"> éthique</span> et
