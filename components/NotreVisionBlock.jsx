@@ -48,9 +48,9 @@ export default function NotreVisionBlock() {
 
           {/* Pyramide Stable */}
           <div className="text-center text-lg font-semibold text-gray-300 space-y-3 leading-tight mt-10">
-            {[ [ "Connecte", "L’Avenir"],
-               ["Numérique", "& la Nouvelle"],
-               ["Énergie", "Souveraine"] ].map((row, i) => (
+            {[ [ "Connecte", "L’Avenir","Numérique"],
+               ["& la Nouvelle","Énergie"],
+               ["Souveraine"] ].map((row, i) => (
               <div key={i} className="flex justify-center gap-3 sm:gap-6">
                 {row.map((item, j) => (
                   <div key={j}>{item}</div>
