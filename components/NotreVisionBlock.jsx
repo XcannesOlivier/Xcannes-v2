@@ -36,7 +36,7 @@ export default function NotreVisionBlock() {
           </div>
 
           {/* Logo */}
-          <section className="flex justify-center mt-10 items-center max-h-[28vh] relative">
+          <section className="flex justify-center items-center max-h-[28vh] relative">
             <div className="relative">
               <img
                 src="/assets/img/ui/biglogoXcannes.png"
