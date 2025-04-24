@@ -94,7 +94,7 @@ export default function FAQSection() {
                 <div
                   className={`transform transition-transform duration-300 ${
                     openIndex === index ? "rotate-90 text-xcannes-green" : "rotate-0"
-                  }`}
+                  }bg-black text-white rounded p-1 inline-block font-sans`}
                 >
                   ▶
                 </div>
