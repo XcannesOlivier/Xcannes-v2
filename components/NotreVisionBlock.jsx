@@ -10,7 +10,7 @@ export default function NotreVisionBlock() {
   return (
     <section
       id="vision"
-      className="relative w-screen text-white font-sans py-24 px-6 bg-cover bg-center bg-no-repeat"
+      className="relative w-screen text-white font-sans py-14 px-6 bg-cover bg-center bg-no-repeat"
       style={{
         backgroundImage: "url('/assets/img/ui/backgrounddolleuro1.png')",
       }}
