@@ -134,7 +134,7 @@ export default function FooterPro() {
   >
     Reg. No. 10157026
   </a>
-  <br />
+  <br className="block sm:hidden" />
   Powered on XRP Ledger – Created to simplify Web3
 </div>
 
