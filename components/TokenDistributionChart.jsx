@@ -59,8 +59,8 @@ export default function TokenDistributionChart() {
     const distanceFactor = isMobile ? 1.2 : 2.3;
   
     const radius = innerRadius + (outerRadius - innerRadius) * distanceFactor;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    const x = cx + radius * Math.cos(-midAngle * RADIAN)+ (isMobile ? 5 : 10);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN)- (isMobile ? 3 : 5);
     const { name, color } = data[index];
   
     return (
