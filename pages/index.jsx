@@ -30,7 +30,7 @@ export default function Home() {
     <img
       src="/assets/img/ui/xcannesgreen.png"
       alt="Logo X"
-      className="h-[12.5rem] sm:h-[16.2rem] md:h-[19rem] w-auto brightness-110 saturate-150  relative"
+      className="h-[10.5rem] sm:h-[16.2rem] md:h-[19rem] w-auto brightness-110 saturate-150  relative"
     />
   </span>
 </h1>
