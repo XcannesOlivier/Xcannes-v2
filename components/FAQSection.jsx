@@ -59,7 +59,7 @@ export default function FAQSection() {
   return (
     <section
       id="faq"
-      className="relative faq-animate border border-white border-opacity-40 font-montserrat font-[300] w-full max-w-6xl mx-auto  text-white pb-20 px-6 mt-0 pt-5 rounded-3xl"
+      className="relative faq-animate border border-white border-opacity-40 font-montserrat font-[300] w-full max-w-6xl mx-auto  text-white pb-5 px-6 mt-0 pt-5 rounded-3xl"
       style={{ backgroundColor: "#202320" }}
     >
       {/* Superposition sombre */}
