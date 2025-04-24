@@ -1,6 +1,6 @@
 export default function BuyXCSSection() {
   return (
-    <section className="relative w-screen to-white py-0 px-4 sm:px-6 text-black overflow-hidden font-montserrat font-[300]">
+    <section className="relative w-screen to-white pt-5 px-4 sm:px-6 text-black overflow-hidden font-montserrat font-[300]">
       {/* Background image */}
       <div
         className="absolute inset-0  animate-fade-in"
