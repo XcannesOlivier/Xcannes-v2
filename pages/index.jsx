@@ -36,7 +36,7 @@ export default function Home() {
 </h1>
 
 {/* Mobile : texte de la vision déplacé */}
-<p className="text-base text-gray-300  mb-10 mt-0 block sm:hidden max-w-xl">
+<p className="text-base text-gray-300  mb-10 -mt-10 block sm:hidden max-w-xl">
   Propulser Cannes dans l’économie numérique avec une technologie
   <span className="text-xcannes-green font-semibold"> rapide</span>,
   <span className="text-xcannes-green font-semibold"> éthique</span> et
