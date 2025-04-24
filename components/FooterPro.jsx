@@ -31,7 +31,7 @@ export default function FooterPro() {
   <ul className="text-sm font-medium space-y-1">
     {[
       { href: "/", label: "Home" },
-      { href: "/dex", label: "Dex" },
+      { href: "/dex", label: "XCannes Dex" },
       { href: "/communauté", label: "Rejoignez nous" },
       { href: "/whitepaper", label: "Livre Blanc" },
       { href: "/tokenomics", label: "Tokenomics" },
