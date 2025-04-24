@@ -24,13 +24,13 @@ export default function Home() {
       <VisionBlock />
       
       <main className="flex flex-col items-center justify-center pt-18 sm:pt-5 md:pt-5 pb-5 px-4 text-center font-montserrat font-[300]">
-      <h1 className="text-2xl sm:text-4xl md:text-5xl font-orbitron font-[500] -mt-[3rem] sm:-mt-[3rem]  md:-mt-[6rem]  flex items-center justify-center flex-wrap text-white ">
+      <h1 className="text-2xl sm:text-4xl md:text-5xl font-orbitron font-[500] -mt-[3rem] sm:-mt-[3rem]  md:-mt-[5rem]  flex items-center justify-center flex-wrap text-white ">
   Bienvenue sur
   <span className="flex items-center -ml-3 -mt-12 sm:mt-0">
     <img
       src="/assets/img/ui/xcannesgreen.png"
       alt="Logo X"
-      className="h-[12.5rem] sm:h-[16.2rem] md:h-[19rem] w-auto brightness-110 saturate-150 sm:-mt-[3rem] md:-mt-[3rem] -mt-[3rem] relative"
+      className="h-[12.5rem] sm:h-[16.2rem] md:h-[19rem] w-auto brightness-110 saturate-150 sm:-mt-[3rem] md:-mt-[2rem] -mt-[3rem] relative"
     />
   </span>
 </h1>
