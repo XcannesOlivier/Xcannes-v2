@@ -65,7 +65,7 @@ export default function TokenDistributionChart() {
     const { name, color } = data[index];
   
     // 🎯 Offsets personnalisables
-    const horizontalOffset = x > cx ? 20 : 20; // vers l'extérieur du camembert
+    const horizontalOffset = x > cx ? 20 : 25; // vers l'extérieur du camembert
     const verticalOffset = isMobile ? 20 : 25;    // vers le bas
   
     // Application des décalages
