@@ -56,7 +56,7 @@ export default function TokenDistributionChart() {
     const RADIAN = Math.PI / 180;
   
     // 💡 Tu peux modifier ce facteur pour ajuster verticalement les labels
-    const distanceFactor = isMobile ? 1.1 : 1.2;
+    const distanceFactor = isMobile ? 1.5 : 1.6;
   
     const radius = innerRadius + (outerRadius - innerRadius) * distanceFactor;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
