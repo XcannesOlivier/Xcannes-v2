@@ -44,7 +44,7 @@ export default function Home() {
 </p>
 
 {/* Desktop : texte d’intro classique */}
-<p className="text-lg max-w-xl text-gray-300 mb-20 -mt-20 hidden sm:block">
+<p className="text-lg max-w-xl text-gray-300 mb-10 -mt-10 hidden sm:block">
   Échangez le token <strong>XCannes (XCS)</strong> directement sur le XRP Ledger. Participez, gagnez, contribuez.
 </p>
 
