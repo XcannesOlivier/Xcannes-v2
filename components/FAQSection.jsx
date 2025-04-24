@@ -73,7 +73,7 @@ export default function FAQSection() {
           FAQ - Questions Fréquentes
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-2">
           {faqItems.map((item, index) => (
             <div
               key={index}
