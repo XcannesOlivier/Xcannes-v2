@@ -58,7 +58,7 @@ export default function NotreVisionBlock() {
               </div>
             ))}
             <div className="mt-2 italic text-sm text-gray-400">
-              Xcannes – Un mouvement local pour un impact global
+              Un mouvement international pour un clin d'eil local
             </div>
           </div>
 
