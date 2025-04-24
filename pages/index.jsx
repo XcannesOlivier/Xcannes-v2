@@ -52,14 +52,14 @@ export default function Home() {
 
 
         <div className="flex flex-col md:flex-row gap-6">
-          <Link href="/dex">
-            <button className="bg-xcannes-green px-6 py-3 rounded-xl font-[500] text-white hover:bg-xcannes-green hover:text-white transition transform hover:scale-105">
-              Accéder au DEX
-            </button>
-          </Link>
           <Link href="/mxga">
             <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-[500] hover:bg-blue-700 hover:text-white transition transform hover:scale-105">
               Découvrez XCS
+            </button>
+          </Link>
+          <Link href="/dex">
+            <button className="bg-xcannes-green px-6 py-3 rounded-xl font-[500] text-white hover:bg-xcannes-green hover:text-white transition transform hover:scale-105">
+              Accéder au DEX
             </button>
           </Link>
         </div>
