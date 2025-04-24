@@ -54,16 +54,20 @@ export default function TokenDistributionChart() {
   // Fonction de rendu custom des labels
   const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const RADIAN = Math.PI / 180;
-    const radius = innerRadius + (outerRadius - innerRadius) * 1.2;
+  
+    // 💡 Tu peux modifier ce facteur pour ajuster verticalement les labels
+    const distanceFactor = isMobile ? 1.3 : 1.4;
+  
+    const radius = innerRadius + (outerRadius - innerRadius) * distanceFactor;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    const { name } = data[index];
-
+    const { name, color } = data[index];
+  
     return (
       <text
         x={x}
         y={y}
-        fill="#fff"
+        fill={color} // Remet la couleur d'origine
         textAnchor={x > cx ? "start" : "end"}
         dominantBaseline="central"
         style={{
@@ -76,6 +80,7 @@ export default function TokenDistributionChart() {
       </text>
     );
   };
+  
 
   return (
     <section
