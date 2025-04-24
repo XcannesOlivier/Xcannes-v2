@@ -57,6 +57,10 @@ body {
 .bg-grey\/90 {
   background-color: #02011ee6;
 }
+.faq-arrow {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
 
 .text-FAQ {
   color: white;
