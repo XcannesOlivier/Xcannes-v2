@@ -55,19 +55,28 @@ export default function TokenDistributionChart() {
   const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const RADIAN = Math.PI / 180;
   
-    // 💡 Tu peux modifier ce facteur pour ajuster verticalement les labels
-    const distanceFactor = isMobile ? 1.6 : 1.6;
+    // Rayon de base
+    const radius = innerRadius + (outerRadius - innerRadius) * 1.2;
   
-    const radius = innerRadius + (outerRadius - innerRadius) * distanceFactor;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN)+ (isMobile ? 10 : 10);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN)- (isMobile ? 14 : 14);
+    // Position de base
+    let x = cx + radius * Math.cos(-midAngle * RADIAN);
+    let y = cy + radius * Math.sin(-midAngle * RADIAN);
+  
     const { name, color } = data[index];
+  
+    // 🎯 Offsets personnalisables
+    const horizontalOffset = x > cx ? 10 : -10; // vers l'extérieur du camembert
+    const verticalOffset = isMobile ? 4 : 8;    // vers le bas
+  
+    // Application des décalages
+    x += horizontalOffset;
+    y += verticalOffset;
   
     return (
       <text
         x={x}
         y={y}
-        fill={color} // Remet la couleur d'origine
+        fill={color}
         textAnchor={x > cx ? "start" : "end"}
         dominantBaseline="central"
         style={{
@@ -80,6 +89,7 @@ export default function TokenDistributionChart() {
       </text>
     );
   };
+  
   
 
   return (
