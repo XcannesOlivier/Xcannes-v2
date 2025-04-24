@@ -97,7 +97,7 @@ export default function BuyXCSSection() {
             href="https://xumm.app/?lang=en"
             target="_blank"
             rel="noopener noreferrer"
-            className="block text-center opacity-100 hover:opacity-100 hover:scale-150 transition duration-500 ease-in-out cursor-pointer"
+            className="block text-center opacity-100 hover:opacity-100 hover:scale-120 transition duration-500 ease-in-out cursor-pointer"
           >
             <img
               src="/assets/img/socials/logoxummblue.png"
@@ -111,7 +111,7 @@ export default function BuyXCSSection() {
             href="https://www.youtube.com/@xcannes"
             target="_blank"
             rel="noopener noreferrer"
-            className="block text-center opacity-100 hover:opacity-100 hover:scale-150 transition duration-500 ease-in-out cursor-pointer"
+            className="block text-center opacity-100 hover:opacity-100 hover:scale-120 transition duration-500 ease-in-out cursor-pointer"
           >
             <img
               src="/assets/img/socials/youtube-transparent.png"
@@ -123,7 +123,7 @@ export default function BuyXCSSection() {
 
           <a
             href="/dex"
-            className="block text-center opacity-100 hover:opacity-100 hover:scale-150 transition duration-500 ease-in-out cursor-pointer"
+            className="block text-center opacity-100 hover:opacity-100 hover:scale-120 transition duration-500 ease-in-out cursor-pointer"
           >
             <img
               src="/assets/img/socials/logoxcannesdexred.png"
@@ -137,7 +137,7 @@ export default function BuyXCSSection() {
             href="https://www.bitrue.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="block text-center opacity-100 hover:opacity-100 hover:scale-150 transition duration-500 ease-in-out cursor-pointer"
+            className="block text-center opacity-100 hover:opacity-100 hover:scale-120 transition duration-500 ease-in-out cursor-pointer"
           >
             <img
               src="/assets/img/socials/logobitrue.jpg"
