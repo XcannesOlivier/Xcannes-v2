@@ -51,6 +51,32 @@ function useIsMobile() {
 export default function TokenDistributionChart() {
   const isMobile = useIsMobile();
 
+  // Fonction de rendu custom des labels
+  const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 1.2;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    const { name } = data[index];
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="#fff"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+        style={{
+          fontSize: isMobile ? "10px" : "14px",
+          fontFamily: "Montserrat",
+          fontWeight: 500,
+        }}
+      >
+        {`${name} ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
   return (
     <section
       className="w-screen bg-cover bg-center bg-no-repeat mt-0 text-white pb-15 pt-10 px-6 font-montserrat font-[300]"
@@ -78,9 +104,7 @@ export default function TokenDistributionChart() {
                   innerRadius={isMobile ? 30 : 80}
                   outerRadius={isMobile ? 60 : 120}
                   dataKey="value"
-                  label={({ name, percent }) =>
-                    `${name} ${(percent * 100).toFixed(0)}%`
-                  }
+                  label={renderCustomLabel}
                   labelLine={false}
                   isAnimationActive={true}
                 >
