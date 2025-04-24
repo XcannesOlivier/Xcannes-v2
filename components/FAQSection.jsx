@@ -84,7 +84,7 @@ export default function FAQSection() {
             >
               <div className="flex justify-between items-center p-4">
                 <h3
-                  className={`text-base md:text-lg font-[400] transition-all ${
+                  className={`text-base text-sm md:text-lg font-[400] transition-all ${
                     openIndex === index ? "underline text-xcannes-green" : "text-FAQ"
                   }`}
                 >
