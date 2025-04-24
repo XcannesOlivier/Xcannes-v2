@@ -70,7 +70,7 @@ export default function AltPaymentBlock({ title = "Accédez à XCS en toute simp
             <img
               src={`/assets/img/payments/${src}`}
               alt={alt}
-              className="w-17 h-16 object-contain"
+              className="w-17 h-15 object-contain"
             />
           </div>
         ))}
