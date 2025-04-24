@@ -82,7 +82,7 @@ export default function FAQSection() {
                 openIndex === index ? "ring-1 ring-xcannes-green" : ""
               }`}
             >
-              <div className="flex justify-between items-center p-4">
+              <div className="flex justify-between items-center pt-2 pb-2">
                 <h3
                   className={`text-base text-sm md:text-lg font-[400] transition-all ${
                     openIndex === index ? "underline text-xcannes-green" : "text-FAQ"
