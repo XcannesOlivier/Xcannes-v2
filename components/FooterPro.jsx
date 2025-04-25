@@ -104,8 +104,8 @@ export default function FooterPro() {
   <ul className="text-sm font-medium space-y-1">
     {[
       { label: "CoinMarketCap", url: "https://coinmarketcap.com" },
-      { label: "Info Compagnie", url: "https://coingecko.com" },
-      { label: "XrpScan", url: "https://xrpscan.com" },
+      { label: "XrpScan (Xcs)", url: "https://xrpscan.com/account/rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx" },
+      { label: "XrpScan (Xrp)", url: "https://xrpscan.com" },
       { label: "FirstLedger", url: "https://firstledger.dev" },
       { label: "DexScreener", url: "https://dexscreener.com/xrpl" },
     ].map(({ label, url }) => (
