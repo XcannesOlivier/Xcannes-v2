@@ -27,12 +27,16 @@ export default function CreatorWalletBlock() {
       </p>
 
       <div className="flex items-center bg-[#f9f6f6] rounded-lg overflow-hidden px-4 py-2">
-  <p
-    className="flex-1 text-black text-sm font-[400] truncate whitespace-nowrap overflow-hidden max-w-[200px] sm:max-w-full"
-    title={creatorWallet}
-  >
-    {creatorWallet}
-  </p>
+      <a
+  href={`https://xrpscan.com/account/${creatorWallet}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex-1 text-black text-sm font-[400] truncate whitespace-nowrap overflow-hidden max-w-[200px] sm:max-w-full underline hover:text-blue-600"
+  title={creatorWallet}
+>
+  {creatorWallet}
+</a>
+
   <button
     onClick={handleCopy}
     className="ml-4 px-4 py-2 text-sm font-[600] bg-xcannes-green text-white hover:bg-xcannes-blue-light hover:text-white transition"
