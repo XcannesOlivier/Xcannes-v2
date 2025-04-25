@@ -85,12 +85,11 @@ export default function FooterPro() {
           </a>
 
           <p className="text-sm mt-4">
-            Email :{" "}
-            <a href="mailto:xcannesdao@gmail.com" className="underline">
-              xcannesdao@gmail.com
-            </a>
-          </p>
-
+  Email :{" "}
+  <a href="/contact" className="underline text-xcannes-green hover:opacity-80 transition">
+    contact@xcannes.com
+  </a>
+</p>
           {isConnected && (
             <p className="text-xs text-white mt-4 break-all">
               🔗 Connecté à XUMM : {wallet}
