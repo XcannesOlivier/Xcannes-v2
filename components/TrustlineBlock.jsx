@@ -46,7 +46,7 @@ export default function TrustlineBlock() {
     <span className="font-semibold">Currency :</span> XCS
   </p>
   <p className="mb-4">
-    <span className="font-semibold">Limit :</span>  2&#8239;&#8239;006&#8239;&#8239;400
+    <span className="font-semibold">Limit :</span>  2&#8239;&#8239;&#8239;006&#8239;&#8239;&#8239;400
   </p>
 
   <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg overflow-hidden">
