@@ -39,7 +39,8 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-12 bg-gray-100">
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-12 bg-gray-100"
+    style={{ backgroundColor: "#202320" }}>
       <div className="max-w-md w-full bg-white rounded-lg shadow p-6">
         <h1 className="text-2xl font-bold mb-4">Contactez-nous</h1>
 
