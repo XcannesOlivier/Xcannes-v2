@@ -72,7 +72,7 @@ export default function Contact() {
             className="w-full border border-gray-300 px-3 py-2 rounded"
           />
           <ReCAPTCHA
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+            sitekey="6LfNwCQrAAAAAFsILt0hClQ5kZVYyKwngXMP0EPF"
             onChange={(token) => setCaptchaToken(token)}
           />
           <button
