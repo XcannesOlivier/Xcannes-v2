@@ -51,26 +51,42 @@ function useIsMobile() {
 export default function TokenDistributionChart() {
   const isMobile = useIsMobile();
 
-  // Fonction de rendu custom des labels
-  const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+  const labelOffsets = {
+    desktop: {
+      Team: { x: 25, y: -10 },
+      Trésorerie: { x: -30, y: 10 },
+      Communauté: { x: 20, y: 25 },
+      Liquidité: { x: -20, y: 25 },
+    },
+    mobile: {
+      Team: { x: 10, y: -5 },
+      Trésorerie: { x: -15, y: 5 },
+      Communauté: { x: 12, y: 15 },
+      Liquidité: { x: -12, y: 15 },
+    },
+  };
+  
+
+  const renderCustomLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }) => {
     const RADIAN = Math.PI / 180;
-  
-    // Rayon de base
     const radius = innerRadius + (outerRadius - innerRadius) * 1.2;
-  
-    // Position de base
     let x = cx + radius * Math.cos(-midAngle * RADIAN);
     let y = cy + radius * Math.sin(-midAngle * RADIAN);
   
     const { name, color } = data[index];
+    const offsets = isMobile ? labelOffsets.mobile : labelOffsets.desktop;
+    const offset = offsets[name] || { x: 0, y: 0 };
   
-    // 🎯 Offsets personnalisables
-    const horizontalOffset = x > cx ? 20 : 25; // vers l'extérieur du camembert
-    const verticalOffset = isMobile ? 20 : 25;    // vers le bas
-  
-    // Application des décalages
-    x += horizontalOffset;
-    y += verticalOffset;
+    x += offset.x;
+    y += offset.y;
   
     return (
       <text
