@@ -132,8 +132,8 @@ export default function TokenDistributionChart() {
                   data={data}
                   cx="50%"
                   cy="50%"
-                  innerRadius={isMobile ? 60 : 80}
-                  outerRadius={isMobile ? 100 : 120}
+                  innerRadius={isMobile ? 30 : 80}
+                  outerRadius={isMobile ? 800 : 120}
                   dataKey="value"
                   label={renderCustomLabel}
                   labelLine={false}
