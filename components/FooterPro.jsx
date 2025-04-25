@@ -88,7 +88,7 @@ export default function FooterPro() {
   Email :{" "}
   <a
   href={`/contact${isDex ? "?from=dex" : ""}`}
-  className="underline text-xcannes-green hover:opacity-80 transition"
+  className="underline text-white hover:opacity-80 transition"
 >
   contact@xcannes.com
 </a>
