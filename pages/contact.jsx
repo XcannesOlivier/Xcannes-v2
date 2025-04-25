@@ -73,6 +73,13 @@ export default function Contact() {
           Envoyer
         </button>
         <p className="text-sm mt-2 text-gray-400">{status}</p>
+
+        {/* 👇 Retour au site */}
+<p className="mt-6 text-center">
+  <a href="/" className="text-sm underline text-blue-600">
+    ← Retour au site
+  </a>
+</p>
       </form>
     </section>
   );
