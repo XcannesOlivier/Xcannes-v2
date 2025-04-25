@@ -3,11 +3,12 @@ import nodemailer from "nodemailer";
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { name, email, message, token } = req.body;
+  const { name, email, message, captchaToken } = req.body;
+
 
   // Vérifier le token reCAPTCHA
-  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${token}`;
-  const captchaRes = await fetch(verifyUrl, { method: "POST" });
+  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${captchaToken}`;
+ const captchaRes = await fetch(verifyUrl, { method: "POST" });
   const captchaData = await captchaRes.json();
 
   if (!captchaData.success) {
