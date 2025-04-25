@@ -59,8 +59,8 @@ export default function TokenDistributionChart() {
       Liquidité: { x: -20, y: 25 },
     },
     mobile: {
-      Team: { x: 10, y: -5 },
-      Trésorerie: { x: 25, y: -15 },
+      Team: { x: 5, y: -5 },
+      Trésorerie: { x: 25, y: -25 },
       Communauté: { x: 25, y: 15 },
       Liquidité: { x: -12, y: 15 },
     },
