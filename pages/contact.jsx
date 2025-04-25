@@ -71,15 +71,14 @@ export default function Contact() {
           disabled={!captchaToken}
         >
           Envoyer
-        </button>
-        <p className="text-sm mt-2 text-gray-400">{status}</p>
+          </button>
+       {/* 👇 Retour au site */}
+<p className="mt-6 text-center">
+  <a href="/" className="text-sm underline text-blue-600">
+    ← Retour au site
+  </a>
+</p>
 
-        <button
-  onClick={() => window.close()}
-  className="mt-6 text-sm underline text-blue-600 block mx-auto"
->
-  ✕ Fermer la page
-</button>
       </form>
     </section>
   );
