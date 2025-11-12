@@ -6,10 +6,8 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import Header from "../components/Header";
 import FooterPro from "../components/FooterPro";
-import OrderBook from "../components/OrderBook";
-import TradeHistory from "../components/TradeHistory";
-import AltPaymentBlock from "../components/AltPaymentBlock";
-import TradeBox from "../components/TradeBox";
+import TradingPanel from "../components/TradingPanel";
+import SetupPanel from "../components/SetupPanel";
 import { useXumm } from "../context/XummContext";
 import TrustlineDex from "../components/TrustlineDex";
 import SEOHead from "../components/SEOHead";
@@ -59,12 +57,12 @@ export default function Dex() {
       <main className="relative w-full min-h-screen text-white pt-36 pb-0 mb-0 bg-cover bg-center bg-no-repeat bg-fixed font-montserrat font-[300] bg-xcannes-background">
         <div className="absolute inset-0 bg-black/0 z-0" />
 
-        <div className="max-w-5xl mx-auto px-4 relative z-10">
-          <h1 className="text-3xl font-orbitron font-[500] text-xcannes-green mb-6">
-            Trading
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <h1 className="text-5xl md:text-6xl font-orbitron font-bold text-center text-white mb-8 tracking-tight">
+            XCS Today
           </h1>
 
-          {/* ✅ Graphique avec sélecteurs intégrés */}
+          {/* Graphique pleine largeur */}
           <XrplCandleChartRaw
             key={`${selectedPair}-${interval}`}
             pair={selectedPair}
@@ -74,14 +72,15 @@ export default function Dex() {
             availablePairs={PAIRS}
           />
 
-          <div className="grid md:grid-cols-[1fr_1fr] gap-6 mt-0  mb-5 items-start">
-            <TradeBox pair={selectedPair} />
-            <AltPaymentBlock isDex={isDex} />
+          {/* Trading Panel unifié */}
+          <div className="mt-6">
+            <TradingPanel pair={selectedPair} />
           </div>
 
-          <TrustlineDex />
-          <OrderBook pair={selectedPair} />
-          <TradeHistory pair={selectedPair} />
+          {/* Setup Panel unifié (Trustline + Fiat Purchase) */}
+          <div className="mt-6">
+            <SetupPanel />
+          </div>
 
           {isConnected && (
             <div className="my-12 text-center">
