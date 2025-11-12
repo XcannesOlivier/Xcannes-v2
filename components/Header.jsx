@@ -27,95 +27,97 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`w-full h-16 fixed top-0 left-0 z-50 px-4 flex items-center justify-between font-montserrat font-[300] transition duration-300 ${
-      scrolled ? "bg-black/70 backdrop-blur-sm" : "bg-black/90"
-    } text-white`}>
-      <Link href={isDex ? "/" : "/dex"}>
-        <div className="flex items-center gap-0 h-full">
-          <img
-            src="/assets/img/ui/navHeader.png"
-            alt="Logo XCS"
-            className="h-32 sm:h-34 md:h-36 lg:h-38 object-contain transition-all duration-300"
-          />
-          <span className={`text-base sm:text-lg md:text-xl font-bold ml-0 ${isDex ? "text-xcannes-green" : "text-xcannes-blue-light"}`}>
-            {isDex ? "DEX" : "Home"}
+    <header
+      className={`w-full h-16 fixed top-0 left-0 z-50 px-6 flex items-center justify-between font-montserrat transition-all duration-300 border-b ${
+        scrolled
+          ? "bg-black/95 backdrop-blur-md border-white/10"
+          : "bg-black/80 backdrop-blur-sm border-white/5"
+      } text-white`}
+    >
+      {/* Logo simple texte style banque suisse */}
+      <Link href="/">
+        <div className="flex items-center gap-3 group">
+          <span className="text-xl md:text-2xl font-orbitron font-bold tracking-tight text-white group-hover:text-xcannes-green transition-colors duration-300">
+            XCANNES
+          </span>
+          <span className="hidden md:inline text-xs text-white/40 font-light">
+            | Digital Asset Exchange
           </span>
         </div>
       </Link>
 
-      <nav className="hidden md:flex items-center gap-6 font-[400]">
-        <Link href={isDex ? "/" : "/dex"} className="transition transform hover:scale-105 duration-300">
-          {isDex ? "home" : "DEX"}
+      {/* Navigation épurée */}
+      <nav className="hidden md:flex items-center gap-8 font-[300] text-sm">
+        <Link
+          href={isDex ? "/" : "/dex"}
+          className="hover:text-xcannes-green transition-colors duration-200"
+        >
+          {isDex ? "Home" : "Trading"}
         </Link>
 
-        <Link href="/communauté" className="block text-xs sm:text-sm text-center font-medium text-white transition transform hover:scale-105 duration-300 hover:text-white">
-          Communauté
-        </Link>
-
-        {isDex ? (
-          <Link href="/mxga" className="transition transform hover:scale-105 duration-300">
-            Vision
-          </Link>
-        ) : (
-          <div className="relative group">
-            <a href="#vision" className="cursor-pointer transition transform hover:scale-105 hover:text-xcannes-green duration-300">
-              Vision
-            </a>
-            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none whitespace-nowrap">
-              Découvrez notre vision
-            </div>
-          </div>
-        )}
-
-<select
+        <select
           onChange={changeLanguage}
           value={router.locale}
-          className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer font-[system-ui,'Segoe_UI_Emoji','Apple_Color_Emoji','Noto_Color_Emoji',sans-serif]"
+          className="bg-transparent border border-white/20 text-white text-xs rounded px-3 py-1.5 cursor-pointer hover:border-white/40 transition-colors duration-200 focus:outline-none focus:border-xcannes-green"
+          aria-label="Sélectionner la langue"
         >
-          <option value="fr">🇫🇷 Français</option>
-          <option value="en">🇺🇸 US English</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="ja">🇯🇵 日本語</option>
+          <option value="fr" className="bg-black">
+            FR
+          </option>
+          <option value="en" className="bg-black">
+            EN
+          </option>
+          <option value="es" className="bg-black">
+            ES
+          </option>
+          <option value="ja" className="bg-black">
+            JA
+          </option>
         </select>
 
-
-        <XummConnectButton small />
+        {isDex && <XummConnectButton small />}
       </nav>
 
-      <button className="md:hidden text-white text-2xl focus:outline-none" onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? "✕" : "☰"}
+      {/* Menu mobile minimaliste */}
+      <button
+        className="md:hidden text-white text-2xl focus:outline-none hover:text-xcannes-green transition-colors"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle menu"
+        aria-expanded={menuOpen}
+      >
+        {menuOpen ? "×" : "☰"}
       </button>
 
       {menuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-black/70 backdrop-blur-sm text-white flex flex-col items-center gap-4 py-4 md:hidden transition-opacity duration-500 opacity">
-          <Link href={isDex ? "/" : "/dex"} onClick={() => setMenuOpen(false)}>
-            {isDex ? "home" : "DEX"}
+        <div className="absolute top-16 left-0 w-full bg-black/95 backdrop-blur-md text-white flex flex-col items-center gap-6 py-8 md:hidden border-b border-white/10">
+          <Link
+            href={isDex ? "/" : "/dex"}
+            onClick={() => setMenuOpen(false)}
+            className="hover:text-xcannes-green transition-colors"
+          >
+            {isDex ? "Home" : "Trading"}
           </Link>
-          <Link href="/communauté" onClick={() => setMenuOpen(false)}>Communauté</Link>
-          {isDex ? (
-            <Link href="/mxga" onClick={() => setMenuOpen(false)}>Vision</Link>
-          ) : (
-            <div className="relative group">
-              <a href="#vision" onClick={() => setMenuOpen(false)} className="hover:text-xcannes-green transition">
-                Vision
-              </a>
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none whitespace-nowrap">
-                Découvrez notre vision
-              </div>
-            </div>
-          )}
-          <select
-          onChange={changeLanguage}
-          value={router.locale}
-          className="bg-black/70 border border-white border-opacity-40 text-white text-xs rounded px-2 py-1 cursor-pointer"
-        >
-          <option value="fr">🇫🇷 Français</option>
-          <option value="en">🇺🇸 US English</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="ja">🇯🇵 日本語</option>
-        </select>
 
-          <XummConnectButton small />
+          <select
+            onChange={changeLanguage}
+            value={router.locale}
+            className="bg-transparent border border-white/20 text-white text-xs rounded px-3 py-1.5 cursor-pointer"
+          >
+            <option value="fr" className="bg-black">
+              🇫🇷 Français
+            </option>
+            <option value="en" className="bg-black">
+              �� English
+            </option>
+            <option value="es" className="bg-black">
+              🇪🇸 Español
+            </option>
+            <option value="ja" className="bg-black">
+              🇯🇵 日本語
+            </option>
+          </select>
+
+          {isDex && <XummConnectButton small />}
         </div>
       )}
     </header>

@@ -2,145 +2,209 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useXumm } from "../context/XummContext";
+import xrpl from "xrpl";
 
 export default function FooterPro() {
   const router = useRouter();
   const isDex = router.pathname === "/dex";
   const { wallet, isConnected } = useXumm();
 
-  const socials = [
-    { name: "Twitter", icon: "twitter.png", url: "#" },
-    { name: "YouTube", icon: "youtube.png", url: "#" },
-    { name: "Instagram", icon: "instagram.png", url: "#" },
-    { name: "TikTok", icon: "tictoc.png", url: "#" },
-    { name: "Facebook", icon: "facebook.png", url: "#" },
-  ];
+  const [xrplConnected, setXrplConnected] = useState(false);
+  const [xrplLoading, setXrplLoading] = useState(true);
+
+  const socials = [{ name: "Twitter", icon: "twitter.png", url: "#" }];
+
+  useEffect(() => {
+    let client;
+
+    const checkXRPL = async () => {
+      try {
+        client = new xrpl.Client("wss://s1.ripple.com");
+        await client.connect();
+        setXrplConnected(true);
+        setXrplLoading(false);
+      } catch (err) {
+        console.error("XRPL connection error:", err);
+        setXrplConnected(false);
+        setXrplLoading(false);
+      } finally {
+        if (client && client.isConnected()) {
+          client.disconnect();
+        }
+      }
+    };
+
+    checkXRPL();
+
+    return () => {
+      if (client && client.isConnected()) {
+        client.disconnect();
+      }
+    };
+  }, []);
 
   return (
-    <footer
-      className={`w-screen max-w-none text-white pt-12 pb-8 px-6 mb-0 relative overflow-hidden ${
-        isDex
-          ? "bg-gradient-to-b from-[#202320] to-black"
-          : "bg-gradient-to-b from-[#202320] to-black"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 mb-10 text-center md:text-center">
-        {/* Colonne 1 - Pages */}
-        <div className="space-y-2 order-1">
-  <h4 className="font-bold text-white">Espaces</h4>
-  <ul className="text-sm font-medium space-y-1">
-    {[
-      { href: "/", label: "Home" },
-      { href: "/dex", label: "XCannes Dex" },
-      { href: "/communauté", label: "Rejoignez nous" },
-      { href: "/whitepaper", label: "Livre Blanc" },
-      { href: "/tokenomics", label: "Tokenomics" },
-      { href: "/XCannes,LLC", label: "XCannes,LLC" },
-    ]
-    .filter(({ href }) => href !== router.pathname) // 👈 filtre dynamique
-    .map(({ href, label }) => (
-      <li key={href}>
-        <Link
-          href={href}
-          className="inline-block transition-transform duration-200 hover:scale-105 hover:text-xcannes-green"
-        >
-          {label}
-        </Link>
-      </li>
-    ))}
-  </ul>
-</div>
-
-        {/* Colonne 2 - Logo + Réseaux + Wallet */}
-        <div className="col-span-2 md:col-span-1 flex flex-col items-center justify-center order-3 md:order-2">
-          <img
-            src="/assets/img/ui/dragon-mascotte.png"
-            alt="Mascotte Xcannes"
-            className="w-32 md:w-40 max-w-full object-contain mb-4"
-          />
-
-          <div className="flex gap-3 flex-wrap justify-center mb-6">
-            {socials.map((s) => (
-              <a
-                key={s.name}
-                href={s.url}
-                target="_blank"
-                rel="noreferrer"
-                className="transition-transform transform hover:scale-125"
-              >
-                <img
-                  src={`/assets/img/socials/${s.icon}`}
-                  alt={s.name}
-                  className="w-6 h-6"
-                />
-              </a>
-            ))}
+    <footer className="w-screen max-w-none text-white pt-16 pb-8 px-6 border-t border-white/10 bg-gradient-to-b from-xcannes-background to-black">
+      <div className="max-w-6xl mx-auto">
+        {/* Section principale épurée */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+          {/* Colonne 1 - Branding */}
+          <div className="text-center md:text-left">
+            <h3 className="text-2xl font-orbitron font-bold mb-2 text-white">
+              XCANNES
+            </h3>
+            <p className="text-sm text-white/60 mb-4">Digital Asset Exchange</p>
+            <p className="text-xs text-white/40">
+              Powered on XRP Ledger
+              <br />
+              Created to simplify Web3
+            </p>
           </div>
 
-          <a
-            href="/disclaimer"
-            className="inline-block text-white text-sm font-medium py-2 px-6 rounded-xl hover:scale-105 transition"
-          >
-            Mention légale
-          </a>
+          {/* Colonne 2 - Liens essentiels */}
+          <div className="text-center">
+            <h4 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
+              Navigation
+            </h4>
+            <ul className="text-sm space-y-2">
+              <li>
+                <Link
+                  href="/dex"
+                  className="text-white/70 hover:text-xcannes-green transition-colors"
+                >
+                  Trading
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/whitepaper"
+                  className="text-white/70 hover:text-xcannes-green transition-colors"
+                >
+                  Whitepaper
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/disclaimer"
+                  className="text-white/70 hover:text-xcannes-green transition-colors"
+                >
+                  Legal
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-          <p className="text-sm mt-4">
-  Email :{" "}
-  <a
-  href={`/contact${isDex ? "?from=dex" : ""}`}
-  className="underline text-white hover:opacity-80 transition"
->
-  contact@xcannes.com
-</a>
-
-</p>
-          {isConnected && (
-            <p className="text-xs text-white mt-4 break-all">
-              🔗 Connecté à XUMM : {wallet}
+          {/* Colonne 3 - Contact & Réseaux */}
+          <div className="text-center md:text-right">
+            <h4 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
+              Contact
+            </h4>
+            <p className="text-sm mb-4">
+              <a
+                href="/contact"
+                className="text-white/70 hover:text-xcannes-green transition-colors"
+              >
+                contact@xcannes.com
+              </a>
             </p>
-          )}
+
+            {/* Réseaux sociaux minimalistes */}
+            <div className="flex gap-4 justify-center md:justify-end mt-6 items-center">
+              {socials.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="opacity-60 hover:opacity-100 transition-opacity"
+                  aria-label={s.name}
+                >
+                  <img
+                    src={`/assets/img/socials/${s.icon}`}
+                    alt={s.name}
+                    className="w-4 h-4"
+                  />
+                </a>
+              ))}
+
+              {/* Wall Street Journal */}
+              <a
+                href="https://www.wsj.com/finance/currencies"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opacity-60 hover:opacity-100 transition-opacity ml-2"
+                aria-label="Wall Street Journal"
+              >
+                <span className="text-xs text-white/60 uppercase tracking-wider">
+                  WSJ
+                </span>
+              </a>
+
+              {/* Festival de Cannes */}
+              <a
+                href="https://www.festival-cannes.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opacity-60 hover:opacity-100 transition-opacity ml-2"
+                aria-label="Festival de Cannes"
+              >
+                <span className="text-xs text-white/60 uppercase tracking-wider">
+                  CANNES
+                </span>
+              </a>
+            </div>
+          </div>
         </div>
 
-        {/* Colonne 3 - Liens externes */}
-        <div className="space-y-2 order-2 md:order-3">
-  <h4 className="font-bold text-white">Portails</h4>
-  <ul className="text-sm font-medium space-y-1">
-    {[
-      { label: "CoinMarketCap", url: "https://coinmarketcap.com" },
-      { label: "XrpScan (Xcs)", url: "https://xrpscan.com/account/rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx" },
-      { label: "XrpScan (Xrp)", url: "https://xrpscan.com" },
-      { label: "FirstLedger", url: "https://firstledger.dev" },
-      { label: "DexScreener", url: "https://dexscreener.com/xrpl" },
-    ].map(({ label, url }) => (
-      <li key={url}>
-        <a
-          href={url}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-block transition-transform duration-200 hover:scale-105 hover:text-xcannes-green"
-        >
-          {label}
-        </a>
-      </li>
-    ))}
-  </ul>
-</div>
-</div>
-      {/* Footer final */}
-      <div className="text-center text-xs text-white mt-6">
-  &copy; {new Date().getFullYear()} - XCannes LLC – Delaware, USA –
-  <a
-    href="https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="underline underline-offset-2 hover:text-xcannes-green ml-1"
-  >
-    Reg. No. 10157026
-  </a>
-  <br className="block sm:hidden" />
-  Powered on XRP Ledger – Created to simplify Web3
-</div>
+        {/* Ligne de séparation */}
+        <div className="border-t border-white/5 pt-6">
+          <div className="flex flex-col md:flex-row justify-between items-center text-xs text-white/40 gap-4">
+            <p>&copy; {new Date().getFullYear()} XCannes LLC – Delaware, USA</p>
 
+            <div
+              className="flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 border border-white/10"
+              title={
+                xrplLoading
+                  ? "Checking XRPL..."
+                  : xrplConnected
+                  ? "XRPL Connected"
+                  : "XRPL Disconnected"
+              }
+            >
+              <div
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                  xrplLoading
+                    ? "bg-yellow-500 animate-pulse"
+                    : xrplConnected
+                    ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"
+                    : "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"
+                }`}
+              ></div>
+              <span className="text-[10px] text-white/40 uppercase tracking-wider">
+                XRPL
+              </span>
+            </div>
+
+            <a
+              href="https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-xcannes-green transition-colors"
+            >
+              Reg. No. 10157026
+            </a>
+          </div>
+        </div>
+
+        {/* Wallet connecté si applicable */}
+        {isConnected && (
+          <div className="mt-6 text-center">
+            <p className="text-xs text-xcannes-green/60">
+              🔗 Connected: {wallet.slice(0, 8)}...{wallet.slice(-6)}
+            </p>
+          </div>
+        )}
+      </div>
     </footer>
   );
 }

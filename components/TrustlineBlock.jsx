@@ -3,78 +3,87 @@ import { useState } from "react";
 export default function TrustlineBlock() {
   const [copied, setCopied] = useState(false);
 
-  const trustlineURL =
-    "https://xrpl.services?issuer=rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx&currency=XCS&limit=2006400";
+  const issuer = "rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx";
+  const currency = "XCS";
+  const limit = "2006400";
+  const trustlineURL = `https://xrpl.services?issuer=${issuer}&currency=${currency}&limit=${limit}`;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(trustlineURL);
+    navigator.clipboard.writeText(issuer);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <section
-    className="text-white bg-[#f5f5f5]/20 font-montserrat font-[300] border border-[1.5px] border-white  border-opacity-40 shadow-2xl w-full
- rounded-xl p-6 sm:p-8 my-10 max-w-3xl mx-auto"
-  
-    >
-      <h2
-        className="text-2xl sm:text-3xl font-orbitron font-[500] text-center mb-6"
-        style={{ color: "#16b303" }}
-      >
-        ⚡ Ajouter la Trustline
-      </h2>
+    <section className="relative py-24 px-6">
+      
+      <div className="max-w-3xl mx-auto relative z-10">
+        
+        <div className="text-center mb-12">
+          <p className="text-sm uppercase tracking-widest text-xcannes-green mb-3 font-light">
+            Setup Required
+          </p>
+          <h2 className="text-4xl md:text-5xl font-orbitron font-bold text-white mb-4">
+            Add XCS Trustline
+          </h2>
+          <p className="text-lg text-white/60 max-w-xl mx-auto">
+            Enable XCS token reception on your XRPL wallet
+          </p>
+        </div>
 
-      <p className="text-sm sm:text-base text-white font-montserrat font-[300] mb-6 text-center">
-        Pour recevoir des tokens <strong>XCS</strong> sur votre wallet XRPL (comme Xaman/Xumm),
-        vous devez d’abord autoriser le jeton en ajoutant une Trustline.
-      </p>
+        <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
+          
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-white mb-4">Trustline Details</h3>
+            <div className="space-y-4">
+              
+              <div className="bg-black/40 rounded-lg p-4 border border-white/5">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-white/60">Issuer Address</span>
+                  <button
+                    onClick={handleCopy}
+                    className="text-xs px-3 py-1 bg-xcannes-green/20 hover:bg-xcannes-green/30 text-xcannes-green rounded transition-colors"
+                  >
+                    {copied ? '✓ Copied' : 'Copy'}
+                  </button>
+                </div>
+                <p className="text-white font-mono text-sm break-all">{issuer}</p>
+              </div>
 
-      {/* Bloc noir avec écriture blanche */}
-      <div className="bg-black text-white rounded-xl p-6 text-sm sm:text-base mb-6 relative">
-      <p className="flex gap-1 text-sm">
-  <span className="font-semibold">Issuer: </span>
-  <span
-    className="truncate inline-block max-w-[calc(100vw-9rem)]"
-    title="rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx"
-  >
-    rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx
-  </span>
-</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-black/40 rounded-lg p-4 border border-white/5">
+                  <span className="text-sm text-white/60 block mb-2">Currency</span>
+                  <p className="text-white font-semibold text-lg">{currency}</p>
+                </div>
+                <div className="bg-black/40 rounded-lg p-4 border border-white/5">
+                  <span className="text-sm text-white/60 block mb-2">Trust Limit</span>
+                  <p className="text-white font-semibold text-lg">{limit.toLocaleString()}</p>
+                </div>
+              </div>
 
-  <p className="mb-1">
-    <span className="font-semibold">Currency :</span> XCS
-  </p>
-  <p className="mb-4">
-    <span className="font-semibold">Limit :</span>  2&#8239;&#8239;&#8239;006&#8239;&#8239;&#8239;400
-  </p>
+            </div>
+          </div>
 
-  <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg overflow-hidden">
-    <p
-      className="flex-1 text-xs sm:text-sm text-white truncate whitespace-nowrap overflow-hidden max-w-[200px] sm:max-w-full"
-      title={trustlineURL}
-    >
-      {trustlineURL}
-    </p>
-    <button
-      onClick={handleCopy}
-      className="text-xs font-[500] bg-xcannes-green text-white px-4 py-2 rounded hover:bg-xcannes-blue-light hover:text-white transition"
-    >
-      {copied ? "Copié ✅" : "📋 Copier"}
-    </button>
-  </div>
-</div>
+          <div className="space-y-4">
+            <a
+              href={trustlineURL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full px-6 py-4 bg-xcannes-green hover:bg-xcannes-green/90 text-white font-semibold rounded-lg transition-all duration-300 text-center transform hover:scale-[1.02]"
+            >
+              Add Trustline via XRPL Services →
+            </a>
+            
+            <div className="flex items-start gap-3 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+              <span className="text-2xl">ℹ️</span>
+              <div className="text-sm text-white/70">
+                <strong className="text-white">Important:</strong> Adding a trustline is required before receiving XCS tokens. This is a one-time setup that costs ~0.00001 XRP.
+              </div>
+            </div>
+          </div>
 
+        </div>
 
-      <div className="text-center">
-        <a
-          href={trustlineURL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block bg-xcannes-green text-white font-[500] py-3 px-6 rounded-xl hover:scale-105 transition transform duration-300"
-        >
-          ➕ Ajouter la Trustline
-        </a>
       </div>
     </section>
   );

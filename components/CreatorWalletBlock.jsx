@@ -12,14 +12,9 @@ export default function CreatorWalletBlock() {
   };
 
   return (
-    <section
-      className="max-w-3xl mx-auto w-full border-[1.5px] border-white border-opacity-30 p-6 rounded-xl mt-10 mb-10 text-center bg-black text-white font-montserrat font-[300]"
-    >
-      <h2
-        className="text-xl font-orbitron font-[500] mb-4"
-        style={{ color: "#16b303" }}
-      >
-        🔐 Adresse du Wallet Créateur
+    <section className="max-w-3xl mx-auto w-full border-[1.5px] border-white border-opacity-30 p-6 rounded-xl mt-10 mb-10 text-center bg-black text-white font-montserrat font-[300]">
+      <h2 className="text-xl font-orbitron font-[500] mb-4 text-xcannes-green">
+        Adresse du Wallet Créateur
       </h2>
 
       <p className="text-sm text-white mb-4">
@@ -27,24 +22,23 @@ export default function CreatorWalletBlock() {
       </p>
 
       <div className="flex items-center bg-[#f9f6f6] rounded-lg overflow-hidden px-4 py-2">
-      <a
-  href={`https://xrpscan.com/account/${creatorWallet}`}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="flex-1 text-black text-sm font-[400] truncate whitespace-nowrap overflow-hidden max-w-[200px] sm:max-w-full underline hover:text-blue-600"
-  title={creatorWallet}
->
-  {creatorWallet}
-</a>
+        <a
+          href={`https://xrpscan.com/account/${creatorWallet}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 text-black text-sm font-[400] truncate whitespace-nowrap overflow-hidden max-w-[200px] sm:max-w-full underline hover:text-blue-600"
+          title={creatorWallet}
+        >
+          {creatorWallet}
+        </a>
 
-  <button
-    onClick={handleCopy}
-    className="ml-4 px-4 py-2 text-sm font-[600] bg-xcannes-green text-white hover:bg-xcannes-blue-light hover:text-white transition"
-  >
-    {copied ? "✅ Copié" : "📋 Copier"}
-  </button>
-</div>
-
+        <button
+          onClick={handleCopy}
+          className="ml-4 px-4 py-2 text-sm font-[600] bg-xcannes-green text-white hover:bg-xcannes-blue-light hover:text-white transition"
+        >
+          {copied ? "Copié" : "Copier"}
+        </button>
+      </div>
     </section>
   );
 }

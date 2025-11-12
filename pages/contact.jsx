@@ -39,14 +39,12 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-12 bg-gray-100"
-    style={{ backgroundColor: "#202320" }}>
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 py-12 bg-xcannes-background">
       <h1 className="text-2xl font-orbitron font-bold mb-6 text-center text-xcannes-green">
-  XCannes - Contactez-nous
-</h1>
+        XCannes - Contactez-nous
+      </h1>
       <div className="max-w-md w-full text-black bg-white rounded-lg shadow p-6">
-
-       <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
             name="name"
@@ -75,7 +73,7 @@ export default function Contact() {
             className="w-full border border-gray-300 px-3 py-2 rounded"
           />
           <ReCAPTCHA
-            sitekey="6LfNwCQrAAAAAFsILt0hClQ5kZVYyKwngXMP0EPF"
+            sitekey="111111111111111gggggggggggggggggg"
             onChange={(token) => setCaptchaToken(token)}
           />
           <button
@@ -91,7 +89,9 @@ export default function Contact() {
           <p className="text-green-600 mt-4">Message envoyé avec succès !</p>
         )}
         {status === "error" && (
-          <p className="text-red-600 mt-4">Erreur lors de l’envoi. Réessayez.</p>
+          <p className="text-red-600 mt-4">
+            Erreur lors de l’envoi. Réessayez.
+          </p>
         )}
 
         {/* 👇 Retour vers index ou dex */}

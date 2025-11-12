@@ -1,14 +1,18 @@
+"use client";
+
 import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { stripePromise } from "../lib/stripe";
 import { useXumm } from "../context/XummContext";
-import XummConnectButton from "./XummConnectButton";
 
-export default function AltPaymentBlock({ title = "Accédez à XCS en toute simplicité" }) {
+export default function AltPaymentBlock({
+  title = "Buy XCS with Fiat Currency",
+}) {
   const router = useRouter();
   const isDex = router.pathname === "/dex";
   const blockRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const { isConnected } = useXumm();
 
@@ -24,84 +28,134 @@ export default function AltPaymentBlock({ title = "Accédez à XCS en toute simp
     return () => observer.disconnect();
   }, []);
 
+  const handleCheckout = async () => {
+    setIsProcessing(true);
+    try {
+      const stripe = await stripePromise;
+      const res = await fetch("/api/create-checkout-session", {
+        method: "POST",
+      });
+      const { id } = await res.json();
+      const result = await stripe.redirectToCheckout({ sessionId: id });
+      if (result.error) {
+        console.error(result.error.message);
+        alert("Payment error: " + result.error.message);
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("An error occurred. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const paymentMethods = [
+    { name: "Visa", logo: "/assets/img/payments/visa.png" },
+    { name: "MasterCard", logo: "/assets/img/payments/mastercard.png" },
+    { name: "Apple Pay", logo: "/assets/img/payments/applepay.png" },
+  ];
+
   return (
     <div
       ref={blockRef}
-      className={`p-6 rounded-xl my-10 text-center mt-0 mb-0 text-white font-montserrat font-[400] items-start border ${
-        isDex ? "bg-black/80" : "bg-black"
-      } ${isDex ? "" : "border border-white border-opacity-50"} ${visible ? "visible" : ""}`}
-      style={isDex ? { borderColor: "rgba(174, 175, 174, 0.5)" } : {}}
+      className={`bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden transition-all duration-500 ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
     >
-      <h2 className="text-2xl font-orbitron font-[500] mb-4" style={{ color: "#16b303" }}>
-        Accédez à{" "}
-        <span className="inline-flex items-baseline">
-          <img
-            src="/assets/img/ui/navHeadergreen.png"
-            alt="X"
-            className="
-              inline-block 
-              h-[1.3em] sm:h-[1.3em] md:h-[1.3em] 
-              w-auto 
-              translate-y-[7px] sm:translate-y-[7px] md:translate-y-[8px] 
-              -mr-[7px] sm:-mr-[7px] md:-mr-[7px] 
-              brightness-110 saturate-150
-            "
-          />
-          CS en toute simplicité
-        </span>
-      </h2>
-
-      <p className="mb-4 text-gray-300 text-sm">par carte bancaire, ApplePay ...</p>
-
-      <div
-        className={`flex justify-center gap-2 mb-6 rounded-xl p-0 ${
-          isDex ? "bg-black/10 " : "bg-black"
-        }`}
-      >
-        {[
-          { alt: "Visa", src: "visa.png" },
-          { alt: "MasterCard", src: "mastercard.png" },
-          { alt: "Apple Pay", src: "applepay.png" }
-        ].map(({ alt, src }) => (
-          <div
-            key={alt}
-            className="bg-transparent rounded-lg p-3 shadow-sm transition-transform duration-500 ease-in-out hover:scale-150"
-          >
-            <img
-              src={`/assets/img/payments/${src}`}
-              alt={alt}
-              className="w-16 h-16 object-contain"
-            />
-          </div>
-        ))}
+      {/* Header */}
+      <div className="p-6 border-b border-white/10 text-center">
+        <h2 className="text-2xl font-orbitron font-bold text-white mb-2">
+          Buy XCS with Fiat
+        </h2>
+        <p className="text-sm text-white/60">
+          Purchase XCS tokens using credit card or Apple Pay
+        </p>
       </div>
 
-      <button
-        onClick={async () => {
-          const stripe = await stripePromise;
-          const res = await fetch("/api/create-checkout-session", {
-            method: "POST",
-          });
-          const { id } = await res.json();
-          const result = await stripe.redirectToCheckout({ sessionId: id });
-          if (result.error) console.error(result.error.message);
-        }}
-        className="bg-xcannes-green text-white font-montserrat font-[500] px-6 py-2 border border-xcannes-green rounded transition duration-300 transform hover:scale-105"
-      >
-        Acheter par Carte / ApplePay
-      </button>
-
-      <p className="mt-3 text-xs text-xcannes-yellow italic">
-        {isConnected
-          ? "✅ Votre wallet est connecté, vous recevrez vos XCS automatiquement après le paiement."
-          : "⚠️ Pour recevoir vos XCS après paiement, veuillez connecter votre wallet XRPL ou fournir votre adresse."}
-      </p>
-
-      {!isConnected && (
-        <div className="mt-3">
-          <XummConnectButton />
+      {/* Content */}
+      <div className="p-6 space-y-6">
+        {/* Payment Methods Grid */}
+        <div>
+          <p className="text-xs uppercase tracking-wider text-white/40 mb-3 text-center">
+            Accepted Payment Methods
+          </p>
+          <div className="grid grid-cols-3 gap-3">
+            {paymentMethods.map((method) => (
+              <div
+                key={method.name}
+                className="group bg-white/5 rounded-lg p-4 border border-white/10 hover:border-xcannes-green/40 hover:bg-white/10 transition-all duration-300"
+              >
+                <div className="flex items-center justify-center h-16">
+                  <img
+                    src={method.logo}
+                    alt={method.name}
+                    className="w-full h-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      )}
+
+        {/* Wallet Connection Status */}
+        {isConnected ? (
+          <div className="bg-xcannes-green/10 border border-xcannes-green/20 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">✓</span>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-xcannes-green mb-1">
+                  Wallet Connected
+                </p>
+                <p className="text-xs text-white/60">
+                  Your XCS tokens will be sent directly to your connected wallet
+                  after payment.
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">ℹ️</span>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-blue-400 mb-1">
+                  Optional: Connect Wallet
+                </p>
+                <p className="text-xs text-white/60">
+                  Connect your XRPL wallet in the header for automatic delivery,
+                  or simply provide your address during checkout.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* CTA Button */}
+        <button
+          onClick={handleCheckout}
+          disabled={isProcessing}
+          className="w-full bg-xcannes-green hover:bg-xcannes-green/90 text-black font-semibold py-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {isProcessing ? (
+            <>
+              <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+              <span>Processing...</span>
+            </>
+          ) : (
+            <>
+              <span>��</span>
+              <span>Buy with Card / Apple Pay</span>
+            </>
+          )}
+        </button>
+
+        {/* Info Footer */}
+        <div className="text-center">
+          <p className="text-xs text-white/40">
+            Powered by Stripe • Secure Checkout
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

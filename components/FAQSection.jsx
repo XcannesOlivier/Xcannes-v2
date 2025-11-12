@@ -1,113 +1,89 @@
-import { useState, useEffect } from "react";
-
-const faqItems = [
-  {
-    question: "Qu’est-ce que la crypto-monnaie XCANNES (XCS) ?",
-    answer: "La crypto-monnaie XCS est une monnaie numérique sécurisée par la blockchain, permettant des transactions décentralisées et sans intermédiaire."
-  },
-  {
-    question: "Sur quelle blockchain est basée cette crypto-monnaie ?",
-    answer: "Le jeton XCS est basé sur le XRP Ledger (XRPL), conçu pour des transactions rapides, économiques et sécurisées."
-  },
-  {
-    question: "Comment puis-je acheter ces tokens ?",
-    answer: "Cliquez sur “Buy Now” sur notre site. Vous serez redirigé vers une plateforme dédiée acceptant crypto, carte et autres méthodes de paiement."
-  },
-  {
-    question: "Quelle est l’utilité principale de cette crypto-monnaie ?",
-    answer: "XCS incarne l’identité numérique et financière de Cannes. Moyen de paiement moderne, sécurisé et intégré dans l’économie locale."
-  },
-  {
-    question: "Y a-t-il une quantité limitée de tokens ?",
-    answer: "Oui, le jeton XCANNES possède une offre strictement limitée à 2 006 400 unités, garantissant ainsi sa rareté."
-  },
-  {
-    question: "Le projet est-il conforme aux réglementations ?",
-    answer: "Oui, nous respectons les réglementations KYC/AML et veillons à être en conformité avec les lois en vigueur."
-  },
-  {
-    question: "Où puis-je stocker mes tokens en toute sécurité ?",
-    answer: "Sur des portefeuilles compatibles XRPL : Xaman (Xumm), Gatehub, Ledger, etc."
-  }
-];
+import { useState } from "react";
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
-
-  useEffect(() => {
-    const section = document.querySelector(".faq-animate");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            section.classList.add("visible");
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
-
-    if (section) observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
 
   const toggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  const faqItems = [
+    {
+      question: "What is XCS?",
+      answer: "XCS is a digital asset built on the XRP Ledger (XRPL), designed to provide fast, secure, and transparent transactions with minimal fees."
+    },
+    {
+      question: "How do I buy XCS tokens?",
+      answer: "Connect your XUMM wallet, add the XCS trustline, and trade directly on our DEX platform. The entire process takes less than 2 minutes."
+    },
+    {
+      question: "What are the transaction fees?",
+      answer: "XRPL network fees are minimal, typically around 0.00001 XRP per transaction. No hidden fees, complete transparency."
+    },
+    {
+      question: "Is XCS secure?",
+      answer: "Yes. XCS is built on the XRP Ledger, one of the most secure and battle-tested blockchain networks with 10+ years of operation and zero downtime."
+    },
+    {
+      question: "Can I trade XCS 24/7?",
+      answer: "Absolutely. Our decentralized exchange operates 24/7/365 with instant settlements and global accessibility."
+    }
+  ];
+
   return (
-    <section
-      id="faq"
-      className="relative faq-animate border border-white border-opacity-40 font-montserrat font-[300] w-full max-w-6xl mx-auto  text-white pb-10 px-6 mt-0 pt-5 rounded-3xl"
-      style={{ backgroundColor: "#202320" }}
-    >
-      {/* Superposition sombre */}
-      <div className="absolute inset-0 bg-black/35 #202320 z-0 rounded-3xl" />
+    <section className="relative py-24 px-6">
+      
+      <div className="max-w-4xl mx-auto relative z-10">
+        
+        <div className="text-center mb-16">
+          <p className="text-sm uppercase tracking-widest text-xcannes-green mb-3 font-light">
+            Support
+          </p>
+          <h2 className="text-4xl md:text-5xl font-orbitron font-bold text-white mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-lg text-white/60">
+            Everything you need to know about XCS tokens
+          </p>
+        </div>
 
-      {/* Contenu FAQ */}
-      <div className="relative z-10 max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-orbitron font-[500] text-center mb-10"
-        style={{ color: '#16b303' }}
-        >
-          FAQ - Questions Fréquentes
-        </h2>
-
-        <div className="space-y-2">
+        <div className="space-y-4">
           {faqItems.map((item, index) => (
             <div
               key={index}
-              onClick={() => toggle(index)}
-              className={`bg-black/30 rounded-xl border border-white/20 shadow-md cursor-pointer transition-all duration-300 overflow-hidden ${
-                openIndex === index ? "ring-1 ring-xcannes-green" : ""
-              }`}
+              className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-all duration-300"
             >
-              <div className="flex justify-between text-sm items-center p-2">
-                <h3
-                  className={`text-base text-sm md:text-lg font-[400] transition-all ${
-                    openIndex === index ? "underline text-xcannes-green" : "text-FAQ"
-                  }`}
-                >
+              <button
+                onClick={() => toggle(index)}
+                className="w-full flex items-center justify-between p-6 text-left hover:bg-white/5 transition-colors"
+              >
+                <span className="text-lg font-semibold text-white pr-8">
                   {item.question}
-                </h3>
-
-                <div
-                  className={`transform transition-transform duration-300 ${
-                    openIndex === index ? "rotate-90 text-xcannes-green" : "rotate-0"
-                  }`}
-                >
-                  ▶
-                </div>
-              </div>
-
-              {openIndex === index && (
-                <div className="px-4 pb-4 text-sm text-white font-[300]">
+                </span>
+                <span className={`text-2xl text-xcannes-green transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}>
+                  {openIndex === index ? '−' : '+'}
+                </span>
+              </button>
+              
+              <div className={`overflow-hidden transition-all duration-300 ${openIndex === index ? 'max-h-96' : 'max-h-0'}`}>
+                <div className="p-6 pt-0 text-white/70 leading-relaxed border-t border-white/5">
                   {item.answer}
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
+
+        <div className="text-center mt-12">
+          <p className="text-white/60 mb-4">Still have questions?</p>
+          <a 
+            href="/contact"
+            className="inline-block px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-xcannes-green/40 text-white rounded-lg transition-all duration-300"
+          >
+            Contact Support →
+          </a>
+        </div>
+
       </div>
     </section>
   );

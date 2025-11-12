@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-export default function TokenAmountInput({ value, onChange, max, placeholder = "0.00", token = "XCS" }) {
+export default function TokenAmountInput({
+  value,
+  onChange,
+  max,
+  placeholder = "0.00",
+  token = "XCS",
+}) {
   const [localValue, setLocalValue] = useState(value || "");
 
   const handleInput = (e) => {
@@ -13,20 +19,18 @@ export default function TokenAmountInput({ value, onChange, max, placeholder = "
   };
 
   return (
-    <div
-  className="flex items-center gap-2 border border-white border-opacity-30 rounded px-4 py-2 bg-black/30"
-   
->
-
+    <div className="flex items-center gap-3 bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg px-4 py-3 hover:border-white/20 focus-within:border-xcannes-green/40 transition-all duration-300">
       <input
-        className="bg-transparent text-white w-full outline-none text-xl"
+        className="bg-transparent text-white w-full outline-none text-xl font-medium placeholder:text-white/30"
         type="text"
         inputMode="decimal"
         placeholder={placeholder}
         value={localValue}
         onChange={handleInput}
       />
-      <span className="ml-2 text-xcannes-green font-bold">{token}</span>
+      <span className="text-xcannes-green font-bold text-sm uppercase tracking-wider whitespace-nowrap">
+        {token}
+      </span>
     </div>
   );
 }

@@ -1,9 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-// ⚠️ Assure-toi que le SDK est bien chargé via _document.js
-// <script src="https://xumm.app/assets/cdn/xumm.min.js"></script>
-
-const xumm = typeof window !== "undefined" ? new window.Xumm("ff05c0a0-0067-4284-947d-2c99548b2d18") : null;
+// On n'utilise plus le SDK XUMM côté client
+// Toutes les interactions XUMM se font via les API routes côté serveur
 
 const XummContext = createContext();
 
@@ -23,32 +21,28 @@ export const XummProvider = ({ children }) => {
     }
   };
 
-  const connect = () => xumm?.authorize();
-  const disconnect = () => xumm?.logout();
-
-  const checkSession = async () => {
-    try {
-      const acc = await xumm.user.account;
-      updateWallet(acc);
-    } catch {
-      updateWallet(null);
+  // Fonction pour connecter via prompt utilisateur
+  const connect = () => {
+    const walletAddress = prompt(
+      "Entrez votre adresse wallet XRPL (commence par 'r'):"
+    );
+    if (walletAddress && walletAddress.startsWith("r")) {
+      updateWallet(walletAddress);
+    } else if (walletAddress) {
+      alert("Adresse invalide. Elle doit commencer par 'r'");
     }
   };
 
+  const disconnect = () => {
+    updateWallet(null);
+  };
+
   useEffect(() => {
-    if (!xumm) return;
-
-    xumm.on("ready", checkSession);
-    xumm.on("success", checkSession);
-    xumm.on("logout", () => updateWallet(null));
-
-    if (sessionStorage.getItem("xumm_wallet")) {
-      checkSession();
+    // Récupère le wallet sauvegardé si existe
+    const savedWallet = sessionStorage.getItem("xumm_wallet");
+    if (savedWallet) {
+      updateWallet(savedWallet);
     }
-
-    return () => {
-      xumm.removeAllListeners();
-    };
   }, []);
 
   return (

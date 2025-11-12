@@ -1,56 +1,46 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}"
+    "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
-        "xcannes-background": "#202320",
-        "xcannes-green": "#16b303",
-        "xcannes-blue-light": "#0695d9",
-        "xcannes-blue": "#0a08a9",
-        "xcannes-blue-weight": "#195e7f",
-        "xcannes-green-weight": "#16650c",
-        "xcannes-red": "#930606",
-        "xcannes-red-light": "#e70707",
-        "xcannes-yellow": "#e3ca06",
-        "xcannes-yellow-weight": "#797b06",
-        "xcannes-gray": "#414139",
-        "xcannes-gray-light": "#51514a",
-        "xcannes-gray-weight": "#272725",
-        "xcannes-violet": "#6027e9",
-        "xcannes-violet-weight": "#3a2371",
-        "xcannes-pink": "#c525b9",
-        "xcannes-pink-weight": "#75136d"
+        "xcannes-background": "#0a0f0d",
+        "xcannes-green": "#10b981",
+        "xcannes-blue-light": "#3b82f6",
+        "xcannes-blue": "#1e40af",
+        "xcannes-blue-weight": "#1e3a5f",
+        "xcannes-green-weight": "#065f46",
+        "xcannes-red": "#dc2626",
+        "xcannes-red-light": "#ef4444",
+        "xcannes-yellow": "#fbbf24",
+        "xcannes-yellow-weight": "#92400e",
+        "xcannes-gray": "#4b5563",
+        "xcannes-gray-light": "#6b7280",
+        "xcannes-gray-weight": "#1f2937",
+        "xcannes-violet": "#7c3aed",
+        "xcannes-violet-weight": "#5b21b6",
+        "xcannes-pink": "#ec4899",
+        "xcannes-pink-weight": "#be185d",
       },
       animation: {
-        firework: "firework 0.8s ease-out forwards",
-        blueFlame: "blueFlame 1s ease-in-out infinite"
+        "fade-in": "fadeIn 0.6s ease-out forwards",
       },
       keyframes: {
-        blueFlame: {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" }
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
         },
-        firework: {
-          "0%": { transform: "scale(0)", opacity: 1 },
-          "100%": {
-            transform: "scale(3) translateY(-50px)",
-            opacity: 0,
-          },
-        }
       },
       fontFamily: {
-        sans: ['Manrope', 'sans-serif'],
-        orbitron: ['Orbitron', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif'],
-      }
-    }
+        sans: ["var(--font-manrope)", "sans-serif"],
+        orbitron: ["var(--font-orbitron)", "sans-serif"],
+        montserrat: ["var(--font-montserrat)", "sans-serif"],
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };
-
