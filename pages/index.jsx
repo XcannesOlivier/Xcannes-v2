@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import FooterPro from "../components/FooterPro";
 import Link from "next/link";
 import FAQSection from "../components/FAQSection";
-import TokenDistributionChart from "../components/TokenDistributionChart";
+import TokenomicsSection from "../components/TokenomicsSection";
 import TrustlineBlock from "../components/TrustlineBlock";
 import AltPaymentBlock from "../components/AltPaymentBlock";
 import CreatorWalletBlock from "../components/CreatorWalletBlock";
@@ -51,7 +51,7 @@ export default function Home() {
           </div>
 
           {/* Main heading */}
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-orbitron font-bold text-white mb-6 leading-tight">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-orbitron font-bold text-white mb-6 pb-4 leading-snug sm:leading-snug md:leading-snug lg:leading-snug">
             The Future of
             <span className="block bg-gradient-to-r from-xcannes-green via-emerald-400 to-green-500 bg-clip-text text-transparent">
               Digital Finance
@@ -110,7 +110,7 @@ export default function Home() {
       <div className="bg-xcannes-background">
         <NotreVisionBlock />
         <BuyXCSSection />
-        <TokenDistributionChart />
+        <TokenomicsSection />
         <TrustlineBlock />
         <FAQSection />
       </div>

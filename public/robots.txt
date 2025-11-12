@@ -3,7 +3,6 @@ Allow: /
 
 # Pages principales
 Allow: /dex
-Allow: /tokenomics
 Allow: /whitepaper
 Allow: /contact
 

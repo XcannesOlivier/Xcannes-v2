@@ -9,33 +9,38 @@ export default function BuyXCSSection() {
           Comment acheter du XCS ?
         </h2>
 
-        <p className="text-base sm:text-lg text-[white] font-[500] mb-10 sm:mb-12 animate-fade-in">
+        <p className="text-base sm:text-lg text-white/80 font-[400] mb-10 sm:mb-12 animate-fade-in">
           Démarrez votre parcours Web3 en 3 étapes simples !
         </p>
 
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 text-left">
           {/* Étape 1 */}
-          <div className="bg-xcannes-background text-white shadow-2xl border-l-4 border-xcannes-green rounded-lg p-5 hover:shadow-2xl transition hover:scale-[1.02] ">
-            <h3 className="text-lg sm:text-xl font-[500] mb-2">
-              1. Installez un wallet XRPL
+          <div className="relative overflow-hidden bg-xcannes-background text-white/90 shadow-2xl border-l-4 border-xcannes-green rounded-lg p-5 group hover:shadow-xcannes-green/20 transition-all duration-300">
+            {/* Gros numéro en arrière-plan */}
+            <div className="absolute -top-4 -right-4 text-[120px] font-orbitron font-bold text-xcannes-green/10 group-hover:text-xcannes-green/20 transition-colors duration-300 select-none">
+              01
+            </div>
+
+            <h3 className="relative text-lg sm:text-xl text-xcannes-green font-[500] mb-2">
+              Installez un wallet XRPL
             </h3>
-            <p className="mb-4 text-sm">
+            <p className="relative mb-4 text-sm text-white/70">
               Téléchargez un wallet compatible avec le XRP Ledger comme{" "}
               <strong>Xaman (ex-Xumm)</strong> puis créez et sécurisez votre
               portefeuille pour recevoir vos tokens.
             </p>
-            <div className="flex flex-col items-start  gap-2">
+            <div className="relative flex flex-col items-start gap-2">
               <a
                 href="https://xumm.app/?lang=en"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="justify-content text-sm font-[500] text-white bg-xcannes-green px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
+                className="justify-content text-sm font-[500] text-white bg-xcannes-green/80 px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
               >
                 Installer le Wallet
               </a>
               <a
                 href="/activate-wallet"
-                className="justify-content text-sm font-[500] text-white bg-xcannes-green px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
+                className="justify-content text-sm font-[500] text-white bg-xcannes-green/80 px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
               >
                 Activer le Wallet Xaman
               </a>
@@ -43,95 +48,48 @@ export default function BuyXCSSection() {
           </div>
 
           {/* Étape 2 */}
-          <div className="bg-xcannes-background text-white shadow-2xl border-l-4 border-xcannes-green rounded-lg p-5 hover:shadow-2xl transition hover:scale-[1.02] ">
-            <h3 className="text-lg sm:text-xl font-[500] mb-2">
-              2. Ajoutez la Trustline
+          <div className="relative overflow-hidden bg-xcannes-background text-white/90 shadow-2xl border-l-4 border-xcannes-green rounded-lg p-5 group hover:shadow-xcannes-green/20 transition-all duration-300">
+            {/* Gros numéro en arrière-plan */}
+            <div className="absolute -top-4 -right-4 text-[120px] font-orbitron font-bold text-xcannes-green/10 group-hover:text-xcannes-green/20 transition-colors duration-300 select-none">
+              02
+            </div>
+
+            <h3 className="relative text-lg sm:text-xl text-xcannes-green font-[500] mb-2">
+              Ajoutez la Trustline
             </h3>
-            <p className="mb-4 text-sm">
+            <p className="relative mb-4 text-sm text-white/70">
               Ajoutez une trustline pour autoriser votre wallet à recevoir le
               jeton XCS en toute sécurité.
             </p>
             <a
               href="https://xrpl.services?issuer=rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx&currency=XCS&limit=2006400"
-              className="inline-block text-sm font-[500] text-white bg-xcannes-green px-4 py-2 rounded transition transform duration-300 hover:scale-105"
+              className="relative inline-block text-sm font-[500] text-white bg-xcannes-green/80 px-4 py-2 rounded transition transform duration-300 hover:scale-105"
             >
               Ajouter la Trustline
             </a>
           </div>
 
           {/* Étape 3 */}
-          <div className="bg-xcannes-background text-white shadow-2xl border-l-4 border-xcannes-green rounded-lg p-5 hover:shadow-2xl transition hover:scale-[1.02] ">
-            <h3 className="text-lg sm:text-xl font-[500] mb-2">
-              3. Achetez du XCS
+          <div className="relative overflow-hidden bg-xcannes-background text-white/90 shadow-2xl border-l-4 border-xcannes-green rounded-lg p-5 group hover:shadow-xcannes-green/20 transition-all duration-300">
+            {/* Gros numéro en arrière-plan */}
+            <div className="absolute -top-4 -right-4 text-[120px] font-orbitron font-bold text-xcannes-green/10 group-hover:text-xcannes-green/20 transition-colors duration-300 select-none">
+              03
+            </div>
+
+            <h3 className="relative text-lg sm:text-xl text-xcannes-green font-[500] mb-2">
+              Achetez du XCS
             </h3>
-            <p className="mb-4 text-sm">
+            <p className="relative mb-4 text-sm text-white/70">
               Achetez vos tokens XCS directement via notre DEX ou auprès de
               partenaires centralisés comme Bitrue.
             </p>
             <a
               href="/dex"
-              className="inline-block text-sm font-[500] text-white bg-xcannes-green px-4 py-2 rounded transition transform duration-300 hover:scale-105"
+              className="relative inline-block text-sm font-[500] text-white bg-xcannes-green/80 px-4 py-2 rounded transition transform duration-300 hover:scale-105"
             >
               Acheter sur XCannes Dex
             </a>
           </div>
-        </div>
-
-        {/* Logos partenaires */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 my-5 items-center">
-          <a
-            href="https://xumm.app/?lang=en"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-center opacity-100 hover:opacity-100 hover:scale-150 transition duration-500 ease-in-out cursor-pointer"
-          >
-            <img
-              src="/assets/img/socials/logoxummblue.png"
-              alt="Xaman"
-              className="h-12 w-20 sm:h-12 sm:w-20 mx-auto mb-2"
-            />
-            <p className="text-xs text-white">Xaman Wallet</p>
-          </a>
-
-          <a
-            href="https://www.youtube.com/@xcannes"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-center opacity-100 hover:opacity-100 hover:scale-150 transition duration-500 ease-in-out cursor-pointer"
-          >
-            <img
-              src="/assets/img/socials/youtube-transparent.png"
-              alt="YouTube"
-              className="h-12 w-[80px] max-w-[80px] mx-auto mb-1"
-            />
-            <p className="text-xs text-white">Tutoriels Vidéo</p>
-          </a>
-
-          <a
-            href="/dex"
-            className="block text-center opacity-100 hover:opacity-100 hover:scale-150 transition duration-500 ease-in-out cursor-pointer"
-          >
-            <img
-              src="/assets/img/socials/logoxcannesdexred.png"
-              alt="XCannes DEX"
-              className="h-12 w-[80px] max-w-[80px] mx-auto mb-1"
-            />
-            <p className="text-xs text-white">XCannes DEX</p>
-          </a>
-
-          <a
-            href="https://www.bitrue.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-center opacity-100 hover:opacity-100 hover:scale-150 transition duration-500 ease-in-out cursor-pointer"
-          >
-            <img
-              src="/assets/img/socials/logobitrue.jpg"
-              alt="Bitrue"
-              className="h-12 w-20 sm:h-12 sm:w-20 mx-auto mb-2"
-            />
-            <p className="text-xs text-white">Bitrue CEX</p>
-          </a>
         </div>
       </div>
     </section>

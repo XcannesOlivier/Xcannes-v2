@@ -121,15 +121,30 @@ export default function PriceTicker({ pairs = [], fixed = false }) {
       </div>
 
       <style jsx>{`
-        @keyframes scroll-left {
+        /* Use only standard + -webkit prefixed keyframes to avoid legacy -o/-moz/-ms at-rules
+           which can trigger parsing errors in some tools. Modern browsers support standard keyframes. */
+        @-webkit-keyframes scroll-left {
           0% {
+            -webkit-transform: translateX(0);
             transform: translateX(0);
           }
           100% {
+            -webkit-transform: translateX(-33.333%);
+            transform: translateX(-33.333%);
+          }
+        }
+        @keyframes scroll-left {
+          0% {
+            -webkit-transform: translateX(0);
+            transform: translateX(0);
+          }
+          100% {
+            -webkit-transform: translateX(-33.333%);
             transform: translateX(-33.333%);
           }
         }
         .animate-scroll-left {
+          -webkit-animation: scroll-left 60s linear infinite;
           animation: scroll-left 60s linear infinite;
         }
       `}</style>

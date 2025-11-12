@@ -139,7 +139,7 @@ export default function SetupPanel() {
           ) : (
             <div className="bg-white/5 border border-white/10 rounded-lg p-3">
               <div className="flex items-start gap-2">
-                <span className="text-lg">ℹ️</span>
+                <span className="text-2xl">ⓘ</span>
                 <div className="flex-1">
                   <p className="text-xs font-semibold text-white/80 mb-1">
                     Optional: Connect Wallet
@@ -165,7 +165,7 @@ export default function SetupPanel() {
               </>
             ) : (
               <>
-                <span>�</span>
+                <span>💳</span>
                 <span className="text-sm">Buy with Card / Apple Pay</span>
               </>
             )}
@@ -229,10 +229,7 @@ export default function SetupPanel() {
               rel="noopener noreferrer"
               className="flex items-center justify-between w-full bg-xcannes-green hover:bg-xcannes-green/90 text-black font-semibold px-4 py-3 rounded-lg transition-all group"
             >
-              <span className="flex items-center gap-2 text-sm">
-                <span>🔗</span>
-                <span>Add via XRPL Services</span>
-              </span>
+              <span className="text-sm">Add via XRPL Services</span>
               <span className="opacity-60 group-hover:opacity-100">→</span>
             </a>
 
@@ -240,7 +237,7 @@ export default function SetupPanel() {
               onClick={() => handleCopy(trustlineURL)}
               className="flex items-center justify-center gap-2 w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 px-4 py-2 rounded-lg transition-all text-sm"
             >
-              <span>{copied ? "✓" : "�"}</span>
+              <span>{copied ? "✓" : "🌐"}</span>
               <span>{copied ? "Copied!" : "Copy URL"}</span>
             </button>
           </div>

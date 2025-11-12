@@ -4,3 +4,9 @@ out
 .env.local
 .env
 .DS_Store
+
+# Tailwind generated
+output.css
+
+# Archives
+archives/

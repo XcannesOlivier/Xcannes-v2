@@ -116,7 +116,7 @@ export default function AltPaymentBlock({
         ) : (
           <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <span className="text-2xl">ℹ️</span>
+              <span className="text-2xl">ⓘ</span>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-blue-400 mb-1">
                   Optional: Connect Wallet

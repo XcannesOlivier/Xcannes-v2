@@ -17,14 +17,6 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Tokenomics -->
-  <url>
-    <loc>https://xcannes.com/tokenomics</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <!-- Whitepaper -->
   <url>
     <loc>https://xcannes.com/whitepaper</loc>
