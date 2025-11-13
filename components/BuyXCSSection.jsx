@@ -1,4 +1,8 @@
+import { useTranslation } from "next-i18next";
+
 export default function BuyXCSSection() {
+  const { t } = useTranslation("common");
+
   return (
     <section className="relative w-screen to-white pt-5 pb-5 px-4 sm:px-6 text-black overflow-hidden font-montserrat font-[300]">
       {/* Background image */}
@@ -6,11 +10,11 @@ export default function BuyXCSSection() {
 
       <div className="relative max-w-5xl mx-auto text-center">
         <h2 className="text-3xl sm:text-4xl text-xcannes-green font-orbitron font-[500] mb-3 animate-slide-down">
-          Comment acheter du XCS ?
+          {t("buy_title")}
         </h2>
 
         <p className="text-base sm:text-lg text-white/80 font-[400] mb-10 sm:mb-12 animate-fade-in">
-          Démarrez votre parcours Web3 en 3 étapes simples !
+          {t("buy_badge")}
         </p>
 
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 text-left">
@@ -22,12 +26,10 @@ export default function BuyXCSSection() {
             </div>
 
             <h3 className="relative text-lg sm:text-xl text-xcannes-green font-[500] mb-2">
-              Installez un wallet XRPL
+              {t("buy_step1_title")}
             </h3>
             <p className="relative mb-4 text-sm text-white/70">
-              Téléchargez un wallet compatible avec le XRP Ledger comme{" "}
-              <strong>Xaman (ex-Xumm)</strong> puis créez et sécurisez votre
-              portefeuille pour recevoir vos tokens.
+              {t("buy_step1_text")}
             </p>
             <div className="relative flex flex-col items-start gap-2">
               <a
@@ -36,13 +38,13 @@ export default function BuyXCSSection() {
                 rel="noopener noreferrer"
                 className="justify-content text-sm font-[500] text-white bg-xcannes-green/80 px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
               >
-                Installer le Wallet
+                {t("buy_step1_button1")}
               </a>
               <a
                 href="/activate-wallet"
                 className="justify-content text-sm font-[500] text-white bg-xcannes-green/80 px-4 py-2 rounded transition transform duration-300 hover:scale-105 text-center"
               >
-                Activer le Wallet Xaman
+                {t("buy_step1_button2")}
               </a>
             </div>
           </div>
@@ -55,17 +57,16 @@ export default function BuyXCSSection() {
             </div>
 
             <h3 className="relative text-lg sm:text-xl text-xcannes-green font-[500] mb-2">
-              Ajoutez la Trustline
+              {t("buy_step2_title")}
             </h3>
             <p className="relative mb-4 text-sm text-white/70">
-              Ajoutez une trustline pour autoriser votre wallet à recevoir le
-              jeton XCS en toute sécurité.
+              {t("buy_step2_text")}
             </p>
             <a
               href="https://xrpl.services?issuer=rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx&currency=XCS&limit=2006400"
               className="relative inline-block text-sm font-[500] text-white bg-xcannes-green/80 px-4 py-2 rounded transition transform duration-300 hover:scale-105"
             >
-              Ajouter la Trustline
+              {t("buy_step2_button")}
             </a>
           </div>
 
@@ -77,17 +78,16 @@ export default function BuyXCSSection() {
             </div>
 
             <h3 className="relative text-lg sm:text-xl text-xcannes-green font-[500] mb-2">
-              Achetez du XCS
+              {t("buy_step3_title")}
             </h3>
             <p className="relative mb-4 text-sm text-white/70">
-              Achetez vos tokens XCS directement via notre DEX ou auprès de
-              partenaires centralisés comme Bitrue.
+              {t("buy_step3_text")}
             </p>
             <a
               href="/dex"
               className="relative inline-block text-sm font-[500] text-white bg-xcannes-green/80 px-4 py-2 rounded transition transform duration-300 hover:scale-105"
             >
-              Acheter sur XCannes Dex
+              {t("buy_step3_button")}
             </a>
           </div>
         </div>

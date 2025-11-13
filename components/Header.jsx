@@ -1,22 +1,18 @@
 import Link from "next/link";
 import XummConnectButton from "./XummConnectButton";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { useTranslation } from "next-i18next";
 
 export default function Header() {
   const router = useRouter();
+  const { t } = useTranslation("common");
   const isDex = router.pathname === "/dex";
   const isHome = router.pathname === "/";
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
-  const changeLanguage = (e) => {
-    const newLocale = e.target.value;
-    if (newLocale !== router.locale) {
-      router.push(router.pathname, router.asPath, { locale: newLocale });
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,28 +48,10 @@ export default function Header() {
           href={isDex ? "/" : "/dex"}
           className="hover:text-xcannes-green transition-colors duration-200"
         >
-          {isDex ? "Home" : "Trading"}
+          {isDex ? t("nav_home") : t("nav_trading")}
         </Link>
 
-        <select
-          onChange={changeLanguage}
-          value={router.locale}
-          className="bg-transparent border border-white/20 text-white text-xs rounded px-3 py-1.5 cursor-pointer hover:border-white/40 transition-colors duration-200 focus:outline-none focus:border-xcannes-green"
-          aria-label="Sélectionner la langue"
-        >
-          <option value="fr" className="bg-black">
-            FR
-          </option>
-          <option value="en" className="bg-black">
-            EN
-          </option>
-          <option value="es" className="bg-black">
-            ES
-          </option>
-          <option value="ja" className="bg-black">
-            JA
-          </option>
-        </select>
+        <LanguageSwitcher />
 
         {isDex && <XummConnectButton small />}
       </nav>
@@ -95,27 +73,10 @@ export default function Header() {
             onClick={() => setMenuOpen(false)}
             className="hover:text-xcannes-green transition-colors"
           >
-            {isDex ? "Home" : "Trading"}
+            {isDex ? t("nav_home") : t("nav_trading")}
           </Link>
 
-          <select
-            onChange={changeLanguage}
-            value={router.locale}
-            className="bg-transparent border border-white/20 text-white text-xs rounded px-3 py-1.5 cursor-pointer"
-          >
-            <option value="fr" className="bg-black">
-              🇫🇷 Français
-            </option>
-            <option value="en" className="bg-black">
-              �� English
-            </option>
-            <option value="es" className="bg-black">
-              🇪🇸 Español
-            </option>
-            <option value="ja" className="bg-black">
-              🇯🇵 日本語
-            </option>
-          </select>
+          <LanguageSwitcher />
 
           {isDex && <XummConnectButton small />}
         </div>

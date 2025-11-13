@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { useTranslation } from "next-i18next";
 
 export default function PriceTicker({ pairs = [], fixed = false }) {
+  const { t } = useTranslation("common");
   const [pricesData, setPricesData] = useState([]);
   const tickerRef = useRef(null);
 

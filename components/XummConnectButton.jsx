@@ -1,7 +1,9 @@
 import { useXumm } from "../context/XummContext";
+import { useTranslation } from "next-i18next";
 
 export default function XummConnectButton({ small = false }) {
   const { wallet, isConnected, connect, disconnect } = useXumm();
+  const { t } = useTranslation("common");
 
   if (isConnected) {
     return (
@@ -19,7 +21,7 @@ export default function XummConnectButton({ small = false }) {
                 small ? "text-xs" : "text-sm"
               } font-medium text-xcannes-green`}
             >
-              Connecté
+              {t("wallet_connected")}
             </span>
           </div>
           <span
@@ -39,7 +41,7 @@ export default function XummConnectButton({ small = false }) {
           } bg-white/5 hover:bg-red-500/20 text-white/70 hover:text-red-400 border border-white/10 hover:border-red-500/40 rounded-lg font-medium transition-all duration-300`}
           aria-label="Se déconnecter du wallet"
         >
-          <span className="hidden sm:inline">Déconnecter</span>
+          <span className="hidden sm:inline">{t("wallet_disconnect")}</span>
           <span className="sm:hidden">✕</span>
         </button>
       </div>
@@ -54,7 +56,7 @@ export default function XummConnectButton({ small = false }) {
       } bg-[#3052ff] hover:bg-[#2642d9] text-white font-medium rounded-lg transition-all duration-200`}
       aria-label="Connecter votre wallet XRPL"
     >
-      Connecter Wallet
+      {t("wallet_connect")}
     </button>
   );
 }

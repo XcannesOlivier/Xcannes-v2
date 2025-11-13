@@ -1,8 +1,11 @@
 import { useEffect } from "react";
+import { useTranslation } from "next-i18next";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 export default function NotreVisionBlock() {
+  const { t } = useTranslation("common");
+
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
   }, []);
@@ -10,23 +13,23 @@ export default function NotreVisionBlock() {
   const pillars = [
     {
       icon: "💼",
-      title: "Mission",
-      text: "Créer un écosystème crypto accessible, transparent et centré sur l'utilisateur",
+      title: t("vision_mission_title"),
+      text: t("vision_mission_text"),
     },
     {
       icon: "🌍",
-      title: "Local & Global",
-      text: "Ancrée à Cannes, ouverte sur le monde grâce à la technologie XRP Ledger",
+      title: t("vision_local_title"),
+      text: t("vision_local_text"),
     },
     {
       icon: "🧬",
-      title: "Innovation",
-      text: "Des solutions DeFi simples et performantes pour tous",
+      title: t("vision_innovation_title"),
+      text: t("vision_innovation_text"),
     },
     {
       icon: "⚖️",
-      title: "Transparence",
-      text: "Une gouvernance claire, un tokenomics équitable, une communauté forte",
+      title: t("vision_transparency_title"),
+      text: t("vision_transparency_text"),
     },
   ];
 
@@ -40,7 +43,7 @@ export default function NotreVisionBlock() {
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-16" data-aos="fade-up">
           <p className="text-sm uppercase tracking-widest text-xcannes-green mb-3 font-light">
-            Our Vision
+            {t("vision_badge")}
           </p>
           <h2
             className="text-4xl md:text-5xl font-orbitron font-bold mb-8 bg-gradient-to-b from-white via-white/90 to-white/60 bg-clip-text text-transparent"
@@ -49,12 +52,10 @@ export default function NotreVisionBlock() {
                 "0 0 10px rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.3)",
             }}
           >
-            Construire le futur de la finance
+            {t("vision_title")}
           </h2>
           <p className="text-lg text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
-            XCANNES connecte l'innovation blockchain à l'économie réelle,
-            <br />
-            en créant un pont entre tradition et disruption.
+            {t("vision_description")}
           </p>
         </div>
 
@@ -92,13 +93,13 @@ export default function NotreVisionBlock() {
           data-aos="fade-up"
         >
           <p className="text-white/80 mb-6 text-lg font-light">
-            Découvrez notre stratégie complète et notre roadmap
+            {t("vision_cta_text")}
           </p>
           <a
             href="/whitepaper"
             className="inline-block px-8 py-3 bg-xcannes-green/10 hover:bg-xcannes-green/20 border border-xcannes-green/30 hover:border-xcannes-green text-white rounded-lg transition-all duration-300 font-medium"
           >
-            📓 Lire le Whitepaper
+            📓 {t("vision_cta_button")}
           </a>
         </div>
 

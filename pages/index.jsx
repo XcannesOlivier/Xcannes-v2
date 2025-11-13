@@ -12,10 +12,14 @@ import BuyXCSSection from "../components/BuyXCSSection.jsx";
 import NotreVisionBlock from "../components/NotreVisionBlock";
 import SEOHead from "../components/SEOHead";
 import PriceTicker from "../components/PriceTicker";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const PAIRS = ["XCS/XRP", "XCS/USD", "XCS/EUR", "XCS/RLUSD", "XRP/RLUSD"];
 
 export default function Home() {
+  const { t } = useTranslation("common");
+
   return (
     <>
       <SEOHead
@@ -46,36 +50,34 @@ export default function Home() {
           <div className="inline-flex items-center gap-2 bg-xcannes-green/10 border border-xcannes-green/20 rounded-full px-4 py-2 mb-8">
             <span className="w-2 h-2 bg-xcannes-green rounded-full animate-pulse" />
             <span className="text-sm text-xcannes-green font-medium">
-              Built on XRP Ledger
+              {t("hero_badge")}
             </span>
           </div>
 
           {/* Main heading */}
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-orbitron font-bold text-white mb-6 pb-4 leading-snug sm:leading-snug md:leading-snug lg:leading-snug">
-            The Future of
+            {t("hero_title")}
             <span className="block bg-gradient-to-r from-xcannes-green via-emerald-400 to-green-500 bg-clip-text text-transparent">
-              Digital Finance
+              {t("hero_title_gradient")}
             </span>
           </h1>
 
           {/* Subheading */}
           <p className="text-lg sm:text-xl text-white/70 max-w-3xl mx-auto mb-12 font-light leading-relaxed">
-            Trade XCS tokens with institutional-grade security.
-            <br className="hidden sm:block" />
-            Fast settlements, low fees, powered by blockchain technology.
+            {t("hero_description")}
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Link href="/dex">
               <button className="group relative px-8 py-4 bg-xcannes-green hover:bg-xcannes-green/90 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-xcannes-green/20">
-                <span className="relative z-10">Start Trading</span>
+                <span className="relative z-10">{t("hero_button")}</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-green-500 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </button>
             </Link>
             <Link href="/whitepaper">
               <button className="px-8 py-4 bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 text-white font-semibold rounded-lg transition-all duration-300">
-                Read Whitepaper →
+                {t("hero_whitepaper")} →
               </button>
             </Link>
           </div>
@@ -118,4 +120,12 @@ export default function Home() {
       <FooterPro />
     </>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 }

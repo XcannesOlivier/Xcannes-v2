@@ -8,6 +8,19 @@ import FooterPro from "../components/FooterPro";
 export default function Disclaimer() {
   const { t } = useTranslation("common");
 
+  // Section LLC Information
+  const llcInfo = {
+    companyName: "XCANNES LLC",
+    state: "Delaware",
+    fileNumber: "10157026",
+    ein: "38-4351623",
+    incorporationDate: "08 April 2025",
+    registeredAgent: "Harvard Business Services, Inc.",
+    address: "16192 Coastal Highway, Lewes, DE 19958, USA",
+    email: "xcannesdao@gmail.com",
+    website: "https://xcannes.com",
+  };
+
   const sections = [
     {
       number: "01",
@@ -82,7 +95,7 @@ export default function Disclaimer() {
         "Des cookies et technologies similaires peuvent être utilisés pour améliorer l'expérience utilisateur.",
         "Vous avez le droit d'accéder, de modifier ou de supprimer vos données personnelles.",
         "Les transactions blockchain sont publiques et transparentes par nature - XCANNES ne contrôle pas cette transparence.",
-        "📌 Consultez notre <a href='/confidentialite' class='underline text-xcannes-green hover:text-xcannes-green/80'>Politique de Confidentialité</a> pour plus d'informations détaillées.",
+        "Pour toute demande concernant vos données personnelles, contactez-nous à <a href='mailto:xcannesdao@gmail.com' class='underline text-xcannes-green hover:text-xcannes-green/80'>xcannesdao@gmail.com</a>.",
       ],
     },
     {
@@ -143,10 +156,10 @@ export default function Disclaimer() {
   return (
     <>
       <Head>
-        <title>Conditions Générales & Disclaimer - XCANNES (XCS)</title>
+        <title>Legal Information & Disclaimer - XCANNES LLC (XCS)</title>
         <meta
           name="description"
-          content="Conditions générales d'utilisation, avertissements sur les risques et informations légales concernant le token XCS et les services XCANNES."
+          content="Complete legal information about XCANNES LLC (Delaware), including company registration, EIN, terms of use, risk disclaimers and regulatory compliance for XCS token."
         />
         <meta name="robots" content="index, follow" />
       </Head>
@@ -158,93 +171,263 @@ export default function Disclaimer() {
           {/* Header */}
           <div className="text-center mb-16">
             <p className="text-sm uppercase tracking-widest text-xcannes-green mb-3 font-light">
-              Conditions Légales
+              Legal Documentation
             </p>
             <h1 className="text-4xl md:text-5xl font-orbitron font-bold text-white mb-4">
-              Conditions Générales & Disclaimer
+              Legal Information & Compliance
             </h1>
             <p className="text-lg text-white/60 max-w-2xl mx-auto mb-6">
-              Veuillez lire attentivement ce document avant d'utiliser XCS ou
-              nos services.
+              Complete legal information, company registration details, and
+              terms of use.
             </p>
-            <div className="flex items-center justify-center gap-6 text-sm text-white/40">
-              <span>📅 Mise à jour : 12 Novembre 2025</span>
+            <div className="flex items-center justify-center gap-6 text-sm text-white/40 flex-wrap">
+              <span>📅 Updated: 13 November 2025</span>
               <span>•</span>
-              <span>📜 Version 2.0</span>
+              <span>📜 Version 3.0</span>
+              <span>•</span>
+              <span>🏛️ Delaware LLC</span>
             </div>
           </div>
 
-          {/* Avertissement principal */}
-          <div className="bg-black/40 backdrop-blur-sm border border-xcannes-green/30 rounded-xl p-8 mb-12">
-            <div className="flex items-start gap-4">
-              <span className="text-4xl">⚠️</span>
-              <div className="flex-1">
-                <h2 className="text-xl font-orbitron font-bold text-xcannes-green mb-3">
-                  Avertissement sur les Risques
-                </h2>
-                <div className="text-white/70 space-y-2 text-sm leading-relaxed">
-                  <p>
-                    • Les cryptomonnaies sont des actifs{" "}
-                    <strong>hautement volatils et spéculatifs</strong>.
-                  </p>
-                  <p>
-                    • Vous pouvez{" "}
-                    <strong>perdre la totalité de votre investissement</strong>.
-                  </p>
-                  <p>
-                    • N'investissez{" "}
-                    <strong>
-                      que ce que vous pouvez vous permettre de perdre
-                    </strong>
-                    .
-                  </p>
-                  <p>
-                    • Ce n'est <strong>pas un conseil financier</strong> -
-                    consultez un professionnel.
-                  </p>
-                </div>
-              </div>
+          {/* ============= SECTION 1: LLC INFORMATION ============= */}
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-orbitron font-bold text-white mb-3">
+                🏛️ Company Information
+              </h2>
+              <p className="text-white/60">
+                Legal entity details and registration
+              </p>
             </div>
-          </div>
 
-          {/* Sections */}
-          <div className="space-y-6">
-            {sections.map((section, index) => (
-              <div
-                key={index}
-                className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden hover:border-xcannes-green/20 transition-all duration-300"
-              >
-                {/* Header de section */}
-                <div className="p-6 border-b border-white/10">
+            <div className="grid gap-6">
+              {/* Company Card */}
+              <div className="bg-black/40 backdrop-blur-sm border border-xcannes-green/30 rounded-xl overflow-hidden">
+                <div className="bg-xcannes-green/10 border-b border-xcannes-green/30 p-6">
                   <div className="flex items-center gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-xcannes-green/10 flex items-center justify-center">
-                      <span className="text-sm font-orbitron font-bold text-xcannes-green">
-                        {section.number}
-                      </span>
+                    <div className="w-16 h-16 rounded-full bg-xcannes-green/20 flex items-center justify-center">
+                      <span className="text-3xl">🏢</span>
                     </div>
-                    <div className="flex items-center gap-3 flex-1">
-                      <span className="text-2xl">{section.icon}</span>
-                      <h2 className="text-xl md:text-2xl font-orbitron font-semibold text-white">
-                        {section.title}
-                      </h2>
+                    <div>
+                      <h3 className="text-2xl font-orbitron font-bold text-white">
+                        {llcInfo.companyName}
+                      </h3>
+                      <p className="text-xcannes-green font-medium">
+                        Limited Liability Company
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Contenu de section */}
-                <div className="p-6">
-                  <div className="space-y-3 text-white/70 leading-relaxed">
-                    {section.content.map((item, idx) => (
-                      <p
-                        key={idx}
-                        dangerouslySetInnerHTML={{ __html: item }}
-                        className="text-sm md:text-base"
-                      />
-                    ))}
+                <div className="p-6 space-y-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <p className="text-white/60 text-sm mb-1">
+                        State of Incorporation
+                      </p>
+                      <p className="text-white font-semibold text-lg">
+                        🇺🇸 {llcInfo.state}, USA
+                      </p>
+                    </div>
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <p className="text-white/60 text-sm mb-1">File Number</p>
+                      <p className="text-white font-semibold text-lg font-mono">
+                        {llcInfo.fileNumber}
+                      </p>
+                      <a
+                        href="https://icis.corp.delaware.gov/Ecorp/EntitySearch/NameSearch.aspx"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xcannes-green text-xs hover:underline flex items-center gap-1 mt-1"
+                      >
+                        <span>Verify on Delaware Registry</span>
+                        <span>↗</span>
+                      </a>
+                    </div>
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <p className="text-white/60 text-sm mb-1">EIN (Tax ID)</p>
+                      <p className="text-white font-semibold text-lg font-mono">
+                        {llcInfo.ein}
+                      </p>
+                      <a
+                        href="/assets/docs/XCannesLLC_EIN_IRS.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xcannes-green text-xs hover:underline flex items-center gap-1 mt-1"
+                      >
+                        <span>📄 View Official EIN Document (IRS)</span>
+                        <span>↗</span>
+                      </a>
+                    </div>
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <p className="text-white/60 text-sm mb-1">
+                        Incorporation Date
+                      </p>
+                      <p className="text-white font-semibold text-lg">
+                        📅 {llcInfo.incorporationDate}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                    <p className="text-white/60 text-sm mb-2">
+                      Registered Agent
+                    </p>
+                    <p className="text-white font-medium">
+                      {llcInfo.registeredAgent}
+                    </p>
+                    <p className="text-white/70 text-sm mt-1">
+                      {llcInfo.address}
+                    </p>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <p className="text-white/60 text-sm mb-1">
+                        Official Email
+                      </p>
+                      <a
+                        href={`mailto:${llcInfo.email}`}
+                        className="text-xcannes-green hover:text-xcannes-green/80 font-medium flex items-center gap-2"
+                      >
+                        <span>�</span>
+                        <span>{llcInfo.email}</span>
+                      </a>
+                    </div>
+                    <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                      <p className="text-white/60 text-sm mb-1">Website</p>
+                      <a
+                        href={llcInfo.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xcannes-green hover:text-xcannes-green/80 font-medium flex items-center gap-2"
+                      >
+                        <span>🌐</span>
+                        <span>xcannes.com</span>
+                        <span>↗</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
+
+              {/* Compliance Statement */}
+              <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+                <div className="flex items-start gap-4">
+                  <span className="text-3xl">✅</span>
+                  <div>
+                    <h3 className="text-xl font-orbitron font-bold text-white mb-3">
+                      Legal Compliance & Transparency
+                    </h3>
+                    <div className="text-white/70 space-y-2 text-sm leading-relaxed">
+                      <p>
+                        <strong className="text-white">XCANNES LLC</strong> is a
+                        legally registered entity in the State of Delaware, USA,
+                        operating in full compliance with applicable corporate
+                        and tax regulations.
+                      </p>
+                      <p>
+                        We are committed to transparency, regulatory compliance,
+                        and building trust with our community through legitimate
+                        business practices.
+                      </p>
+                      <p className="text-xcannes-green">
+                        🔒 Our registration details are publicly verifiable on
+                        the Delaware Division of Corporations website.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ============= SECTION 2: TERMS & DISCLAIMER ============= */}
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-orbitron font-bold text-white mb-3">
+                📋 Terms of Use & Disclaimer
+              </h2>
+              <p className="text-white/60">
+                Legal conditions and risk warnings
+              </p>
+            </div>
+
+            {/* Avertissement principal */}
+            <div className="bg-black/40 backdrop-blur-sm border border-xcannes-green/30 rounded-xl p-8 mb-12">
+              <div className="flex items-start gap-4">
+                <span className="text-4xl">⚠️</span>
+                <div className="flex-1">
+                  <h2 className="text-xl font-orbitron font-bold text-xcannes-green mb-3">
+                    Avertissement sur les Risques
+                  </h2>
+                  <div className="text-white/70 space-y-2 text-sm leading-relaxed">
+                    <p>
+                      • Les cryptomonnaies sont des actifs{" "}
+                      <strong>hautement volatils et spéculatifs</strong>.
+                    </p>
+                    <p>
+                      • Vous pouvez{" "}
+                      <strong>
+                        perdre la totalité de votre investissement
+                      </strong>
+                      .
+                    </p>
+                    <p>
+                      • N'investissez{" "}
+                      <strong>
+                        que ce que vous pouvez vous permettre de perdre
+                      </strong>
+                      .
+                    </p>
+                    <p>
+                      • Ce n'est <strong>pas un conseil financier</strong> -
+                      consultez un professionnel.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Sections */}
+            <div className="space-y-6">
+              {sections.map((section, index) => (
+                <div
+                  key={index}
+                  className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden hover:border-xcannes-green/20 transition-all duration-300"
+                >
+                  {/* Header de section */}
+                  <div className="p-6 border-b border-white/10">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-xcannes-green/10 flex items-center justify-center">
+                        <span className="text-sm font-orbitron font-bold text-xcannes-green">
+                          {section.number}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className="text-2xl">{section.icon}</span>
+                        <h2 className="text-xl md:text-2xl font-orbitron font-semibold text-white">
+                          {section.title}
+                        </h2>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Contenu de section */}
+                  <div className="p-6">
+                    <div className="space-y-3 text-white/70 leading-relaxed">
+                      {section.content.map((item, idx) => (
+                        <p
+                          key={idx}
+                          dangerouslySetInnerHTML={{ __html: item }}
+                          className="text-sm md:text-base"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Section Contact */}
@@ -313,7 +496,7 @@ export default function Disclaimer() {
 
           {/* Footer legal */}
           <div className="mt-12 pt-8 border-t border-white/10 text-center text-white/40 text-xs">
-            <p>© 2025 XCANNES. Tous droits réservés.</p>
+            <p>© 2025 XCANNES LLC. Tous droits réservés.</p>
             <p className="mt-2">
               XCS Token • XRPL Native • Issuer:
               rBxQY3dc4mJtcDA5UgmLvtKsdc7vmCGgxx

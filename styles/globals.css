@@ -9,7 +9,40 @@ body {
   font-family: var(--font-manrope), system-ui, sans-serif;
 }
 
-/* ========= ANIMATIONS ULTRA-MODERNES ========= */
+/* ========= RTL SUPPORT (Right-To-Left) ========= */
+
+/* Support automatique pour les langues RTL (arabe, ourdou) */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Ajustements des marges/paddings en RTL */
+[dir="rtl"] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* Flex reverse pour RTL */
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+/* Grid ajustements RTL si nécessaire */
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+/* ========= ANIMATIONS ========= */
 
 /* Gradient animé pour hero */
 @keyframes gradient {
@@ -31,9 +64,11 @@ body {
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -41,48 +76,6 @@ body {
   animation: fadeIn 0.6s ease-out forwards;
 }
 
-/* Slide up avec fade */
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.faq-animate,
-.scroll-animate {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.4s ease-out;
-}
-
-.faq-animate.visible,
-.scroll-animate.visible {
-  animation: fadeInUp 0.4s ease-out forwards;
-}
-
-.clip-diagonal {
-  clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 0% 100%);
-}
-
-/* Fond FAQ */
-.bg-grey\/90 {
-  background-color: rgba(2, 1, 30, 0.95);
-}
-
-.faq-arrow {
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-}
-
-.text-FAQ {
-  color: white;
-}
-
-.text-global {
-  color: rgb(187, 29, 29);
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { useTranslation } from "next-i18next";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 // Distribution XCS - 2,006,400 Total Supply
@@ -76,6 +77,7 @@ const metrics = [
 ];
 
 export default function TokenomicsSection() {
+  const { t } = useTranslation("common");
   const [mounted, setMounted] = useState(false);
   const [activeIndex, setActiveIndex] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -162,18 +164,16 @@ export default function TokenomicsSection() {
           <div className="inline-flex items-center gap-2 bg-xcannes-green/10 border border-xcannes-green/20 rounded-full px-6 py-2.5 mb-6">
             <div className="w-2 h-2 bg-xcannes-green rounded-full animate-pulse" />
             <span className="text-sm font-semibold text-xcannes-green uppercase tracking-widest">
-              Tokenomics
+              {t("tokenomics_badge")}
             </span>
           </div>
 
           <h2 className="text-5xl md:text-6xl lg:text-7xl font-orbitron font-bold text-white/90 mb-6 leading-tight">
-            Token Distribution
+            {t("tokenomics_title")}
           </h2>
 
           <p className="text-xl text-white/60 max-w-3xl mx-auto leading-relaxed">
-            Transparent allocation model designed for sustainable growth,
-            <br className="hidden sm:block" />
-            long-term value creation, and ecosystem prosperity
+            {t("tokenomics_description")}
           </p>
         </div>
 
@@ -338,18 +338,17 @@ export default function TokenomicsSection() {
         {/* CTA Section */}
         <div className="bg-gradient-to-r from-black/40 via-xcannes-green/5 to-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-8 text-center">
           <h3 className="text-2xl font-orbitron font-bold text-white/90 mb-3">
-            Learn More About XCS Economics
+            {t("tokenomics_cta_title")}
           </h3>
           <p className="text-white/50 mb-6 max-w-2xl mx-auto">
-            Discover our complete tokenomics model, vesting schedules, and
-            long-term sustainability strategy in our comprehensive whitepaper.
+            {t("tokenomics_cta_text")}
           </p>
           <a
             href="/whitepaper"
             className="inline-flex items-center gap-3 bg-xcannes-green hover:bg-xcannes-green/90 text-black font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-xcannes-green/20"
           >
             <span className="text-xl">📓</span>
-            <span>Read Full Whitepaper</span>
+            <span>{t("tokenomics_cta_button")}</span>
             <span>→</span>
           </a>
         </div>

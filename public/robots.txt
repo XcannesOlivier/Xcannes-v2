@@ -2,9 +2,12 @@ User-agent: *
 Allow: /
 
 # Pages principales
+Allow: /
 Allow: /dex
 Allow: /whitepaper
 Allow: /contact
+Allow: /disclaimer
+Allow: /success
 
 # Bloque les fichiers techniques
 Disallow: /api/

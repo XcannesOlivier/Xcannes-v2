@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { Client } from "xrpl";
 import { getBookIdFromPair } from "../utils/xrpl";
 import TokenAmountInput from "./TokenAmountInput";
+import { useTranslation } from "next-i18next";
 
 export default function TradingPanel({ pair }) {
+  const { t } = useTranslation("common");
   // TradeBox states
   const [mode, setMode] = useState("BUY");
   const [orderType, setOrderType] = useState("market");
@@ -149,7 +151,7 @@ export default function TradingPanel({ pair }) {
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
             <div className="w-8 h-8 border-2 border-xcannes-green border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-            <p className="text-white/60 text-sm">Chargement...</p>
+            <p className="text-white/60 text-sm">{t("trading_loading")}</p>
           </div>
         </div>
       </div>
@@ -161,11 +163,9 @@ export default function TradingPanel({ pair }) {
       {/* Header */}
       <div className="p-4 border-b border-white/10">
         <h2 className="text-lg font-orbitron font-bold text-white">
-          Trading Panel
+          {t("trading_title")}
         </h2>
-        <p className="text-xs text-white/40 mt-1">
-          Place orders & view market data
-        </p>
+        <p className="text-xs text-white/40 mt-1">{t("trading_subtitle")}</p>
       </div>
 
       {/* Main Grid: 3 colonnes */}
@@ -173,7 +173,7 @@ export default function TradingPanel({ pair }) {
         {/* COLONNE 1 : TradeBox */}
         <div className="p-4">
           <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider mb-4">
-            Place Order
+            {t("trading_place_order")}
           </h3>
 
           {/* BUY/SELL Toggle */}
@@ -190,7 +190,7 @@ export default function TradingPanel({ pair }) {
                     : "bg-red-500/20 text-red-400 hover:bg-red-500/30"
                 }`}
               >
-                {opt === "BUY" ? "Buy" : "Sell"} {base}
+                {opt === "BUY" ? t("trading_buy") : t("trading_sell")} {base}
               </button>
             ))}
           </div>
@@ -207,7 +207,7 @@ export default function TradingPanel({ pair }) {
                     : "border-white/10 hover:border-white/20 text-white/60"
                 }`}
               >
-                {type === "market" ? "Market" : "Limit"}
+                {type === "market" ? t("trading_market") : t("trading_limit")}
               </button>
             ))}
           </div>
@@ -215,7 +215,7 @@ export default function TradingPanel({ pair }) {
           {/* Amount */}
           <div className="mb-3">
             <label className="block mb-1 text-xs text-white/60">
-              Amount ({base})
+              {t("trading_amount")} ({base})
             </label>
             <TokenAmountInput
               value={amount}
@@ -241,7 +241,7 @@ export default function TradingPanel({ pair }) {
           {orderType === "limit" && (
             <div className="mb-3">
               <label className="block mb-1 text-xs text-white/60">
-                Price ({counter})
+                {t("trading_price")} ({counter})
               </label>
               <TokenAmountInput
                 value={price}
@@ -253,7 +253,7 @@ export default function TradingPanel({ pair }) {
 
           {/* Total */}
           <p className="text-xs text-white/60 mb-3">
-            Total:{" "}
+            {t("trading_total")}:{" "}
             <span className="text-xcannes-green font-semibold">
               {getTotal()} {counter}
             </span>
@@ -264,28 +264,33 @@ export default function TradingPanel({ pair }) {
             onClick={handleOrder}
             className="bg-xcannes-green hover:scale-105 transition text-white px-4 py-2 rounded text-sm font-semibold w-full"
           >
-            Place {mode} Order
+            {t("trading_place_order_button").replace(
+              "{mode}",
+              mode === "BUY" ? t("trading_buy") : t("trading_sell")
+            )}
           </button>
         </div>
 
         {/* COLONNE 2 : OrderBook */}
         <div className="p-4">
           <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider mb-4">
-            Order Book
+            {t("trading_orderbook")}
           </h3>
 
           {/* Headers */}
           <div className="grid grid-cols-3 gap-2 mb-2 text-xs text-white/40 font-medium">
-            <div>Price</div>
-            <div className="text-right">Amount</div>
-            <div className="text-right">Total</div>
+            <div>{t("trading_orderbook_price")}</div>
+            <div className="text-right">{t("trading_orderbook_amount")}</div>
+            <div className="text-right">{t("trading_orderbook_total")}</div>
           </div>
 
           {/* ASKS */}
           <div className="mb-3">
             <div className="flex items-center gap-1.5 mb-1.5">
               <div className="w-1 h-1 rounded-full bg-red-500"></div>
-              <span className="text-xs font-semibold text-red-400">SELLS</span>
+              <span className="text-xs font-semibold text-red-400">
+                {t("trading_sells")}
+              </span>
             </div>
             <div className="space-y-0.5">
               {asks.slice(0, 5).map((order, idx) => {
@@ -316,7 +321,7 @@ export default function TradingPanel({ pair }) {
           {/* Spread */}
           <div className="my-2 py-1 text-center border-y border-white/5">
             <span className="text-xs text-white/40">
-              Spread:{" "}
+              {t("trading_spread")}:{" "}
               {asks[0] && bids[0]
                 ? (asks[0].price - bids[0].price).toFixed(6)
                 : "-"}
@@ -328,7 +333,7 @@ export default function TradingPanel({ pair }) {
             <div className="flex items-center gap-1.5 mb-1.5">
               <div className="w-1 h-1 rounded-full bg-xcannes-green"></div>
               <span className="text-xs font-semibold text-xcannes-green">
-                BUYS
+                {t("trading_buys")}
               </span>
             </div>
             <div className="space-y-0.5">
@@ -361,21 +366,21 @@ export default function TradingPanel({ pair }) {
         {/* COLONNE 3 : Trade History */}
         <div className="p-4">
           <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wider mb-4">
-            Recent Trades
+            {t("trading_recent_trades")}
           </h3>
 
           {/* Headers */}
           <div className="grid grid-cols-3 gap-2 mb-2 text-xs text-white/40 font-medium">
-            <div>Price</div>
-            <div className="text-right">Amount</div>
-            <div className="text-right">Time</div>
+            <div>{t("trading_orderbook_price")}</div>
+            <div className="text-right">{t("trading_orderbook_amount")}</div>
+            <div className="text-right">{t("trading_time")}</div>
           </div>
 
           {/* Trade List */}
           <div className="space-y-1 max-h-[350px] overflow-y-auto">
             {history.length === 0 ? (
               <p className="text-xs text-white/40 text-center py-8">
-                No recent trades
+                {t("trading_no_trades")}
               </p>
             ) : (
               history.map((tx, idx) => (

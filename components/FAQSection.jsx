@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "next-i18next";
 
 export default function FAQSection() {
+  const { t } = useTranslation("common");
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggle = (index) => {
@@ -9,42 +11,38 @@ export default function FAQSection() {
 
   const faqItems = [
     {
-      question: "What is XCS?",
-      answer: "XCS is a digital asset built on the XRP Ledger (XRPL), designed to provide fast, secure, and transparent transactions with minimal fees."
+      question: t("faq_q1"),
+      answer: t("faq_a1"),
     },
     {
-      question: "How do I buy XCS tokens?",
-      answer: "Connect your XUMM wallet, add the XCS trustline, and trade directly on our DEX platform. The entire process takes less than 2 minutes."
+      question: t("faq_q2"),
+      answer: t("faq_a2"),
     },
     {
-      question: "What are the transaction fees?",
-      answer: "XRPL network fees are minimal, typically around 0.00001 XRP per transaction. No hidden fees, complete transparency."
+      question: t("faq_q3"),
+      answer: t("faq_a3"),
     },
     {
-      question: "Is XCS secure?",
-      answer: "Yes. XCS is built on the XRP Ledger, one of the most secure and battle-tested blockchain networks with 10+ years of operation and zero downtime."
+      question: t("faq_q4"),
+      answer: t("faq_a4"),
     },
     {
-      question: "Can I trade XCS 24/7?",
-      answer: "Absolutely. Our decentralized exchange operates 24/7/365 with instant settlements and global accessibility."
-    }
+      question: t("faq_q5"),
+      answer: t("faq_a5"),
+    },
   ];
 
   return (
     <section className="relative py-24 px-6">
-      
       <div className="max-w-4xl mx-auto relative z-10">
-        
         <div className="text-center mb-16">
           <p className="text-sm uppercase tracking-widest text-xcannes-green mb-3 font-light">
-            Support
+            {t("faq_badge")}
           </p>
           <h2 className="text-4xl md:text-5xl font-orbitron font-bold text-white mb-4">
-            Frequently Asked Questions
+            {t("faq_title")}
           </h2>
-          <p className="text-lg text-white/60">
-            Everything you need to know about XCS tokens
-          </p>
+          <p className="text-lg text-white/60">{t("faq_subtitle")}</p>
         </div>
 
         <div className="space-y-4">
@@ -60,12 +58,20 @@ export default function FAQSection() {
                 <span className="text-lg font-semibold text-white pr-8">
                   {item.question}
                 </span>
-                <span className={`text-2xl text-xcannes-green transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}>
-                  {openIndex === index ? '−' : '+'}
+                <span
+                  className={`text-2xl text-xcannes-green transition-transform duration-300 ${
+                    openIndex === index ? "rotate-180" : ""
+                  }`}
+                >
+                  {openIndex === index ? "−" : "+"}
                 </span>
               </button>
-              
-              <div className={`overflow-hidden transition-all duration-300 ${openIndex === index ? 'max-h-96' : 'max-h-0'}`}>
+
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openIndex === index ? "max-h-96" : "max-h-0"
+                }`}
+              >
                 <div className="p-6 pt-0 text-white/70 leading-relaxed border-t border-white/5">
                   {item.answer}
                 </div>
@@ -75,15 +81,14 @@ export default function FAQSection() {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-white/60 mb-4">Still have questions?</p>
-          <a 
+          <p className="text-white/60 mb-4">{t("faq_contact")}</p>
+          <a
             href="/contact"
             className="inline-block px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-xcannes-green/40 text-white rounded-lg transition-all duration-300"
           >
-            Contact Support →
+            {t("faq_contact_button")} →
           </a>
         </div>
-
       </div>
     </section>
   );

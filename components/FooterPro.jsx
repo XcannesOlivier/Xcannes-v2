@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { useXumm } from "../context/XummContext";
 import xrpl from "xrpl";
 
 export default function FooterPro() {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const isDex = router.pathname === "/dex";
   const { wallet, isConnected } = useXumm();
@@ -53,18 +55,18 @@ export default function FooterPro() {
             <h3 className="text-2xl font-orbitron font-bold mb-2 text-white">
               XCANNES
             </h3>
-            <p className="text-sm text-white/60 mb-4">Digital Asset Exchange</p>
+            <p className="text-sm text-white/60 mb-4">{t("footer_branding")}</p>
             <p className="text-xs text-white/40">
-              Powered on XRP Ledger
+              {t("footer_powered")}
               <br />
-              Created to simplify Web3
+              {t("footer_created")}
             </p>
           </div>
 
           {/* Colonne 2 - Liens essentiels */}
           <div className="text-center">
             <h4 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
-              Navigation
+              {t("footer_nav_title")}
             </h4>
             <ul className="text-sm space-y-2">
               <li>
@@ -72,7 +74,7 @@ export default function FooterPro() {
                   href="/dex"
                   className="text-white/70 hover:text-xcannes-green transition-colors"
                 >
-                  Trading
+                  {t("footer_nav_trading")}
                 </Link>
               </li>
               <li>
@@ -80,15 +82,16 @@ export default function FooterPro() {
                   href="/whitepaper"
                   className="text-white/70 hover:text-xcannes-green transition-colors"
                 >
-                  Whitepaper
+                  {t("footer_nav_whitepaper")}
                 </Link>
               </li>
               <li>
                 <Link
                   href="/disclaimer"
-                  className="text-white/70 hover:text-xcannes-green transition-colors"
+                  className="text-white/70 hover:text-xcannes-green transition-colors flex items-center justify-center gap-2"
                 >
-                  Legal
+                  <span>🏛️</span>
+                  <span>Legal Info</span>
                 </Link>
               </li>
             </ul>
@@ -97,14 +100,14 @@ export default function FooterPro() {
           {/* Colonne 3 - Contact & Réseaux */}
           <div className="text-center md:text-right">
             <h4 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
-              Contact
+              {t("footer_contact_title")}
             </h4>
             <p className="text-sm mb-4">
               <a
                 href="/contact"
                 className="text-white/70 hover:text-xcannes-green transition-colors"
               >
-                contact@xcannes.com
+                {t("footer_contact_email")}
               </a>
             </p>
 
@@ -159,16 +162,16 @@ export default function FooterPro() {
         {/* Ligne de séparation */}
         <div className="border-t border-white/5 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center text-xs text-white/40 gap-4">
-            <p>&copy; {new Date().getFullYear()} XCannes LLC – Delaware, USA</p>
+            <p>{t("footer_copyright")}</p>
 
             <div
               className="flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 border border-white/10"
               title={
                 xrplLoading
-                  ? "Checking XRPL..."
+                  ? t("footer_xrpl_checking")
                   : xrplConnected
-                  ? "XRPL Connected"
-                  : "XRPL Disconnected"
+                  ? t("footer_xrpl_connected")
+                  : t("footer_xrpl_disconnected")
               }
             >
               <div
@@ -200,7 +203,8 @@ export default function FooterPro() {
         {isConnected && (
           <div className="mt-6 text-center">
             <p className="text-xs text-xcannes-green/60">
-              🔗 Connected: {wallet.slice(0, 8)}...{wallet.slice(-6)}
+              {t("footer_wallet_connected")} {wallet.slice(0, 8)}...
+              {wallet.slice(-6)}
             </p>
           </div>
         )}

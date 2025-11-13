@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Header from "../components/Header";
 import FooterPro from "../components/FooterPro";
 import TradingPanel from "../components/TradingPanel";
@@ -23,7 +25,15 @@ const XrplCandleChartRaw = dynamic(
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
             <div className="w-8 h-8 border-2 border-xcannes-green border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-            <p className="text-white/60 text-sm">Chargement du graphique...</p>
+            <p className="text-white/60 text-sm">
+              {(typeof window !== "undefined" &&
+                window.__NEXT_DATA__?.props?.pageProps?._nextI18Next
+                  ?.initialI18nStore?.[
+                  window.__NEXT_DATA__?.props?.pageProps?._nextI18Next
+                    ?.initialLocale
+                ]?.common?.dex_chart_loading) ||
+                "Loading chart..."}
+            </p>
           </div>
         </div>
       </div>
@@ -35,6 +45,7 @@ const XrplCandleChartRaw = dynamic(
 const PAIRS = ["XCS/XRP", "XCS/USD", "XCS/EUR", "XCS/RLUSD", "XRP/RLUSD"];
 
 export default function Dex() {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const isDex = router.pathname === "/dex";
 
@@ -45,8 +56,8 @@ export default function Dex() {
   return (
     <>
       <SEOHead
-        title="DEX XCannes - Échange crypto instantané"
-        description="Plateforme d'échange décentralisée pour XCS. Trading en temps réel sur XRPL avec paires XCS/XRP, XCS/USD, XCS/EUR."
+        title={t("dex_seo_title")}
+        description={t("dex_seo_description")}
         canonical="/dex"
       />
 
@@ -59,7 +70,7 @@ export default function Dex() {
 
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <h1 className="text-5xl md:text-6xl font-orbitron font-bold text-center text-white mb-8 tracking-tight">
-            XCS Today
+            {t("dex_title")}
           </h1>
 
           {/* Graphique pleine largeur */}
@@ -85,7 +96,7 @@ export default function Dex() {
           {isConnected && (
             <div className="my-12 text-center">
               <p className="text-xs text-green-400 break-all">
-                🔗 Wallet connecté : {wallet}
+                {t("dex_wallet_connected")} {wallet}
               </p>
             </div>
           )}
@@ -95,4 +106,12 @@ export default function Dex() {
       <FooterPro />
     </>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 }
